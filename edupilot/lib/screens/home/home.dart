@@ -1,8 +1,11 @@
+import 'package:edupilot/screens/home/quiz_card.dart';
+import 'package:edupilot/services/quize_store.dart';
 import 'package:edupilot/shared/styled_app_bar.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -68,7 +71,24 @@ class Home extends StatelessWidget {
             // ders kartları
             Row(
               children: [
-
+                Expanded(
+                  child: Consumer<QuizeStore>(
+                    builder:(context, value, child) {
+                      return ListView.builder(
+                        itemCount: value.quizes.length,
+                        itemBuilder: (_, index) {
+                          return Row(
+                            children: [
+                              QuizCard(
+                                value.quizes[index]
+                              ),
+                            ],
+                          );
+                        }
+                      );
+                    },
+                  )
+                ),
               ],
             ),
           ],

@@ -2,43 +2,43 @@ import 'package:flutter/material.dart';
 
 enum Lesson {
   math(
-    icon: Icon(Icons.calculate)
+    icon: Icons.calculate
   ),
   geometry(
-    icon: Icon(Icons.architecture)
+    icon: Icons.architecture
   ),
   physics(
-    icon: Icon(Icons.engineering)
+    icon: Icons.engineering
   ),
   chemistry(
-    icon: Icon(Icons.science)
+    icon: Icons.science
   ),
   biology(
-    icon: Icon(Icons.biotech)
+    icon: Icons.biotech
   ),
   history(
-    icon: Icon(Icons.history_edu)
+    icon: Icons.history_edu
   ),
   geography(
-    icon: Icon(Icons.terrain)
+    icon: Icons.terrain
   ),
   philosophy(
-    icon: Icon(Icons.psychology_alt)
+    icon: Icons.psychology_alt
   ),
   religion(
-    icon: Icon(Icons.self_improvement)
+    icon: Icons.self_improvement
   ),  
   turkish(
-    icon: Icon(Icons.menu_book)
+    icon: Icons.menu_book
   ),
   english(
-    icon: Icon(Icons.language)
+    icon: Icons.language
   );
 
   const Lesson({
     required this.icon
   });
   
-  final Icon icon;
+  final IconData? icon;
 
 }
