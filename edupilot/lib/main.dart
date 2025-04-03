@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 // firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'firebase_options.dart';
-
 
 void main() async {
 
@@ -17,25 +17,19 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MaterialApp(
-      theme: primaryTheme,
-      home: const Home(), 
-    ),
-  );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class Sandbox extends StatelessWidget {
-  const Sandbox({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  // This widget is the root of the application
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('SANDBOX'),
-        backgroundColor: Colors.grey,
-        centerTitle: true,
-      ),
-      body: const Text('Sandbox'),
+    return MaterialApp(
+      title: '',
+      theme: primaryTheme,
+      home: const Home(),
     );
   }
 }

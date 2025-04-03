@@ -2,43 +2,69 @@ import 'package:flutter/material.dart';
 
 enum Lesson {
   math(
-    icon: Icons.calculate
+    name: 'Matematik',
+    icon: Icons.calculate,
+    point: 30
   ),
   geometry(
-    icon: Icons.architecture
+    name: 'Geometri',
+    icon: Icons.architecture,
+    point: 25
   ),
   physics(
-    icon: Icons.engineering
+    name: 'Fizik',
+    icon: Icons.engineering,
+    point: 25
   ),
   chemistry(
-    icon: Icons.science
+    name: 'Kimya',
+    icon: Icons.science,
+    point: 25
   ),
   biology(
-    icon: Icons.biotech
+    name: 'Biyoloji',
+    icon: Icons.biotech,
+    point: 25
   ),
   history(
-    icon: Icons.history_edu
+    name: 'Tarih',
+    icon: Icons.history_edu,
+    point: 20
   ),
   geography(
-    icon: Icons.terrain
+    name: 'Coğrafya',
+    icon: Icons.terrain,
+    point: 20
   ),
   philosophy(
-    icon: Icons.psychology_alt
+    name: 'Felsefe',
+    icon: Icons.psychology_alt,
+    point: 20
   ),
   religion(
-    icon: Icons.self_improvement
+    name: 'Din Kültürü ve Ahlak Bilgisi',
+    icon: Icons.self_improvement,
+    point: 20
   ),  
   turkish(
-    icon: Icons.menu_book
+    name: 'Türkçe',
+    icon: Icons.menu_book,
+    point: 30
   ),
   english(
-    icon: Icons.language
+    name: 'İngilizce',
+    icon: Icons.language,
+    point: 20
   );
 
   const Lesson({
-    required this.icon
+    required this.name,
+    required this.icon,
+    required this.point,
   });
   
+  final String name;
   final IconData? icon;
+  final int point;
 
 }
