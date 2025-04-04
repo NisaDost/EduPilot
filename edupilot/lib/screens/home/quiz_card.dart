@@ -37,19 +37,11 @@ class QuizCard extends ConsumerWidget {
                 Column(
                   children: [
                     //ders adı
-                    Row(
-                      children: [
-                        StyledTitle(allQuizes[index].lesson.name.toUpperCase(), AppColors.backgroundColor)
-                      ],
-                    ),
+                    StyledTitle(allQuizes[index].lesson.name.toUpperCase(), AppColors.backgroundColor),
                     // quiz puan bilgisi
-                    Row(
-                      children: [
-                        StyledText('Bu quizde doğru cevap başına'),
-                        SizedBox(height: 8),
-                        StyledText('${allQuizes[index].pointPerQuestion} ${Icon(Icons.bolt)} kazanabilirsin!')
-                      ],
-                    ),
+                    StyledText('Bu quizde doğru cevap başına'),
+                    SizedBox(height: 8),
+                    StyledText('${allQuizes[index].pointPerQuestion} ${Icon(Icons.bolt)} kazanabilirsin!')
                   ],
                 ),
 

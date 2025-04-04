@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static Color primaryColor = const Color.fromRGBO(47, 128, 237, 1);
-  static Color primaryAccent = const Color.fromRGBO(16, 42, 67, 1);
+  static Color primaryAccent = const Color.fromRGBO(16, 42, 66, 1);
   static Color secondaryColor = const Color.fromRGBO(240, 136, 45, 1);
   static Color secondaryAccent = const Color.fromRGBO(179, 101, 34, 1);
   static Color backgroundColor = const Color.fromRGBO(230, 230, 230, 1);
@@ -47,6 +47,17 @@ ThemeData primaryTheme = ThemeData(
       fontSize: 40,
       fontWeight: FontWeight.bold,
       letterSpacing: 2,
+    ),
+    bodySmall: TextStyle(
+      color: AppColors.backgroundColor,
+      fontSize: 26,
+      letterSpacing: 0.5,
+    ),
+    titleSmall: TextStyle(
+      color: AppColors.backgroundColor,
+      fontWeight: FontWeight.bold,
+      fontSize: 32,
+      letterSpacing: 1.5,
     ),
   ),
 );
