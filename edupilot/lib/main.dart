@@ -1,4 +1,4 @@
-import 'package:edupilot/screens/home/home.dart';
+import 'package:edupilot/screens/main/main_screen.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '',
       theme: primaryTheme,
-      home: const Home(),
+      home: const MainScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
