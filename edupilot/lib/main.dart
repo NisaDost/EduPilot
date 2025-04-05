@@ -1,4 +1,3 @@
-
 import 'package:edupilot/screens/home/home.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';

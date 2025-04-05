@@ -1,6 +1,7 @@
 import 'package:edupilot/providers/quiz_provider.dart';
+import 'package:edupilot/shared/custom_bottom_bar.dart';
 import 'package:edupilot/widgets/quiz_card.dart';
-import 'package:edupilot/shared/styled_app_bar.dart';
+import 'package:edupilot/shared/custom_app_bar.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class Home extends ConsumerWidget {
     final quizes = ref.watch(quizesProvider);
 
     return Scaffold(
-      appBar: StyledAppBar(),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -41,7 +42,7 @@ class Home extends ConsumerWidget {
                           color: AppColors.primaryAccent,
                           size: 40,
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         StyledTitle('1205', AppColors.primaryAccent),
                       ],
                     ),
@@ -53,7 +54,7 @@ class Home extends ConsumerWidget {
                           color: AppColors.secondaryAccent,
                           size: 40,
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         StyledTitle('5. Gün', AppColors.secondaryAccent),
                       ],
                     ),
@@ -87,6 +88,7 @@ class Home extends ConsumerWidget {
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomBar()
     );
   }
 }
