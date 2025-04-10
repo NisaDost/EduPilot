@@ -1,5 +1,4 @@
 import 'package:edupilot/screens/home/home_screen.dart';
-import 'package:edupilot/screens/login_register/demo.dart';
 import 'package:edupilot/shared/custom_app_bar.dart';
 import 'package:edupilot/shared/custom_bottom_bar.dart';
 import 'package:edupilot/shared/collapse_menu.dart';
@@ -19,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = const [
     Placeholder(),
     Placeholder(),
-    Demo(),
+    Placeholder(),
     HomeScreen(),
   ];
 

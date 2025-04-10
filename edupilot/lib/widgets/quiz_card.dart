@@ -45,7 +45,7 @@ class QuizCard extends StatelessWidget {
               children: [
                 CardTitle(lesson.name.toUpperCase(), AppColors.backgroundColor),
                 const SizedBox(height: 8),
-                Text('Bu quizde soru başına',
+                Text('Bu branştaki quizlerde soru başına',
                   style: TextStyle(
                   color: AppColors.backgroundColor,
                   fontSize: 14,

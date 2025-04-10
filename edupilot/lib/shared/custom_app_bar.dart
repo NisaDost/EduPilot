@@ -37,50 +37,55 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
           ),
 
-          // search bar
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: AppColors.backgroundColor.withAlpha(190),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.grey[700],
-                    size: 24,
-                  ),
-                  hintText: 'Ara?',
-                  hintStyle: TextStyle(
-                    color: Colors.grey[700],
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: AppColors.backgroundColor.withAlpha(190),
-                    ),
-                  ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                  constraints:
-                      const BoxConstraints(minHeight: 36, maxHeight: 36),
-                ),
-              ),
-            ),
-          ),
+          // // search bar
+          // Expanded(
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(right: 12),
+          //     child: TextField(
+          //       decoration: InputDecoration(
+          //         filled: true,
+          //         fillColor: AppColors.backgroundColor.withAlpha(190),
+          //         prefixIcon: Icon(
+          //           Icons.search,
+          //           color: Colors.grey[700],
+          //           size: 24,
+          //         ),
+          //         hintText: 'Ara?',
+          //         hintStyle: TextStyle(
+          //           color: Colors.grey[700],
+          //         ),
+          //         border: OutlineInputBorder(
+          //           borderRadius: BorderRadius.circular(8),
+          //           borderSide: BorderSide(
+          //             color: AppColors.backgroundColor.withAlpha(190),
+          //           ),
+          //         ),
+          //         contentPadding:
+          //             const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+          //         constraints:
+          //             const BoxConstraints(minHeight: 36, maxHeight: 36),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+
+          Expanded(child: SizedBox()),
 
           // app name & profile icon
           Row(
             children: [
               StyledTitle('EduPilot', AppColors.backgroundColor),
               const SizedBox(width: 16),
-              CircleAvatar(
-                backgroundColor: AppColors.backgroundColor,
-                radius: 24,
-                child: Icon(
-                  Icons.person,
-                  color: AppColors.primaryColor,
-                  size: 48,
+              IconButton(
+                onPressed: () {}, 
+                icon: CircleAvatar(
+                  backgroundColor: AppColors.backgroundColor,
+                  radius: 24,
+                  child: Icon(
+                    Icons.person,
+                    color: AppColors.primaryColor,
+                    size: 48,
+                  ),
                 ),
               ),
             ],

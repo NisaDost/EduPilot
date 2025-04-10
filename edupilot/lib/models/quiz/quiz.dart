@@ -6,13 +6,13 @@ class Quiz {
   Quiz({
     required this.lesson,
     required this.pointPerQuestion,
-    this.isfav,
+    required this.isFav,
   });
 
   // fields
   final Lesson lesson;
   final int pointPerQuestion;
-  final bool? isfav;
+  final bool isFav;
 }
 
 
