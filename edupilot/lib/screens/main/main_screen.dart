@@ -29,6 +29,14 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void _closeCollapseMenu() {
+    if (_collapseMenuOpened) {
+      setState(() {
+        _collapseMenuOpened = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -49,13 +57,25 @@ class _MainScreenState extends State<MainScreen> {
           ),
 
           // CollapseMenu
+          if (_collapseMenuOpened)
+            Positioned(
+              left: screenWidth * 0.75,
+              top: 0,
+              bottom: 0,
+              right: 0,
+              child: GestureDetector(
+                onTap: _closeCollapseMenu,
+                child: Container(color: Colors.transparent),
+              ),
+            ),
+
           AnimatedPositioned(
             duration: Duration(milliseconds: 250),
-            left: _collapseMenuOpened ? 0 : -screenWidth * 0.7,
+            left: _collapseMenuOpened ? 0 : -screenWidth * 0.75,
             top: 0,
             bottom: 0,
             child: SizedBox(
-              width: screenWidth * 0.7,
+              width: screenWidth * 0.75,
               child: CollapseMenu(),
             ),
           ),

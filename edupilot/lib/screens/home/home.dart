@@ -11,7 +11,7 @@ class Home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final quizes = ref.watch(quizesProvider);
+    final quizzes = ref.watch(quizzesProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -71,10 +71,10 @@ class Home extends ConsumerWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: quizes.length,
+            itemCount: quizzes.length,
             itemBuilder: (context, index) {
               return QuizCard(
-                quiz: quizes[index],
+                quiz: quizzes[index],
                 onTap: () {
                   // Navigate to quiz page, etc.
                 },

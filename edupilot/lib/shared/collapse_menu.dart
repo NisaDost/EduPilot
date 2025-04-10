@@ -12,7 +12,9 @@ class CollapseMenu extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: Column(
         children: [
-          // icon - user name-surname - grade - points - streak
+          // name-surname
+          CardTitle('Name Surname', AppColors.backgroundColor),
+          // icon - grade - points - streak
           Row(
             children: [
               // icon
@@ -21,21 +23,43 @@ class CollapseMenu extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     backgroundColor: AppColors.backgroundColor,
-                    radius: 36,
+                    radius: 48,
                     child: Icon(Icons.person, 
                       color: AppColors.primaryAccent,
-                      size: 72,
+                      size: 96,
                     ),
                   ),
                 ],
               ),
               SizedBox(width: 16,),
-              // user name-surname - grade - points - streak
+              // grade - points - streak
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CardTitle('Name Surname', AppColors.backgroundColor)
+                  // grade
+                  Row(
+                    children: [
+                      Icon(Icons.school_rounded, color: AppColors.backgroundColor),
+                      SizedBox(width: 16),
+                      CardText("8. Sınıf", AppColors.backgroundColor)
+                    ],
+                  ),
+                  // points
+                  Row(
+                    children: [
+                      Icon(Icons.bolt, color: AppColors.backgroundColor),
+                      SizedBox(width: 16),
+                      CardText("1205", AppColors.backgroundColor)
+                    ],
+                  ),
+                  //streak
+                  Row(
+                    children: [
+                      Icon(Icons.local_fire_department, color: AppColors.backgroundColor),
+                      SizedBox(width: 16),
+                      CardText("5", AppColors.backgroundColor)
+                    ],
+                  ),
                 ],
               ),
             ],

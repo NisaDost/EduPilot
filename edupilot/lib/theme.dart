@@ -56,7 +56,7 @@ ThemeData primaryTheme = ThemeData(
     titleSmall: TextStyle(
       color: AppColors.backgroundColor,
       fontWeight: FontWeight.bold,
-      fontSize: 32,
+      fontSize: 36,
       letterSpacing: 1.5,
     ),
   ),
