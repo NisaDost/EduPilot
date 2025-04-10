@@ -1,4 +1,4 @@
-import 'package:edupilot/screens/home/home.dart';
+import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/login_register/demo.dart';
 import 'package:edupilot/shared/custom_app_bar.dart';
 import 'package:edupilot/shared/custom_bottom_bar.dart';
@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
     Placeholder(),
     Placeholder(),
     Demo(),
-    Home(),
+    HomeScreen(),
   ];
 
   void _toggleCollapseMenu() {
