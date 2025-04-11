@@ -1,4 +1,5 @@
 import 'package:edupilot/screens/home/home_screen.dart';
+import 'package:edupilot/screens/profile/profile_screen.dart';
 import 'package:edupilot/shared/custom_app_bar.dart';
 import 'package:edupilot/shared/custom_bottom_bar.dart';
 import 'package:edupilot/shared/collapse_menu.dart';
@@ -20,6 +21,7 @@ class _MainScreenState extends State<MainScreen> {
     Placeholder(),
     Placeholder(),
     HomeScreen(),
+    ProfileScreen(),
   ];
 
   void _toggleCollapseMenu() {
@@ -36,6 +38,14 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  void _navigateToProfile() {
+    setState(() => _selectedIndex = 4);
+  }
+
+  void _onTabSelected(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -44,6 +54,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: CustomAppBar(
         isMenuOpen: _collapseMenuOpened,
         onMenuToggle: _toggleCollapseMenu,
+        onProfileTap: _navigateToProfile,
       ),
       body: Stack(
         children: [
@@ -82,9 +93,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       bottomNavigationBar: CustomBottomBar(
         selectedIndex: _selectedIndex,
-        onTabSelected: (index) {
-          setState(() => _selectedIndex = index);
-        },
+        onTabSelected: _onTabSelected,
       ),
     );
   }

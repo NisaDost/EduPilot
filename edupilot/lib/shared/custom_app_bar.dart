@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isMenuOpen;
   final VoidCallback onMenuToggle;
+  final VoidCallback onProfileTap;
 
   const CustomAppBar({
     super.key,
     required this.isMenuOpen,
     required this.onMenuToggle,
+    required this.onProfileTap,
   });
 
   @override
@@ -77,7 +79,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               StyledTitle('EduPilot', AppColors.backgroundColor),
               const SizedBox(width: 16),
               IconButton(
-                onPressed: () {}, 
+                onPressed: onProfileTap, 
                 icon: CircleAvatar(
                   backgroundColor: AppColors.backgroundColor,
                   radius: 24,
