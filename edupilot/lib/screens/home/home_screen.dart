@@ -11,7 +11,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final quizzes = ref.watch(quizzesProvider);
+    //final quizzes = ref.watch(quizzesProvider);
+    final favQuizzes = ref.watch(favQuizzesProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -23,7 +24,7 @@ class HomeScreen extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  StyledHeading('Hoş Geldin, USER!'),
+                  StyledHeading('Hoş Geldin, USER!',AppColors.primaryAccent),
                   Text('Bugün nasıl çalışmak istersin?', style: TextStyle(
                       fontSize: 20,
                       fontFamily: GoogleFonts.jomhuria().fontFamily,
@@ -71,10 +72,10 @@ class HomeScreen extends ConsumerWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: quizzes.length,
+            itemCount: favQuizzes.length,
             itemBuilder: (context, index) {
               return QuizCard(
-                quiz: quizzes[index],
+                quiz: favQuizzes[index],
                 onTap: () {
                   // Navigate to quiz page, etc.
                 },

@@ -2,27 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StyledText extends StatelessWidget {
-  const StyledText(this.text, {super.key});
+  const StyledText(this.text, this.color, {super.key});
 
   final String text;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.jomhuria(
       textStyle: Theme.of(context).textTheme.bodyMedium,
+      color: color,
     ));
   }
 }
 
 class StyledHeading extends StatelessWidget {
-  const StyledHeading(this.text, {super.key});
+  const StyledHeading(this.text, this.color, {super.key});
 
   final String text;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.jomhuria(
       textStyle: Theme.of(context).textTheme.headlineMedium,
+      color: color,
     ));
   }
 }

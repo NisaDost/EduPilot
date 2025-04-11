@@ -12,7 +12,7 @@ class Quiz {
   // fields
   final Lesson lesson;
   final int pointPerQuestion;
-  final bool isFav;
+  bool isFav;
 }
 
 
