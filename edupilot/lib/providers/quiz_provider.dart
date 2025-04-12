@@ -46,3 +46,7 @@ List<Quiz> favQuizzes(ref) {
   return allQuizzes.where((q) => q.isFav).toList();
 }
 
+@riverpod
+List<Quiz> nonFavQuizzes(ref) {
+  return allQuizzes.where((q) => !q.isFav).toList();
+}

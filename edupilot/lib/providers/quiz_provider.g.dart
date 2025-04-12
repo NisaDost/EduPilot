@@ -38,6 +38,24 @@ final favQuizzesProvider = AutoDisposeProvider<List<Quiz>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FavQuizzesRef = AutoDisposeProviderRef<List<Quiz>>;
+String _$nonFavQuizzesHash() => r'ccf6871fec87ad84c13450cc67229ba79468da34';
+
+/// See also [nonFavQuizzes].
+@ProviderFor(nonFavQuizzes)
+final nonFavQuizzesProvider = AutoDisposeProvider<List<Quiz>>.internal(
+  nonFavQuizzes,
+  name: r'nonFavQuizzesProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$nonFavQuizzesHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef NonFavQuizzesRef = AutoDisposeProviderRef<List<Quiz>>;
 String _$quizNotifierHash() => r'4ae4c9135f605b21bd10eb439b93864d9f9fd1c4';
 
 /// See also [QuizNotifier].

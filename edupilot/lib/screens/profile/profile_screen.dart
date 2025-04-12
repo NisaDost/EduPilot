@@ -15,12 +15,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final quizzes = ref.watch(quizzesProvider);
+    final allQuizzes = ref.watch(quizzesProvider);
     final favLessons = ref.watch(favQuizzesProvider);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // kişisel bilgiler + favori dersler listesi
           Column(
@@ -71,7 +72,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               CardText(favLesson.lesson.name, AppColors.primaryColor),
                               FilledButton(
                                 onPressed: () {
-                                  
+                                  ref.read(quizNotifierProvider.notifier)
+                                    .toggleFav(favLesson);
                                 },
                                 style: FilledButton.styleFrom(
                                   backgroundColor: AppColors.dangerColor,
@@ -87,7 +89,38 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     SizedBox(height: 12),
                     FilledButton(
-                      onPressed: () {}, 
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Favori Ders Ekle'),
+                              content: SizedBox(
+                                width: 300,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  children: allQuizzes.map((quiz) {
+                                    final isSelected = favLessons.any((f) => f.lesson.name == quiz.lesson.name);
+                                    return CheckboxListTile(
+                                      title: Text(quiz.lesson.name),
+                                      value: isSelected,
+                                      onChanged: (checked) {
+                                        ref.read(quizNotifierProvider.notifier).toggleFav(quiz);
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text('Kapat'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }, 
                       style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))
@@ -101,10 +134,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ],
           ),
-          // avatar değiştir + maskot değiştir + bişiler
+          // avatar değiştir + bişiler
           Column(
             children: [
-
+              CircleAvatar(
+                radius: 64,
+                //backgroundColor: Colors.transparent,
+                child: Image.asset('assets/img/avatar/avatar1.png'),
+              ),
+              SizedBox(height: 8),
+              FilledButton(
+                onPressed: () {}, 
+                style: FilledButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8))
+                  ),
+                  backgroundColor: AppColors.secondaryColor
+                ),
+                child: CardText('Avatarını Değiştir', AppColors.backgroundColor)
+              ),
             ],
           )
         ],
