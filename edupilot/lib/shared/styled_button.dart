@@ -43,3 +43,31 @@ class CollapseMenuButton extends StatelessWidget {
     );
   }
 }
+
+class ProfileScreenButton extends StatelessWidget {
+  const ProfileScreenButton({
+    super.key,
+    required this.onPressed,
+    required this.child,
+    required this.color,
+  });
+
+  final Function() onPressed;
+  final Widget child;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed, 
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: child
+    );
+  }
+}

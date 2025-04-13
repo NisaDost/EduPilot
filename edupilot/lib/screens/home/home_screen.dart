@@ -11,7 +11,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //final quizzes = ref.watch(quizzesProvider);
+    final quizzes = ref.watch(quizzesProvider);
     final favQuizzes = ref.watch(favQuizzesProvider);
 
     return SingleChildScrollView(
@@ -24,7 +24,7 @@ class HomeScreen extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  StyledHeading('Hoş Geldin, USER!',AppColors.primaryAccent),
+                  StyledHeading('Hoş Geldin, USER!',AppColors.titleColor),
                   Text('Bugün nasıl çalışmak istersin?', style: TextStyle(
                       fontSize: 20,
                       fontFamily: GoogleFonts.jomhuria().fontFamily,
@@ -40,7 +40,7 @@ class HomeScreen extends ConsumerWidget {
                         size: 40,
                       ),
                       const SizedBox(width: 12),
-                      StyledTitle('1205', AppColors.primaryAccent),
+                      StyledTitle('1205', AppColors.textColor),
                     ],
                   ),
 
@@ -52,7 +52,7 @@ class HomeScreen extends ConsumerWidget {
                         size: 40,
                       ),
                       const SizedBox(width: 12),
-                      StyledTitle('5. Gün', AppColors.secondaryAccent),
+                      StyledTitle('5. Gün', AppColors.textColor),
                     ],
                   ),
                 ],
@@ -72,10 +72,10 @@ class HomeScreen extends ConsumerWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: favQuizzes.length,
+            itemCount: quizzes.length,
             itemBuilder: (context, index) {
               return QuizCard(
-                quiz: favQuizzes[index],
+                quiz: quizzes[index],
                 onTap: () {
                   // Navigate to quiz page, etc.
                 },

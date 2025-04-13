@@ -7,17 +7,17 @@ part 'quiz_provider.g.dart';
 // dart run build_runner watch
 
 List<Quiz> allQuizzes = [
-  Quiz(lesson: Lesson.math, pointPerQuestion: Lesson.math.point, isFav: true),
-  Quiz(lesson: Lesson.geometry, pointPerQuestion: Lesson.geometry.point, isFav: true),
-  Quiz(lesson: Lesson.physics, pointPerQuestion: Lesson.physics.point, isFav: false),
-  Quiz(lesson: Lesson.chemistry, pointPerQuestion: Lesson.chemistry.point, isFav: true),
-  Quiz(lesson: Lesson.biology, pointPerQuestion: Lesson.biology.point, isFav: false),
-  Quiz(lesson: Lesson.turkish, pointPerQuestion: Lesson.turkish.point, isFav: false),
-  Quiz(lesson: Lesson.geography, pointPerQuestion: Lesson.geography.point, isFav: true),
-  Quiz(lesson: Lesson.history, pointPerQuestion: Lesson.history.point, isFav: false),
-  Quiz(lesson: Lesson.religion, pointPerQuestion: Lesson.religion.point, isFav: false),
-  Quiz(lesson: Lesson.philosophy, pointPerQuestion: Lesson.philosophy.point, isFav: true),
-  Quiz(lesson: Lesson.english, pointPerQuestion: Lesson.english.point, isFav: false),
+  Quiz(id: '1', lesson: Lesson.math, pointPerQuestion: Lesson.math.point),
+  Quiz(id: '2', lesson: Lesson.geometry, pointPerQuestion: Lesson.geometry.point),
+  Quiz(id: '3', lesson: Lesson.physics, pointPerQuestion: Lesson.physics.point),
+  Quiz(id: '4', lesson: Lesson.chemistry, pointPerQuestion: Lesson.chemistry.point),
+  Quiz(id: '5', lesson: Lesson.biology, pointPerQuestion: Lesson.biology.point),
+  Quiz(id: '6', lesson: Lesson.turkish, pointPerQuestion: Lesson.turkish.point),
+  Quiz(id: '7', lesson: Lesson.geography, pointPerQuestion: Lesson.geography.point),
+  Quiz(id: '8', lesson: Lesson.history, pointPerQuestion: Lesson.history.point),
+  Quiz(id: '9', lesson: Lesson.religion, pointPerQuestion: Lesson.religion.point),
+  Quiz(id: '10', lesson: Lesson.philosophy, pointPerQuestion: Lesson.philosophy.point),
+  Quiz(id: '11', lesson: Lesson.english, pointPerQuestion: Lesson.english.point),
 ];
 
 @riverpod
@@ -27,10 +27,6 @@ class QuizNotifier extends _$QuizNotifier {
   @override
   Set<Quiz> build() {
     return const {};
-  }
-
-  void toggleFav(Quiz lesson) {
-    lesson.isFav = !lesson.isFav;
   }
 }
 

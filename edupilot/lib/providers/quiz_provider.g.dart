@@ -56,7 +56,7 @@ final nonFavQuizzesProvider = AutoDisposeProvider<List<Quiz>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef NonFavQuizzesRef = AutoDisposeProviderRef<List<Quiz>>;
-String _$quizNotifierHash() => r'4ae4c9135f605b21bd10eb439b93864d9f9fd1c4';
+String _$quizNotifierHash() => r'000180d2d42100bd916fd8484cc5e155fae1de35';
 
 /// See also [QuizNotifier].
 @ProviderFor(QuizNotifier)
