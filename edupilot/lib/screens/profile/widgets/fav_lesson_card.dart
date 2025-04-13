@@ -1,5 +1,5 @@
 import 'package:edupilot/providers/quiz_provider.dart';
-import 'package:edupilot/screens/profile/heart.dart';
+import 'package:edupilot/screens/profile/widgets/heart.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';

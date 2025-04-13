@@ -1,5 +1,4 @@
-import 'package:edupilot/providers/quiz_provider.dart';
-import 'package:edupilot/screens/profile/fav_lesson_card.dart';
+import 'package:edupilot/screens/profile/widgets/fav_lesson_card.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
@@ -17,8 +16,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final allQuizzes = ref.watch(quizzesProvider);
-    final favLessons = ref.watch(favQuizzesProvider);
+    // final allQuizzes = ref.watch(quizzesProvider);
+    // final favLessons = ref.watch(favQuizzesProvider);
 
     return Container(
       color: Color.fromRGBO(200, 200, 220, 1),
@@ -27,7 +26,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           // kişisel bilgiler + avatar
           SizedBox(height: 8),
           Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
             color: AppColors.backgroundColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,7 +135,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           // başarımlar
           Row(
             children: [
-      
+              
             ],
           ),
         ],
