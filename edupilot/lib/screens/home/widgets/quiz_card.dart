@@ -87,7 +87,7 @@ class QuizCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 53, horizontal: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.backgroundColor.withValues(alpha: 0.2),
+                  color: AppColors.backgroundColor.withValues(alpha: 0.2), // AppColors.primaryColor
                   borderRadius: BorderRadius.circular(0),
                 ),
                 child: Icon(Icons.arrow_forward_ios, size: 40, color: AppColors.backgroundColor),
