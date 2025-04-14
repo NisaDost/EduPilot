@@ -11,6 +11,11 @@ List<Achievement> allAchievements = [
   Achievement(id: '2', name: 'Seribaz', icon: Icons.military_tech_outlined, description: 'fenalıksın'),
   Achievement(id: '3', name: 'Quizatör', icon: Icons.emoji_events, description: 'canavar'),
   Achievement(id: '4', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
+  Achievement(id: '5', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
+  Achievement(id: '6', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
+  Achievement(id: '7', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
+  Achievement(id: '7', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
+  Achievement(id: '7', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
 ];
 
 @riverpod

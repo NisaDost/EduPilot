@@ -1,4 +1,5 @@
 import 'package:edupilot/providers/achievement_provider.dart';
+import 'package:edupilot/screens/profile/widgets/achievement_card.dart';
 import 'package:edupilot/screens/profile/widgets/fav_lesson_card.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -19,7 +20,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     // final allQuizzes = ref.watch(quizzesProvider);
     // final favLessons = ref.watch(favQuizzesProvider);
-    final achievements = ref.watch(achievementsProvider);
+    // final achievements = ref.watch(achievementsProvider);
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -137,37 +138,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             const SizedBox(height: 8),
             // başarımlar
-            Container(
-              padding: EdgeInsets.all(16),
-              color: AppColors.backgroundColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CardTitle('Başarımlar', AppColors.titleColor),
-                  // GridView.builder(
-                  //   itemCount: achievements.length,
-                  //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  //     crossAxisCount: 3,
-                  //     mainAxisSpacing: 12,
-                  //     crossAxisSpacing: 12,
-                  //     childAspectRatio: 0.9,
-                  //   ), 
-                  //   itemBuilder: (context, index) {
-                  //     return Container(
-                  //       padding: EdgeInsets.all(10),
-                  //       color: AppColors.primaryAccent,
-                  //       child: Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         children: [
-                  //           Icon(achievements[index].icon, size: 50),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   }
-                  // )
-                ],
-              )
-            ),
+            AchievementCard(),
+            const SizedBox(height: 8)
           ],
         ),
       ),
