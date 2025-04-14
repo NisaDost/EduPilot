@@ -14,8 +14,7 @@ List<Achievement> allAchievements = [
   Achievement(id: '5', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
   Achievement(id: '6', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
   Achievement(id: '7', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
-  Achievement(id: '7', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
-  Achievement(id: '7', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
+  Achievement(id: '8', name: 'Yetenek', icon: Icons.hotel_class, description: 'bla'),
 ];
 
 @riverpod

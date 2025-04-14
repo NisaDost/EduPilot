@@ -71,7 +71,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           //   ),
           // ),
 
-          Expanded(child: SizedBox()),
+          const Expanded(child: SizedBox()),
 
           // app name & profile icon
           Row(

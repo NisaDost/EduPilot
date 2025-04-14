@@ -10,7 +10,7 @@ class FavLessonCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lessons = ref.watch(quizzesProvider);
+    final lessons = ref.watch(favQuizzesProvider);
 
     return Row(
       children: List.generate(lessons.length, (index) {
@@ -37,7 +37,7 @@ class FavLessonCard extends ConsumerWidget {
               Positioned(
                 top: 5,
                 right: 5,
-                child: Heart(lesson: lessons[index]),
+                child: Heart(lesson: lessons[index], defaultColor: AppColors.backgroundColor),
               ),
             ],
           ),

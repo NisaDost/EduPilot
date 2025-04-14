@@ -1,11 +1,11 @@
 import 'package:edupilot/models/quiz/quiz.dart';
-import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 
 class Heart extends StatefulWidget {
-  const Heart({super.key, required this.lesson});
+  const Heart({super.key, required this.lesson, required this.defaultColor});
 
   final Quiz lesson;
+  final Color defaultColor;
 
   @override
   State<Heart> createState() => _HeartState();
@@ -46,7 +46,7 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin{
       builder: (context, child) {
         return IconButton( 
           icon: Icon(Icons.favorite,
-            color: widget.lesson.isFav ? const Color.fromRGBO(255, 0, 0, 1) : AppColors.backgroundColor,
+            color: widget.lesson.isFav ? const Color.fromRGBO(255, 0, 0, 1) : widget.defaultColor,
             size: _sizeAnimation.value,
           ),
           onPressed: () {

@@ -34,7 +34,7 @@ class CollapseMenuButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        backgroundColor: Color.fromRGBO(217, 217, 217, 0.3),
+        backgroundColor: const Color.fromRGBO(217, 217, 217, 0.3),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
         ),
@@ -61,7 +61,7 @@ class ProfileScreenButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed, 
       style: TextButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
         backgroundColor: color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),

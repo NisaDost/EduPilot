@@ -1,5 +1,6 @@
-import 'package:edupilot/screens/profile/widgets/achievement_card.dart';
-import 'package:edupilot/screens/profile/widgets/fav_lesson_card.dart';
+import 'package:edupilot/screens/profile/widgets/achievement/achievement_card.dart';
+import 'package:edupilot/screens/profile/widgets/favorite/fav_lesson_card.dart';
+import 'package:edupilot/screens/profile/widgets/favorite/favorite_pop_up.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
@@ -107,7 +108,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Row(
                         children: [
                           ProfileScreenButton(
-                            onPressed: () {}, 
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => const FavoritePopUp(),
+                              );
+                            }, 
                             color: AppColors.primaryColor,
                             child: CardText('Favori Ders Ekle', AppColors.backgroundColor), 
                           ),

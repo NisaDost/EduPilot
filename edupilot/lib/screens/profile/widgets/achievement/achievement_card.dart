@@ -1,4 +1,5 @@
 import 'package:edupilot/providers/achievement_provider.dart';
+import 'package:edupilot/screens/profile/widgets/achievement/achievement_pop_up.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -27,19 +28,31 @@ class _AchievementCardState extends ConsumerState<AchievementCard> {
         childAspectRatio: 0.9,
       ), 
       itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundColor: AppColors.primaryAccent,
-              foregroundColor: AppColors.backgroundColor,
-              radius: 36,
-              child: Icon(achievements[index].icon, size: 54),
-            ),
-            SizedBox(height: 6),
-            CardText(achievements[index].name, AppColors.primaryAccent),
-          ]
+        return GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => AchievementPopUp(achievement: achievements[index]),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Hero(
+                tag: achievements[index].id, // must match the Hero tag in popup
+                child: CircleAvatar(
+                  backgroundColor: AppColors.primaryAccent,
+                  foregroundColor: AppColors.backgroundColor,
+                  radius: 36,
+                  child: Icon(achievements[index].icon, size: 54),
+                ),
+              ),
+              const SizedBox(height: 6),
+              CardText(achievements[index].name, AppColors.primaryAccent),
+            ],
+          ),
         );
+
       }
     );
   }
