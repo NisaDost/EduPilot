@@ -1,73 +1,72 @@
 import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/providers/lesson_provider.dart';
 
 class Subject {
 
   final String id;
   final Lesson lesson;
   final String name;
-  final bool isActive;
 
   Subject({
     required this.id,
     required this.lesson,
     required this.name,
-    required this.isActive,
   });
 }
 
 final List<Subject> allSubjects = [
   // math
-  Subject(id: '1', lesson: Lesson.math, name: 'Köklü Sayılar', isActive: true),
-  Subject(id: '2', lesson: Lesson.math, name: 'Türev', isActive: true),
-  Subject(id: '3', lesson: Lesson.math, name: 'Integral', isActive: true),
+  Subject(id: '1', lesson: allLessons.firstWhere((l) => l.name == 'Matematik'), name: 'Köklü Sayılar'),
+  Subject(id: '2', lesson: allLessons.firstWhere((l) => l.name == 'Matematik'), name: 'Türev'),
+  Subject(id: '3', lesson: allLessons.firstWhere((l) => l.name == 'Matematik'), name: 'Integral'),
 
   // geometry
-  Subject(id: '4', lesson: Lesson.geometry, name: 'Üçgenler', isActive: true),
-  Subject(id: '5', lesson: Lesson.geometry, name: 'Prizmalar', isActive: true),
-  Subject(id: '6', lesson: Lesson.geometry, name: 'Çemberler', isActive: true),
+  Subject(id: '4', lesson: allLessons.firstWhere((l) => l.name == 'Geometri'), name: 'Üçgenler'),
+  Subject(id: '5', lesson: allLessons.firstWhere((l) => l.name == 'Geometri'), name: 'Prizmalar'),
+  Subject(id: '6', lesson: allLessons.firstWhere((l) => l.name == 'Geometri'), name: 'Çemberler'),
 
   // physics
-  Subject(id: '7', lesson: Lesson.physics, name: 'Newton Hareket Yasaları', isActive: true),
-  Subject(id: '8', lesson: Lesson.physics, name: 'Elektrik ve Manyetizma', isActive: true),
-  Subject(id: '9', lesson: Lesson.physics, name: 'Optik', isActive: true),
+  Subject(id: '7', lesson: allLessons.firstWhere((l) => l.name == 'Fizik'), name: 'Newton Hareket Yasaları'),
+  Subject(id: '8', lesson: allLessons.firstWhere((l) => l.name == 'Fizik'), name: 'Elektrik ve Manyetizma'),
+  Subject(id: '9', lesson: allLessons.firstWhere((l) => l.name == 'Fizik'), name: 'Optik'),
 
   // chemistry
-  Subject(id: '10', lesson: Lesson.chemistry, name: 'Periyodik Tablo', isActive: true),
-  Subject(id: '11', lesson: Lesson.chemistry, name: 'Asitler ve Bazlar', isActive: true),
-  Subject(id: '12', lesson: Lesson.chemistry, name: 'Kimyasal Tepkimeler', isActive: true),
+  Subject(id: '10', lesson: allLessons.firstWhere((l) => l.name == 'Kimya'), name: 'Periyodik Tablo'),
+  Subject(id: '11', lesson: allLessons.firstWhere((l) => l.name == 'Kimya'), name: 'Asitler ve Bazlar'),
+  Subject(id: '12', lesson: allLessons.firstWhere((l) => l.name == 'Kimya'), name: 'Kimyasal Tepkimeler'),
 
   // biology
-  Subject(id: '13', lesson: Lesson.biology, name: 'Hücre Yapısı', isActive: true),
-  Subject(id: '14', lesson: Lesson.biology, name: 'Genetik ve Kalıtım', isActive: true),
-  Subject(id: '15', lesson: Lesson.biology, name: 'Fotosentez', isActive: true),
+  Subject(id: '13', lesson: allLessons.firstWhere((l) => l.name == 'Biyoloji'), name: 'Hücre Yapısı'),
+  Subject(id: '14', lesson: allLessons.firstWhere((l) => l.name == 'Biyoloji'), name: 'Genetik ve Kalıtım'),
+  Subject(id: '15', lesson: allLessons.firstWhere((l) => l.name == 'Biyoloji'), name: 'Fotosentez'),
 
   // history
-  Subject(id: '16', lesson: Lesson.history, name: 'Osmanlı Tarihi', isActive: true),
-  Subject(id: '17', lesson: Lesson.history, name: 'Türk İnkılabı', isActive: true),
-  Subject(id: '18', lesson: Lesson.history, name: 'Sanayi Devrimi', isActive: true),
+  Subject(id: '16', lesson: allLessons.firstWhere((l) => l.name == 'Tarih'), name: 'Osmanlı Tarihi'),
+  Subject(id: '17', lesson: allLessons.firstWhere((l) => l.name == 'Tarih'), name: 'Türk İnkılabı'),
+  Subject(id: '18', lesson: allLessons.firstWhere((l) => l.name == 'Tarih'), name: 'Sanayi Devrimi'),
 
   // geography
-  Subject(id: '19', lesson: Lesson.geography, name: 'İklim Tipleri', isActive: true),
-  Subject(id: '20', lesson: Lesson.geography, name: 'Yer Şekilleri', isActive: true),
-  Subject(id: '21', lesson: Lesson.geography, name: 'Nüfus ve Göç', isActive: true),
+  Subject(id: '19', lesson: allLessons.firstWhere((l) => l.name == 'Coğrafya'), name: 'İklim Tipleri'),
+  Subject(id: '20', lesson: allLessons.firstWhere((l) => l.name == 'Coğrafya'), name: 'Yer Şekilleri'),
+  Subject(id: '21', lesson: allLessons.firstWhere((l) => l.name == 'Coğrafya'), name: 'Nüfus ve Göç'),
 
   // philosophy
-  Subject(id: '22', lesson: Lesson.philosophy, name: 'Bilgi Felsefesi', isActive: true),
-  Subject(id: '23', lesson: Lesson.philosophy, name: 'Ahlak Felsefesi', isActive: true),
-  Subject(id: '24', lesson: Lesson.philosophy, name: 'Varlık Felsefesi', isActive: true),
+  Subject(id: '22', lesson: allLessons.firstWhere((l) => l.name == 'Felsefe'), name: 'Bilgi Felsefesi'),
+  Subject(id: '23', lesson: allLessons.firstWhere((l) => l.name == 'Felsefe'), name: 'Ahlak Felsefesi'),
+  Subject(id: '24', lesson: allLessons.firstWhere((l) => l.name == 'Felsefe'), name: 'Varlık Felsefesi'),
 
   // religion
-  Subject(id: '25', lesson: Lesson.religion, name: 'İslam’ın Temel İlkeleri', isActive: true),
-  Subject(id: '26', lesson: Lesson.religion, name: 'Peygamberler Tarihi', isActive: true),
-  Subject(id: '27', lesson: Lesson.religion, name: 'Din ve Ahlak', isActive: true),
+  Subject(id: '25', lesson: allLessons.firstWhere((l) => l.name == 'Din Kültürü ve Ahlak Bilgisi'), name: 'İslam’ın Temel İlkeleri'),
+  Subject(id: '26', lesson: allLessons.firstWhere((l) => l.name == 'Din Kültürü ve Ahlak Bilgisi'), name: 'Peygamberler Tarihi'),
+  Subject(id: '27', lesson: allLessons.firstWhere((l) => l.name == 'Din Kültürü ve Ahlak Bilgisi'), name: 'Din ve Ahlak'),
 
   // turkish
-  Subject(id: '28', lesson: Lesson.turkish, name: 'Fiilimsiler', isActive: true),
-  Subject(id: '29', lesson: Lesson.turkish, name: 'Cümlenin Ögeleri', isActive: true),
-  Subject(id: '30', lesson: Lesson.turkish, name: 'Anlatım Bozuklukları', isActive: true),
+  Subject(id: '28', lesson: allLessons.firstWhere((l) => l.name == 'Türkçe'), name: 'Fiilimsiler'),
+  Subject(id: '29', lesson: allLessons.firstWhere((l) => l.name == 'Türkçe'), name: 'Cümlenin Ögeleri'),
+  Subject(id: '30', lesson: allLessons.firstWhere((l) => l.name == 'Türkçe'), name: 'Anlatım Bozuklukları'),
 
   // english
-  Subject(id: '31', lesson: Lesson.english, name: 'Tenses', isActive: true),
-  Subject(id: '32', lesson: Lesson.english, name: 'Modal Verbs', isActive: true),
-  Subject(id: '33', lesson: Lesson.english, name: 'Passive Voice', isActive: true),
+  Subject(id: '31', lesson: allLessons.firstWhere((l) => l.name == 'İngilizce'), name: 'Tenses'),
+  Subject(id: '32', lesson: allLessons.firstWhere((l) => l.name == 'İngilizce'), name: 'Modal Verbs'),
+  Subject(id: '33', lesson: allLessons.firstWhere((l) => l.name == 'İngilizce'), name: 'Passive Voice'),
 ];

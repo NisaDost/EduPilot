@@ -1,5 +1,5 @@
-import 'package:edupilot/providers/quiz_provider.dart';
-import 'package:edupilot/screens/home/widgets/quiz_card.dart';
+import 'package:edupilot/providers/lesson_provider.dart';
+import 'package:edupilot/screens/home/widgets/lesson_card.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +10,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final quizzes = ref.watch(quizzesProvider);
-    // final favQuizzes = ref.watch(favQuizzesProvider);
+    final lessons = ref.watch(lessonsProvider);
+    // final favLessons = ref.watch(favLessonsProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -67,10 +67,10 @@ class HomeScreen extends ConsumerWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: quizzes.length,
+            itemCount: lessons.length,
             itemBuilder: (context, index) {
-              return QuizCard(
-                quiz: quizzes[index],
+              return LessonCard(
+                lesson: lessons[index],
                 onTap: () {
                   // Navigate to quiz page, etc.
                 },

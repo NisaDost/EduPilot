@@ -17,12 +17,11 @@ class AchievementPopUp extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            Hero(
-              tag: achievement.id,
-              child: CircleAvatar(
-                backgroundColor: AppColors.primaryAccent,
-                radius: 48,
+          children: [CircleAvatar(
+              backgroundColor: AppColors.primaryAccent,
+              radius: 48,
+              child: Hero(
+                tag: achievement.id,
                 child: Icon(
                   achievement.icon,
                   color: AppColors.backgroundColor,

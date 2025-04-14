@@ -1,4 +1,4 @@
-import 'package:edupilot/providers/quiz_provider.dart';
+import 'package:edupilot/providers/lesson_provider.dart';
 import 'package:edupilot/screens/profile/widgets/heart.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
@@ -10,7 +10,7 @@ class FavLessonCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lessons = ref.watch(favQuizzesProvider);
+    final lessons = ref.watch(favLessonsProvider);
 
     return Row(
       children: List.generate(lessons.length, (index) {
@@ -27,8 +27,8 @@ class FavLessonCard extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(lessons[index].lesson.icon, size: 96, color: AppColors.backgroundColor),
-                        CardTitle(lessons[index].lesson.name, AppColors.backgroundColor)
+                        Icon(lessons[index].icon, size: 96, color: AppColors.backgroundColor),
+                        CardTitle(lessons[index].name, AppColors.backgroundColor)
                       ],
                     ),
                   ),

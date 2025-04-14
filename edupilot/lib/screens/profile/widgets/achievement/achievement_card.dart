@@ -38,12 +38,12 @@ class _AchievementCardState extends ConsumerState<AchievementCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Hero(
-                tag: achievements[index].id, // must match the Hero tag in popup
-                child: CircleAvatar(
-                  backgroundColor: AppColors.primaryAccent,
-                  foregroundColor: AppColors.backgroundColor,
-                  radius: 36,
+              CircleAvatar(
+                backgroundColor: AppColors.primaryAccent,
+                foregroundColor: AppColors.backgroundColor,
+                radius: 36,
+                child: Hero(
+                  tag: achievements[index].id,
                   child: Icon(achievements[index].icon, size: 54),
                 ),
               ),

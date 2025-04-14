@@ -1,21 +1,20 @@
+import 'package:edupilot/models/quiz/lesson.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:flutter/material.dart';
-import 'package:edupilot/models/quiz/quiz.dart';
 import 'package:edupilot/theme.dart';
 
-class QuizCard extends StatelessWidget {
-  final Quiz quiz;
+class LessonCard extends StatelessWidget {
+  final Lesson lesson;
   final VoidCallback? onTap;
 
-  const QuizCard({
+  const LessonCard({
     super.key,
-    required this.quiz,
+    required this.lesson,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final lesson = quiz.lesson;
 
     return Container(
       margin: const EdgeInsets.all(8),

@@ -1,5 +1,6 @@
-import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/models/quiz/difficulty.dart';
 import 'package:edupilot/models/quiz/quiz.dart';
+import 'package:edupilot/models/quiz/subject.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'quiz_provider.g.dart';
@@ -7,17 +8,38 @@ part 'quiz_provider.g.dart';
 // dart run build_runner watch
 
 List<Quiz> allQuizzes = [
-  Quiz(id: '1', lesson: Lesson.math, pointPerQuestion: Lesson.math.point),
-  Quiz(id: '2', lesson: Lesson.geometry, pointPerQuestion: Lesson.geometry.point),
-  Quiz(id: '3', lesson: Lesson.physics, pointPerQuestion: Lesson.physics.point),
-  Quiz(id: '4', lesson: Lesson.chemistry, pointPerQuestion: Lesson.chemistry.point),
-  Quiz(id: '5', lesson: Lesson.biology, pointPerQuestion: Lesson.biology.point),
-  Quiz(id: '6', lesson: Lesson.turkish, pointPerQuestion: Lesson.turkish.point),
-  Quiz(id: '7', lesson: Lesson.geography, pointPerQuestion: Lesson.geography.point),
-  Quiz(id: '8', lesson: Lesson.history, pointPerQuestion: Lesson.history.point),
-  Quiz(id: '9', lesson: Lesson.religion, pointPerQuestion: Lesson.religion.point),
-  Quiz(id: '10', lesson: Lesson.philosophy, pointPerQuestion: Lesson.philosophy.point),
-  Quiz(id: '11', lesson: Lesson.english, pointPerQuestion: Lesson.english.point),
+  Quiz(id: '1', subject: allSubjects.firstWhere((s) => s.name == 'Türev'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '2', subject: allSubjects.firstWhere((s) => s.name == 'Köklü Sayılar'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '3', subject: allSubjects.firstWhere((s) => s.name == 'Üçgenler'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '4', subject: allSubjects.firstWhere((s) => s.name == 'Newton Hareket Yasaları'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '5', subject: allSubjects.firstWhere((s) => s.name == 'Elektrik ve Manyetizma'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '6', subject: allSubjects.firstWhere((s) => s.name == 'Optik'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '7', subject: allSubjects.firstWhere((s) => s.name == 'Periyodik Tablo'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '8', subject: allSubjects.firstWhere((s) => s.name == 'Asitler ve Bazlar'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '9', subject: allSubjects.firstWhere((s) => s.name == 'Kimyasal Tepkimeler'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '10', subject: allSubjects.firstWhere((s) => s.name == 'Hücre Yapısı'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '11', subject: allSubjects.firstWhere((s) => s.name == 'Genetik ve Kalıtım'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '12', subject: allSubjects.firstWhere((s) => s.name == 'Fotosentez'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '13', subject: allSubjects.firstWhere((s) => s.name == 'Osmanlı Tarihi'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '14', subject: allSubjects.firstWhere((s) => s.name == 'Türk İnkılabı'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '15', subject: allSubjects.firstWhere((s) => s.name == 'Sanayi Devrimi'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '16', subject: allSubjects.firstWhere((s) => s.name == 'İklim Tipleri'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '17', subject: allSubjects.firstWhere((s) => s.name == 'Yer Şekilleri'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '18', subject: allSubjects.firstWhere((s) => s.name == 'Nüfus ve Göç'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '19', subject: allSubjects.firstWhere((s) => s.name == 'Bilgi Felsefesi'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '20', subject: allSubjects.firstWhere((s) => s.name == 'Ahlak Felsefesi'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '21', subject: allSubjects.firstWhere((s) => s.name == 'Varlık Felsefesi'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '22', subject: allSubjects.firstWhere((s) => s.name == 'İslam’ın Temel İlkeleri'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '23', subject: allSubjects.firstWhere((s) => s.name == 'Peygamberler Tarihi'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '24', subject: allSubjects.firstWhere((s) => s.name == 'İslam Tarihi'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '25', subject: allSubjects.firstWhere((s) => s.name == 'Türk Tarihi'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '26', subject: allSubjects.firstWhere((s) => s.name == 'Osmanlı Tarihi'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '27', subject: allSubjects.firstWhere((s) => s.name == 'Cumhuriyet Tarihi'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '28', subject: allSubjects.firstWhere((s) => s.name == 'İlk Türk Devletleri'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '29', subject: allSubjects.firstWhere((s) => s.name == 'Türk İslam Tarihi'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '30', subject: allSubjects.firstWhere((s) => s.name == 'Tenses'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '31', subject: allSubjects.firstWhere((s) => s.name == 'Modal Verbs'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '32', subject: allSubjects.firstWhere((s) => s.name == 'Passive Voice'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
 ];
 
 @riverpod
@@ -38,11 +60,6 @@ List<Quiz> quizzes(ref) {
 }
 
 @riverpod
-List<Quiz> favQuizzes(ref) {
-  return allQuizzes.where((q) => q.isFav).toList();
-}
-
-@riverpod
-List<Quiz> nonFavQuizzes(ref) {
-  return allQuizzes.where((q) => !q.isFav).toList();
+List<Quiz> activeQuizzes(ref) {
+  return allQuizzes.where((q) => q.isActive).toList();
 }

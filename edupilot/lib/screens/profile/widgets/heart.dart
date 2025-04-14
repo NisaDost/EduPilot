@@ -1,10 +1,10 @@
-import 'package:edupilot/models/quiz/quiz.dart';
+import 'package:edupilot/models/quiz/lesson.dart';
 import 'package:flutter/material.dart';
 
 class Heart extends StatefulWidget {
   const Heart({super.key, required this.lesson, required this.defaultColor});
 
-  final Quiz lesson;
+  final Lesson lesson;
   final Color defaultColor;
 
   @override

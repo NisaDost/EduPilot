@@ -25,9 +25,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             // kişisel bilgiler + avatar
-            const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              padding: const EdgeInsets.all(16),
               color: AppColors.backgroundColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,7 +150,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
           ],
         ),
       ),

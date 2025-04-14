@@ -1,27 +1,24 @@
-import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/models/quiz/difficulty.dart';
+import 'package:edupilot/models/quiz/subject.dart';
 
 class Quiz {
 
   // contructor
   Quiz({
     required this.id,
-    required this.lesson,
+    required this.subject,
+    required this.difficulty,
     required this.pointPerQuestion,
+    required this.isActive,
   });
 
   // fields
   final String id;
-  final Lesson lesson;
+  final Subject subject;
+  final Difficulty difficulty;
   final int pointPerQuestion;
-  bool _isFav = false;
+  final bool isActive;
 
-  // getters
-  bool get isFav => _isFav;
-
-  // methods
-  void toggleIsFav() {
-    _isFav = !_isFav;
-  }
 }
 
 
