@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Container(
-        color: const Color.fromRGBO(200, 200, 220, 1),
+        color: AppColors.backgroundAccent,
         child: Column(
           children: [
             // kişisel bilgiler + avatar
