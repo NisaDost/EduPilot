@@ -9,7 +9,7 @@ class StyledText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.jomhuria(
+    return Text(text, style: GoogleFonts.montserrat(
       textStyle: Theme.of(context).textTheme.bodyMedium,
       color: color,
     ));
@@ -24,7 +24,7 @@ class StyledHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.jomhuria(
+    return Text(text, style: GoogleFonts.montserrat(
       textStyle: Theme.of(context).textTheme.headlineMedium,
       color: color,
     ));
@@ -39,7 +39,7 @@ class StyledTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.jomhuria(
+    return Text(text, style: GoogleFonts.montserrat(
       textStyle: Theme.of(context).textTheme.titleMedium,
       color: color,
     ));
@@ -54,7 +54,7 @@ class CardText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.jomhuria(
+    return Text(text, style: GoogleFonts.montserrat(
       textStyle: Theme.of(context).textTheme.bodySmall,
       color: color,
       textBaseline: TextBaseline.alphabetic,
@@ -70,7 +70,7 @@ class CardTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.jomhuria(
+    return Text(text, style: GoogleFonts.montserrat(
       textStyle: Theme.of(context).textTheme.titleSmall,
       color: color,
     ));

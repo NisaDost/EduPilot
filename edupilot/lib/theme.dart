@@ -33,30 +33,32 @@ ThemeData primaryTheme = ThemeData(
   textTheme: TextTheme(
     bodyMedium: TextStyle(
       color: AppColors.textColor,
-      fontSize: 32,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
       letterSpacing: 1,
     ),
     headlineMedium: TextStyle(
       color: AppColors.titleColor,
-      fontSize: 40,
+      fontSize: 20,
       fontWeight: FontWeight.bold,
       letterSpacing: 1,
     ),
     titleMedium: TextStyle(
       color: AppColors.titleColor,
-      fontSize: 40,
+      fontSize: 20,
       fontWeight: FontWeight.bold,
       letterSpacing: 2,
     ),
     bodySmall: TextStyle(
       color: AppColors.backgroundColor,
-      fontSize: 26,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
       letterSpacing: 0.5,
     ),
     titleSmall: TextStyle(
       color: AppColors.backgroundColor,
       fontWeight: FontWeight.bold,
-      fontSize: 36,
+      fontSize: 16,
       letterSpacing: 1.5,
     ),
   ),

@@ -15,7 +15,7 @@ class FavLessonCard extends ConsumerWidget {
     return Row(
       children: List.generate(lessons.length, (index) {
         return Padding(
-          padding: const EdgeInsets.only(right: 8),
+          padding: const EdgeInsets.only(right: 10),
           child: Stack(
             children: [
               ConstrainedBox(
@@ -23,7 +23,7 @@ class FavLessonCard extends ConsumerWidget {
                 child: Card(
                   color: AppColors.secondaryAccent,
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

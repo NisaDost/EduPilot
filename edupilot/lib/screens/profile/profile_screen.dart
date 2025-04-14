@@ -1,26 +1,21 @@
-import 'package:edupilot/providers/achievement_provider.dart';
 import 'package:edupilot/screens/profile/widgets/achievement_card.dart';
 import 'package:edupilot/screens/profile/widgets/fav_lesson_card.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileScreen extends ConsumerStatefulWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final allQuizzes = ref.watch(quizzesProvider);
-    // final favLessons = ref.watch(favQuizzesProvider);
-    // final achievements = ref.watch(achievementsProvider);
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -31,7 +26,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             // kişisel bilgiler + avatar
             const SizedBox(height: 8),
             Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               color: AppColors.backgroundColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,18 +46,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       Row(
                         children: [
                           Icon(Icons.bolt, color: AppColors.primaryColor, size: 36),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           StyledText('1205', AppColors.primaryAccent),
                         ],
                       ),
                       Row(
                         children: [
                           Icon(Icons.local_fire_department, color: AppColors.secondaryColor, size: 36),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           StyledText('9. Gün', AppColors.secondaryAccent),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       ProfileScreenButton(
                         onPressed: () {}, 
                         color: AppColors.secondaryColor,
@@ -101,7 +96,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             const SizedBox(height: 8),
             // favori dersler
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               color: AppColors.backgroundColor,
               child: Column(
                 children: [
@@ -116,7 +111,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             color: AppColors.primaryColor,
                             child: CardText('Favori Ders Ekle', AppColors.backgroundColor), 
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           ProfileScreenButton(
                             onPressed: () {}, 
                             color: AppColors.successColor,
@@ -138,8 +133,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             const SizedBox(height: 8),
             // başarımlar
-            AchievementCard(),
-            const SizedBox(height: 8)
+            Container(
+              padding: const EdgeInsets.all(16),
+              color: AppColors.backgroundColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CardTitle('Başarımlar', AppColors.titleColor),
+                  SizedBox(height: 12),
+                  AchievementCard(),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

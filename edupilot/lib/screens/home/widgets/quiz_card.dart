@@ -43,38 +43,9 @@ class QuizCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CardTitle(lesson.name.toUpperCase(), AppColors.backgroundColor),
-                const SizedBox(height: 8),
-                Text('Bu branştaki quizlerde soru başına',
-                  style: TextStyle(
-                  color: AppColors.backgroundColor,
-                  fontSize: 14,
-                  ),
-                ),
-                Row(
-                  textBaseline: TextBaseline.alphabetic,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: AppColors.backgroundColor,
-                          fontSize: 14,
-                          textBaseline: TextBaseline.alphabetic,
-                        ),
-                        children: [
-                          TextSpan(text: '${quiz.pointPerQuestion}'),
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(Icons.bolt, color: AppColors.backgroundColor, size: 20),
-                          ),
-                          const WidgetSpan(child: SizedBox(width: 3)),
-                          const TextSpan(text: 'kazanabilirsin!'),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
+                StyledTitle(lesson.name, AppColors.backgroundColor),
+                const SizedBox(height: 12),
+                StyledText('Quizleri görmek için tıkla.', AppColors.backgroundColor)
               ],
             ),
           ),
@@ -87,8 +58,8 @@ class QuizCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 53, horizontal: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.backgroundColor.withValues(alpha: 0.2), // AppColors.primaryColor
-                  borderRadius: BorderRadius.circular(0),
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
                 ),
                 child: Icon(Icons.arrow_forward_ios, size: 40, color: AppColors.backgroundColor),
               ),

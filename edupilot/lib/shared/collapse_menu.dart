@@ -10,11 +10,12 @@ class CollapseMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.primaryAccent,
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           // name-surname
           CardTitle('Name Surname', AppColors.backgroundColor),
+          const SizedBox(height: 12),
           // icon - grade - points - streak
           Row(
             children: [
@@ -45,6 +46,7 @@ class CollapseMenu extends StatelessWidget {
                       CardText("8. Sınıf", AppColors.backgroundColor)
                     ],
                   ),
+                  const SizedBox(height: 4),
                   // points
                   Row(
                     children: [
@@ -53,6 +55,7 @@ class CollapseMenu extends StatelessWidget {
                       CardText("1205", AppColors.backgroundColor)
                     ],
                   ),
+                  const SizedBox(height: 4),
                   //streak
                   Row(
                     children: [
