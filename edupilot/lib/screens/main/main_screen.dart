@@ -18,7 +18,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 3;
   bool _collapseMenuOpened = false;
-  Lesson? _selectedLesson;
+  //Lesson? _selectedLesson;
 
   late List<Widget> _screens;
 
@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
       Placeholder(),
       Placeholder(),
       Placeholder(),
-      const HomeScreen(),
+      HomeScreen(onLessonTap: _navigateToSelectQuiz),
       const ProfileScreen(),
       SelectLessonScreen(onLessonTap: _navigateToSelectQuiz), // 5
       const Placeholder(), // temporary, will get replaced with SelectQuizScreen
@@ -69,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void _navigateToSelectQuiz(Lesson lesson) {
     setState(() {
-      _selectedLesson = lesson;
+      //_selectedLesson = lesson;
       _screens[6] = SelectQuizScreen(lesson: lesson); // replace dynamic screen
       _selectedIndex = 6;
     });

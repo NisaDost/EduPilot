@@ -1,3 +1,4 @@
+import 'package:edupilot/models/quiz/lesson.dart';
 import 'package:edupilot/providers/lesson_provider.dart';
 import 'package:edupilot/screens/home/widgets/lesson_card.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -6,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+  final void Function(Lesson) onLessonTap;
+
+  const HomeScreen({required this.onLessonTap, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,9 +81,7 @@ class HomeScreen extends ConsumerWidget {
               itemBuilder: (context, index) {
                 return LessonCard(
                   lesson: lessons[index],
-                  onTap: () {
-                    // Navigate to quiz page, etc.
-                  },
+                  onTap: () => onLessonTap(lessons[index])
                 );
               }
             ),

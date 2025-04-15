@@ -86,7 +86,7 @@ class CollapseMenu extends StatelessWidget {
             width: double.infinity,
             child: CollapseMenuButton(
               onPressed: onAllLessonsTap, 
-              child: CardText('All Quizzes', AppColors.backgroundColor),
+              child: CardText('Tüm Quizler', AppColors.backgroundColor),
             ),
           ),
           const SizedBox(height: 8),

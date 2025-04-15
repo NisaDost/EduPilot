@@ -6,6 +6,7 @@ class Lesson {
     required this.id,
     required this.name,
     required this.icon,
+    // required this.subject
     // required this.grade
   });
 
@@ -13,6 +14,7 @@ class Lesson {
   final String id;
   final String name;
   final IconData? icon;
+  // final List<Subject> subject;
   // final List<int> grade;
   bool _isFav = false;
 
