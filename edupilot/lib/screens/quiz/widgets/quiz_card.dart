@@ -11,13 +11,17 @@ class QuizCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final allQuizzesinLesson = ref.watch(quizzesProvider).where((q) => q.subject.lesson.name == lesson.name).toList();
+    final allQuizzesInLesson = ref.watch(activeQuizzesProvider).where((q) => q.subject.lesson.name == lesson.name).toList();
 
     return Card(
       child: Column(
         children: [
-          // for (Quiz quiz in allQuizzesinLesson)
-          //   Text(quiz.subject.name)
+          for (Quiz quiz in allQuizzesInLesson)
+            Row(
+              children: [
+                Text(quiz.subject.name)
+              ],
+            )
         ],
       ),
     );

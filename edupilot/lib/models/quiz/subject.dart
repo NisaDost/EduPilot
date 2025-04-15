@@ -6,7 +6,7 @@ class Subject {
   final String id;
   final Lesson lesson;
   final String name;
-  // final int grade;
+  // final List<int> grade;
 
   Subject({
     required this.id,

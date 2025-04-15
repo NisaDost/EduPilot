@@ -31,15 +31,9 @@ List<Quiz> allQuizzes = [
   Quiz(id: '21', subject: allSubjects.firstWhere((s) => s.name == 'Varlık Felsefesi'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
   Quiz(id: '22', subject: allSubjects.firstWhere((s) => s.name == 'İslam’ın Temel İlkeleri'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
   Quiz(id: '23', subject: allSubjects.firstWhere((s) => s.name == 'Peygamberler Tarihi'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
-  Quiz(id: '24', subject: allSubjects.firstWhere((s) => s.name == 'İslam Tarihi'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
-  Quiz(id: '25', subject: allSubjects.firstWhere((s) => s.name == 'Türk Tarihi'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
-  Quiz(id: '26', subject: allSubjects.firstWhere((s) => s.name == 'Osmanlı Tarihi'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
-  Quiz(id: '27', subject: allSubjects.firstWhere((s) => s.name == 'Cumhuriyet Tarihi'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
-  Quiz(id: '28', subject: allSubjects.firstWhere((s) => s.name == 'İlk Türk Devletleri'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
-  Quiz(id: '29', subject: allSubjects.firstWhere((s) => s.name == 'Türk İslam Tarihi'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
-  Quiz(id: '30', subject: allSubjects.firstWhere((s) => s.name == 'Tenses'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
-  Quiz(id: '31', subject: allSubjects.firstWhere((s) => s.name == 'Modal Verbs'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
-  Quiz(id: '32', subject: allSubjects.firstWhere((s) => s.name == 'Passive Voice'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
+  Quiz(id: '24', subject: allSubjects.firstWhere((s) => s.name == 'Tenses'), difficulty: Difficulty.hard, pointPerQuestion: 40, isActive: true),
+  Quiz(id: '25', subject: allSubjects.firstWhere((s) => s.name == 'Modal Verbs'), difficulty: Difficulty.easy, pointPerQuestion: 20, isActive: true),
+  Quiz(id: '26', subject: allSubjects.firstWhere((s) => s.name == 'Passive Voice'), difficulty: Difficulty.medium, pointPerQuestion: 30, isActive: true),
 ];
 
 @riverpod
