@@ -6,11 +6,13 @@ class Subject {
   final String id;
   final Lesson lesson;
   final String name;
+  // final int grade;
 
   Subject({
     required this.id,
     required this.lesson,
     required this.name,
+    // required this.grade,
   });
 }
 

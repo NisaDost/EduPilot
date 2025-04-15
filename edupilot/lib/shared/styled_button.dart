@@ -1,3 +1,4 @@
+import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 
 class StyledButton extends StatelessWidget {
@@ -34,9 +35,9 @@ class CollapseMenuButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        backgroundColor: const Color.fromRGBO(217, 217, 217, 0.3),
+        backgroundColor: AppColors.primaryColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
       child: child,

@@ -62,6 +62,22 @@ class CardText extends StatelessWidget {
   }
 }
 
+class CardHeading extends StatelessWidget {
+  const CardHeading(this.text, this.color, {super.key});
+
+  final String text;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, style: GoogleFonts.montserrat(
+      textStyle: Theme.of(context).textTheme.headlineSmall,
+      color: color,
+      textBaseline: TextBaseline.alphabetic,
+    ));
+  }
+}
+
 class CardTitle extends StatelessWidget {
   const CardTitle(this.text, this.color, {super.key});
 

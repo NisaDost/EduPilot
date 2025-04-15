@@ -19,7 +19,10 @@ class HomeScreen extends ConsumerWidget {
           // Hoş Geldin ve hızlı bilgi ekranı
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            color: AppColors.backgroundColor,
+            decoration: BoxDecoration(
+              color: AppColors.backgroundColor,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
+            ),
             child: Row(
               children: [
                 Column(

@@ -1,5 +1,8 @@
+import 'package:edupilot/models/quiz/lesson.dart';
 import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
+import 'package:edupilot/screens/quiz/select_lesson_screen.dart';
+import 'package:edupilot/screens/quiz/select_quiz_screen.dart';
 import 'package:edupilot/shared/custom_app_bar.dart';
 import 'package:edupilot/shared/custom_bottom_bar.dart';
 import 'package:edupilot/shared/collapse_menu.dart';
@@ -15,14 +18,25 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 3;
   bool _collapseMenuOpened = false;
+  Lesson? _selectedLesson;
 
-  final List<Widget> _screens = const [
-    Placeholder(),
-    Placeholder(),
-    Placeholder(),
-    HomeScreen(),
-    ProfileScreen(),
-  ];
+  late List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      Placeholder(),
+      Placeholder(),
+      Placeholder(),
+      const HomeScreen(),
+      const ProfileScreen(),
+      SelectLessonScreen(onLessonTap: _navigateToSelectQuiz), // 5
+      const Placeholder(), // temporary, will get replaced with SelectQuizScreen
+    ];
+  }
+
+
 
   void _toggleCollapseMenu() {
     setState(() {
@@ -38,13 +52,30 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  void _onTabSelected(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
   void _navigateToProfile() {
     setState(() => _selectedIndex = 4);
   }
 
-  void _onTabSelected(int index) {
-    setState(() => _selectedIndex = index);
+  void _navigateToSelectLesson() {
+    setState(() {
+      _selectedIndex = 5;
+      _collapseMenuOpened = false;
+    });
   }
+
+  void _navigateToSelectQuiz(Lesson lesson) {
+    setState(() {
+      _selectedLesson = lesson;
+      _screens[6] = SelectQuizScreen(lesson: lesson); // replace dynamic screen
+      _selectedIndex = 6;
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +106,7 @@ class _MainScreenState extends State<MainScreen> {
               right: 0,
               child: GestureDetector(
                 onTap: _closeCollapseMenu,
-                child: Container(color: Colors.transparent),
+                child: Container(color:Colors.black54),
               ),
             ),
 
@@ -86,7 +117,9 @@ class _MainScreenState extends State<MainScreen> {
             bottom: 0,
             child: SizedBox(
               width: screenWidth * 0.75,
-              child: CollapseMenu(),
+              child: CollapseMenu(
+                onAllLessonsTap: _navigateToSelectLesson,
+              ),
             ),
           ),
         ],

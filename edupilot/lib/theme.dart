@@ -6,7 +6,7 @@ class AppColors {
   static Color secondaryColor = const Color.fromRGBO(240, 136, 45, 1);
   static Color secondaryAccent = const Color.fromRGBO(179, 101, 34, 1);
   static Color backgroundColor = const Color.fromRGBO(230, 230, 230, 1);
-  static Color backgroundAccent = const Color.fromRGBO(217, 217, 217, 1);
+  static Color backgroundAccent = const Color.fromRGBO(185, 185, 185, 1);
   static Color titleColor = const Color.fromRGBO(51, 51, 51, 1);
   static Color textColor = const Color.fromRGBO(30, 30, 30, 1);
   static Color successColor = const Color.fromRGBO(52, 180, 57, 1);
@@ -55,6 +55,12 @@ ThemeData primaryTheme = ThemeData(
       fontWeight: FontWeight.bold,
       fontSize: 12,
       letterSpacing: 0.5,
+    ),
+    headlineSmall: TextStyle(
+      color: AppColors.backgroundColor,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+      letterSpacing: 1,
     ),
     titleSmall: TextStyle(
       color: AppColors.backgroundColor,
