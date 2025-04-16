@@ -31,7 +31,7 @@ class HomeScreen extends ConsumerWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StyledHeading('Hoş Geldin, USER!', AppColors.titleColor),
+                    StyledHeading('Hoş Geldin, USER!', AppColors.successColor),
                     const SizedBox(height: 8),
                     StyledText('Bugün nasıl çalışmak istersin?', AppColors.textColor),
                     const SizedBox(height: 8),

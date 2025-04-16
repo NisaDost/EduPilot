@@ -61,7 +61,7 @@ class SelectQuizScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
-                  StyledHeading('1205', AppColors.textColor)
+                  StyledHeading('1.205', AppColors.textColor)
                 ],
               )            
             ],
