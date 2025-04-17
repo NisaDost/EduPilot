@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 class CollapseMenu extends StatelessWidget {
   const CollapseMenu({
     super.key,
-    required this.onAllLessonsTap,    
+    required this.onAllLessonsTap,
+    required this.onProfileTap,
     });
 
   final VoidCallback onAllLessonsTap;
+  final VoidCallback onProfileTap;
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +79,8 @@ class CollapseMenu extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: CollapseMenuButton(
-              onPressed: () {}, 
-              child: CardText('Collapse Menu Button 1', AppColors.backgroundColor),
+              onPressed: onProfileTap, 
+              child: CardText('Profil', AppColors.backgroundColor),
             ),
           ),
           const SizedBox(height: 8),

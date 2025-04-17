@@ -1,18 +1,30 @@
 import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/models/quiz/subject.dart';
 import 'package:edupilot/screens/quiz/widgets/quiz_card.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SelectQuizScreen extends StatelessWidget {
+class SelectQuizScreen extends StatefulWidget {
   const SelectQuizScreen({required this.lesson, super.key});
 
   final Lesson lesson;
 
   @override
+  State<SelectQuizScreen> createState() => _SelectQuizScreenState();
+}
+
+class _SelectQuizScreenState extends State<SelectQuizScreen> {
+  String? selectedSubject; // null = all subjects
+
+  @override
   Widget build(BuildContext context) {
-    const double topBarHeight = 86;
+    const double topBarHeight = 96;
+
+    // Filter subjects related to this lesson
+    final lessonSubjects = allSubjects.where((s) => s.lesson.name == widget.lesson.name).toList();
+    final subjectNames = ['Tümü'] + lessonSubjects.map((s) => s.name).toList();
 
     return Stack(
       children: [
@@ -20,8 +32,46 @@ class SelectQuizScreen extends StatelessWidget {
           padding: const EdgeInsets.only(top: topBarHeight),
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                QuizCard(lesson: lesson)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(16)
+                    ),
+                    child: DropdownButton<String>(
+                      value: selectedSubject ?? 'Tümü',
+                      dropdownColor: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(16),
+                      isExpanded: true,
+                      items: subjectNames.map((subjectName) {
+                        return DropdownMenuItem<String>(
+                          value: subjectName,
+                          child: StyledHeading(subjectName, AppColors.textColor),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedSubject = value == 'Tümü' ? null : value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeIn,
+                  switchOutCurve: Curves.easeOut,
+                  transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
+                  child: QuizCard(
+                    key: ValueKey(selectedSubject ?? 'all'),
+                    lesson: widget.lesson,
+                    subjectFilter: selectedSubject,
+                  ),
+                ),
               ],
             ),
           ),
@@ -34,36 +84,37 @@ class SelectQuizScreen extends StatelessWidget {
             color: AppColors.backgroundColor,
             borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   StyledTitle(
-                    lesson.name.length < 12 
-                      ? lesson.name 
-                      : lesson.name.substring(0, 11), 
-                    AppColors.successColor),
-                  SizedBox(height: 8),
-                  Text(
-                    'Hadi, soru çözüp puan toplayalım!',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                      color: AppColors.titleColor,
-                    ),
+                    widget.lesson.name.length < 12
+                        ? widget.lesson.name
+                        : widget.lesson.name.substring(0, 11),
+                    AppColors.successColor,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
+                      StyledHeading('1.205', AppColors.textColor),
+                    ],
                   ),
                 ],
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
-                  StyledHeading('1.205', AppColors.textColor)
-                ],
-              )            
+              const SizedBox(height: 8),
+              Text(
+                'Hadi, soru çözüp puan toplayalım!',
+                style: GoogleFonts.montserrat(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                  color: AppColors.titleColor,
+                ),
+              ),
             ],
           ),
         ),

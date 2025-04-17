@@ -7,13 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QuizCard extends ConsumerWidget {
-  const QuizCard({required this.lesson, super.key});
+  const QuizCard({
+    required this.lesson,
+    this.subjectFilter,
+    super.key,
+  });
 
   final Lesson lesson;
+  final String? subjectFilter;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allQuizzesInLesson = ref.watch(activeQuizzesProvider).where((q) => q.subject.lesson.name == lesson.name).toList();
+    final allQuizzesInLesson = ref.watch(activeQuizzesProvider).where((q) {
+      final sameLesson = q.subject.lesson.name == lesson.name;
+      final matchesSubject = subjectFilter == null || q.subject.name == subjectFilter;
+      return sameLesson && matchesSubject;
+    }).toList();
 
     return Padding(
       padding: const EdgeInsets.all(16),

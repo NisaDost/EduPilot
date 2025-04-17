@@ -57,7 +57,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _navigateToProfile() {
-    setState(() => _selectedIndex = 4);
+    setState(() {
+      _selectedIndex = 4;
+      _collapseMenuOpened = false;
+    });
   }
 
   void _navigateToSelectLesson() {
@@ -119,6 +122,7 @@ class _MainScreenState extends State<MainScreen> {
               width: screenWidth * 0.75,
               child: CollapseMenu(
                 onAllLessonsTap: _navigateToSelectLesson,
+                onProfileTap: _navigateToProfile,
               ),
             ),
           ),
