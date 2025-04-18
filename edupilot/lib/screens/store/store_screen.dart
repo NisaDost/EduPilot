@@ -67,7 +67,6 @@ class _StoreScreenState extends State<StoreScreen> {
                   if (selectedTab == 0)
                     Column(
                       children: [
-                        for (int i = 0; i < 4; i++)
                         CouponCard(),
                       ],
                     )
