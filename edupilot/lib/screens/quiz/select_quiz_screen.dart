@@ -19,12 +19,26 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
   String? selectedSubject; // null = all subjects
 
   @override
+  void didUpdateWidget(covariant SelectQuizScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reset the filter if the lesson changes
+    if (oldWidget.lesson.name != widget.lesson.name) {
+      setState(() {
+        selectedSubject = null;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     const double topBarHeight = 96;
 
     // Filter subjects related to this lesson
     final lessonSubjects = allSubjects.where((s) => s.lesson.name == widget.lesson.name).toList();
     final subjectNames = ['Tümü'] + lessonSubjects.map((s) => s.name).toList();
+
+    // Defensive fallback in case selectedSubject no longer exists
+    final String dropdownValue = subjectNames.contains(selectedSubject) ? selectedSubject ?? 'Tümü' : 'Tümü';
 
     return Stack(
       children: [
@@ -40,10 +54,10 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(16)
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: DropdownButton<String>(
-                      value: selectedSubject ?? 'Tümü',
+                      value: dropdownValue,
                       dropdownColor: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(16),
                       isExpanded: true,

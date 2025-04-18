@@ -17,20 +17,57 @@ class _StoreScreenState extends State<StoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double topBarHeight = 96;
+    const double topBarHeight = 92;
 
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: topBarHeight + 48), // give room for buttons
+          padding: const EdgeInsets.only(top: topBarHeight), // give room for buttons
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton(
+                            onPressed: () {
+                              setState(() => selectedTab = 0);
+                            },
+                            style: FilledButton.styleFrom(
+                              backgroundColor: selectedTab == 0 ? AppColors.primaryAccent : AppColors.primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)
+                              )
+                            ),
+                            child: CardTitle('Tüm Kuponlar', AppColors.backgroundColor),
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton(
+                            onPressed: () {
+                              setState(() => selectedTab = 1);
+                            },
+                            style: FilledButton.styleFrom(
+                              backgroundColor: selectedTab == 1 ? AppColors.primaryAccent : AppColors.primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)
+                              )
+                            ),
+                            child: CardTitle('Kodlarım', AppColors.backgroundColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   if (selectedTab == 0)
                     Column(
                       children: [
+                        for (int i = 0; i < 4; i++)
                         CouponCard(),
                       ],
                     )
@@ -87,42 +124,6 @@ class _StoreScreenState extends State<StoreScreen> {
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.5,
                       color: AppColors.titleColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: FilledButton(
-                      onPressed: () {
-                        setState(() => selectedTab = 0);
-                      },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: selectedTab == 0 ? AppColors.primaryAccent : AppColors.primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                        )
-                      ),
-                      child: CardTitle('Tüm Kuponlar', AppColors.backgroundColor),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: FilledButton(
-                      onPressed: () {
-                        setState(() => selectedTab = 1);
-                      },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: selectedTab == 1 ? AppColors.primaryAccent : AppColors.primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                        )
-                      ),
-                      child: CardTitle('Kodlarım', AppColors.backgroundColor),
                     ),
                   ),
                 ],

@@ -48,7 +48,9 @@ class CouponCardPopUp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ProfileScreenButton(
-                    onPressed: () => Navigator.of(context).pop(), 
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     color: AppColors.successColor,
                     child: StyledHeading('Evet', AppColors.backgroundColor),
                   ),
