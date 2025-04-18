@@ -69,6 +69,7 @@ flutter:
     - assets/img/mascots/
     - assets/img/banner/
     - assets/img/avatar/
+    - assets/img/coupon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

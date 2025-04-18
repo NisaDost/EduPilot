@@ -10,9 +10,11 @@ class StyledText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.montserrat(
-      textStyle: Theme.of(context).textTheme.bodyMedium,
-      color: color,
-    ));
+        textStyle: Theme.of(context).textTheme.bodyMedium,
+        color: color,
+      ),
+      softWrap: true,
+    );
   }
 }
 
@@ -25,9 +27,11 @@ class StyledHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.montserrat(
-      textStyle: Theme.of(context).textTheme.headlineMedium,
-      color: color,
-    ));
+        textStyle: Theme.of(context).textTheme.headlineMedium,
+        color: color,
+      ),
+      softWrap: true,
+    );
   }
 }
 
@@ -40,9 +44,11 @@ class StyledTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.montserrat(
-      textStyle: Theme.of(context).textTheme.titleMedium,
-      color: color,
-    ));
+        textStyle: Theme.of(context).textTheme.titleMedium,
+        color: color,
+      ),
+      softWrap: true,
+    );
   }
 }
 
@@ -55,10 +61,12 @@ class CardText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.montserrat(
-      textStyle: Theme.of(context).textTheme.bodySmall,
-      color: color,
-      textBaseline: TextBaseline.alphabetic,
-    ));
+        textStyle: Theme.of(context).textTheme.bodySmall,
+        color: color,
+        textBaseline: TextBaseline.alphabetic,
+      ),
+      softWrap: true,
+    );
   }
 }
 
@@ -71,10 +79,12 @@ class CardHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.montserrat(
-      textStyle: Theme.of(context).textTheme.headlineSmall,
-      color: color,
-      textBaseline: TextBaseline.alphabetic,
-    ));
+        textStyle: Theme.of(context).textTheme.headlineSmall,
+        color: color,
+        textBaseline: TextBaseline.alphabetic,
+      ),
+      softWrap: true,
+    );
   }
 }
 
@@ -87,8 +97,10 @@ class CardTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.montserrat(
-      textStyle: Theme.of(context).textTheme.titleSmall,
-      color: color,
-    ));
+        textStyle: Theme.of(context).textTheme.titleSmall,
+        color: color,
+      ),
+      softWrap: true,
+    );
   }
 }

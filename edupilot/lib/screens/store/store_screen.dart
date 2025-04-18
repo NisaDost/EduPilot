@@ -1,0 +1,136 @@
+import 'package:edupilot/screens/store/widgets/code.dart';
+import 'package:edupilot/screens/store/widgets/coupon_card.dart';
+import 'package:edupilot/shared/styled_text.dart';
+import 'package:edupilot/theme.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class StoreScreen extends StatefulWidget {
+  const StoreScreen({super.key});
+
+  @override
+  State<StoreScreen> createState() => _StoreScreenState();
+}
+
+class _StoreScreenState extends State<StoreScreen> {
+  int selectedTab = 0; // 0: Kuponlar, 1: Kodlarım
+
+  @override
+  Widget build(BuildContext context) {
+    const double topBarHeight = 96;
+
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: topBarHeight + 48), // give room for buttons
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  if (selectedTab == 0)
+                    Column(
+                      children: [
+                        CouponCard(),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: [
+                        Text('Kodlarım içeriği burada'),
+                        Code(),
+                      ],
+                    )
+                ],
+              ),
+            ),
+          ),
+        ),
+        Column(
+          children: [
+            Container(
+              height: topBarHeight,
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundColor,
+                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      StyledTitle('Dükkan', AppColors.successColor),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: AppColors.secondaryColor,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
+                            StyledHeading('1.205', AppColors.textColor),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Quizlerden kazandığın puanları ödüllere dönüştürelim!',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                      color: AppColors.titleColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () {
+                        setState(() => selectedTab = 0);
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: selectedTab == 0 ? AppColors.primaryAccent : AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        )
+                      ),
+                      child: CardTitle('Tüm Kuponlar', AppColors.backgroundColor),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () {
+                        setState(() => selectedTab = 1);
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: selectedTab == 1 ? AppColors.primaryAccent : AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        )
+                      ),
+                      child: CardTitle('Kodlarım', AppColors.backgroundColor),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

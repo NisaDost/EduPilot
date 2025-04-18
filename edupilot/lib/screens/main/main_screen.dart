@@ -3,6 +3,7 @@ import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
 import 'package:edupilot/screens/quiz/select_lesson_screen.dart';
 import 'package:edupilot/screens/quiz/select_quiz_screen.dart';
+import 'package:edupilot/screens/store/store_screen.dart';
 import 'package:edupilot/shared/custom_app_bar.dart';
 import 'package:edupilot/shared/custom_bottom_bar.dart';
 import 'package:edupilot/shared/collapse_menu.dart';
@@ -26,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _screens = [
-      Placeholder(),
+      StoreScreen(),
       Placeholder(),
       Placeholder(),
       HomeScreen(onLessonTap: _navigateToSelectQuiz),
