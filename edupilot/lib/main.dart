@@ -26,10 +26,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '',
+      title: 'EduPilot',
       theme: primaryTheme,
       home: const MainScreen(),
       debugShowCheckedModeBanner: false,
+      //supportedLocales: const <Locale>[Locale('tr', 'TR')],
     );
   }
 }

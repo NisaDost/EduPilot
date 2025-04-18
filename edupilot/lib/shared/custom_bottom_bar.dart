@@ -44,7 +44,7 @@ class CustomBottomBar extends StatelessWidget {
               child: Icon(
                 icon,
                 color: isActive
-                    ? AppColors.highlightColor
+                    ? AppColors.secondaryColor
                     : AppColors.backgroundColor,
                 size: 32,
               ),

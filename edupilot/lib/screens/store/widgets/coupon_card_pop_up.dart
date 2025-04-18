@@ -52,12 +52,18 @@ class CouponCardPopUp extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                     color: AppColors.successColor,
-                    child: StyledHeading('Evet', AppColors.backgroundColor),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: StyledHeading('Evet', AppColors.backgroundColor),
+                    ),
                   ),
                   ProfileScreenButton(
                     onPressed: () => Navigator.of(context).pop(), 
                     color: AppColors.dangerColor,
-                    child: StyledHeading('Hayır', AppColors.backgroundColor),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: StyledHeading('Hayır', AppColors.backgroundColor),
+                    ),
                   )
                 ],
               )

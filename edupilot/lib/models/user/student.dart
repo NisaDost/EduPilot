@@ -13,5 +13,5 @@ class Student {
   final String id;
   final User user;
   final String? institutionName;
-  final Supervisor? supervisor;
+  final List<Supervisor>? supervisor;
 }
