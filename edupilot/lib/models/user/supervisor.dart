@@ -8,6 +8,6 @@ class Supervisor {
   });
 
   final String id;
-  final String? institutionName;
-  final List<Student>? student;
+  String? institutionName;
+  List<Student>? student;
 }

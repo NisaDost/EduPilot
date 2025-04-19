@@ -27,7 +27,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // kişisel bilgiler + avatar
             Container(
               padding: const EdgeInsets.all(16),
-              color: AppColors.backgroundColor,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+                color: AppColors.backgroundColor,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -93,11 +96,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             // favori dersler
             Container(
               padding: const EdgeInsets.all(16),
-              color: AppColors.backgroundColor,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: AppColors.backgroundColor,
+              ),
               child: Column(
                 children: [
                   Row(
@@ -136,11 +142,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             // başarımlar
             Container(
               padding: const EdgeInsets.all(16),
-              color: AppColors.backgroundColor,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                color: AppColors.backgroundColor,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

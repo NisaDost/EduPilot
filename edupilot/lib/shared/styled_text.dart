@@ -52,6 +52,23 @@ class StyledTitle extends StatelessWidget {
   }
 }
 
+class StyledLargeTitle extends StatelessWidget {
+  const StyledLargeTitle(this.text, this.color, {super.key});
+
+  final String text;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, style: GoogleFonts.montserrat(
+        textStyle: Theme.of(context).textTheme.titleLarge,
+        color: color,
+      ),
+      softWrap: true,
+    );
+  }
+}
+
 class CardText extends StatelessWidget {
   const CardText(this.text, this.color, {super.key});
 
@@ -83,6 +100,25 @@ class CardHeading extends StatelessWidget {
         color: color,
         textBaseline: TextBaseline.alphabetic,
       ),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+class CenterAlignedText extends StatelessWidget {
+  const CenterAlignedText(this.text, this.color, {super.key});
+
+  final String text;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, style: GoogleFonts.montserrat(
+        textStyle: Theme.of(context).textTheme.headlineSmall,
+        color: color,
+        textBaseline: TextBaseline.alphabetic,
+      ),
+      textAlign: TextAlign.center,
       softWrap: true,
     );
   }

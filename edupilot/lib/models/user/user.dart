@@ -22,7 +22,7 @@ class User {
   final String password;
   final String phoneNumber;
   final String email;
-  final Image avatar;
+  Image avatar;
   final Role role;
 
 }

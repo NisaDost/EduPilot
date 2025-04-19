@@ -19,5 +19,4 @@ class UserCoupons {
   bool isUsed = false;
   final DateTime createdAt;
   late DateTime updatedAt;
-
 }

@@ -49,22 +49,22 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
+                      color: AppColors.primaryAccent,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: DropdownButton<String>(
                       value: dropdownValue,
-                      dropdownColor: AppColors.primaryColor,
+                      dropdownColor: AppColors.primaryAccent,
                       borderRadius: BorderRadius.circular(16),
                       isExpanded: true,
                       items: subjectNames.map((subjectName) {
                         return DropdownMenuItem<String>(
                           value: subjectName,
-                          child: StyledHeading(subjectName, AppColors.textColor),
+                          child: StyledHeading(subjectName, AppColors.backgroundColor),
                         );
                       }).toList(),
                       onChanged: (value) {
