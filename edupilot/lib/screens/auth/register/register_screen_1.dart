@@ -42,7 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                           ),
                           SizedBox(height: 8),
                           InfoRow(
-                            leading: StyledText('*', AppColors.dangerColor),
+                            leading: XSmallBodyText('*', AppColors.dangerColor),
                             text: 'ile işaretli alanların doldurulması zorunludur.'
                           ),
                         ],
@@ -53,6 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                 },
                 pageNumber: 1,
               ),
+              // content
               const SizedBox(height: 16),
               Container(
                 margin: EdgeInsets.all(12),
@@ -75,9 +76,9 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                       // ad
                       Row(
                         children: [
-                          StyledHeading('Adın', AppColors.textColor),
+                          LargeText('Adın', AppColors.textColor),
                           const SizedBox(height: 4),
-                          StyledHeading('*', AppColors.dangerColor),
+                          LargeText('*', AppColors.dangerColor),
                         ],
                       ),
                       TextFormField(
@@ -121,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                       // ikinci isim
                       Row(
                         children: [
-                          StyledHeading('İkinci Adın', AppColors.textColor),
+                          LargeText('İkinci Adın', AppColors.textColor),
                         ],
                       ),
                       TextFormField(
@@ -159,9 +160,9 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                       // soyad
                       Row(
                         children: [
-                          StyledHeading('Soydın', AppColors.textColor),
+                          LargeText('Soydın', AppColors.textColor),
                           const SizedBox(height: 4),
-                          StyledHeading('*', AppColors.dangerColor),
+                          LargeText('*', AppColors.dangerColor),
                         ],
                       ),
                       TextFormField(
@@ -222,7 +223,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                           borderRadius: BorderRadius.circular(10)
                         ),
                       ),
-                      child: StyledLargeTitle('Geri', AppColors.backgroundColor)
+                      child: XLargeText('Geri', AppColors.backgroundColor)
                     ),
                     FilledButton(
                       onPressed: () async {
@@ -244,7 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                           borderRadius: BorderRadius.circular(10)
                         ),
                       ),
-                      child: StyledLargeTitle('İleri', AppColors.backgroundColor)
+                      child: XLargeText('İleri', AppColors.backgroundColor)
                     )
                   ],
                 ),

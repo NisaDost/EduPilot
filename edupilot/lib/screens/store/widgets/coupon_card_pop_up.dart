@@ -29,17 +29,17 @@ class CouponCardPopUp extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              StyledTitle(coupon.name, AppColors.titleColor),
+              LargeBodyText(coupon.name, AppColors.titleColor),
               const SizedBox(height: 8),
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   style: TextStyle(color: AppColors.textColor, fontSize: 16),
                   children: [
-                    WidgetSpan(child: CardHeading('Bu ürünü ${coupon.fee}', AppColors.textColor)),
+                    WidgetSpan(child: MediumText('Bu ürünü ${coupon.fee}', AppColors.textColor)),
                     WidgetSpan(child: Icon(Icons.bolt, color: AppColors.primaryColor, size: 20)),
-                    WidgetSpan(child: CardHeading(' karşılığında ', AppColors.textColor)),
-                    WidgetSpan(child: CardHeading('almak istediğine emin misin?', AppColors.textColor)),
+                    WidgetSpan(child: MediumText(' karşılığında ', AppColors.textColor)),
+                    WidgetSpan(child: MediumText('almak istediğine emin misin?', AppColors.textColor)),
                   ],
                 ),
               ),
@@ -54,7 +54,7 @@ class CouponCardPopUp extends StatelessWidget {
                     color: AppColors.successColor,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: StyledHeading('Evet', AppColors.backgroundColor),
+                      child: LargeText('Evet', AppColors.backgroundColor),
                     ),
                   ),
                   ProfileScreenButton(
@@ -62,7 +62,7 @@ class CouponCardPopUp extends StatelessWidget {
                     color: AppColors.dangerColor,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: StyledHeading('Hayır', AppColors.backgroundColor),
+                      child: LargeText('Hayır', AppColors.backgroundColor),
                     ),
                   )
                 ],

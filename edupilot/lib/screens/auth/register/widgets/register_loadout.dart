@@ -59,12 +59,20 @@ class RegisterLoadout extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StyledTitle(title, AppColors.secondaryColor),
+                    Expanded(
+                      child: LargeBodyText(
+                        title,
+                        AppColors.secondaryColor,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.visible,
+                        maxLines: 2, // Optional: control how many lines it wraps to
+                      ),
+                    ),
                     IconButton(
                       onPressed: infoButtonOnPressed,
-                      icon: Icon(Icons.info, color: AppColors.primaryColor, size: 48)
+                      icon: Icon(Icons.info, color: AppColors.primaryColor, size: 48),
                     ),
                   ],
                 ),
@@ -85,7 +93,7 @@ class RegisterLoadout extends StatelessWidget {
         color: isActive ? AppColors.secondaryColor : AppColors.primaryAccent,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: StyledTitle(
+      child: LargeBodyText(
         number, 
         isActive ? AppColors.primaryAccent : AppColors.backgroundColor
       )
@@ -119,7 +127,7 @@ class InfoRow extends StatelessWidget {
         if (leading != null) leading!,
         if (leading != null) const SizedBox(width: 4),
         Expanded(
-          child: StyledText(text, AppColors.textColor)),
+          child: XSmallBodyText(text, AppColors.textColor)),
       ],
     );
   }
