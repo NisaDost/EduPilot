@@ -64,7 +64,7 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
                       items: subjectNames.map((subjectName) {
                         return DropdownMenuItem<String>(
                           value: subjectName,
-                          child: StyledHeading(subjectName, AppColors.backgroundColor),
+                          child: LargeText(subjectName, AppColors.backgroundColor),
                         );
                       }).toList(),
                       onChanged: (value) {
@@ -104,7 +104,7 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  StyledTitle(
+                  LargeBodyText(
                     widget.lesson.name.length < 12
                         ? widget.lesson.name
                         : widget.lesson.name.substring(0, 11),
@@ -114,7 +114,7 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
-                      StyledHeading('1.205', AppColors.textColor),
+                      LargeText('1.205', AppColors.textColor),
                     ],
                   ),
                 ],

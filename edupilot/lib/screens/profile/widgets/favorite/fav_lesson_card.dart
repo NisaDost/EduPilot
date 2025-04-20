@@ -28,7 +28,7 @@ class FavLessonCard extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(lessons[index].icon, size: 96, color: AppColors.backgroundColor),
-                        CardTitle(lessons[index].name, AppColors.backgroundColor)
+                        MediumBodyText(lessons[index].name, AppColors.backgroundColor)
                       ],
                     ),
                   ),

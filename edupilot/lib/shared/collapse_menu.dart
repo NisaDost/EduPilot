@@ -21,7 +21,7 @@ class CollapseMenu extends StatelessWidget {
       child: Column(
         children: [
           // name-surname
-          CardTitle('Name Surname', AppColors.backgroundColor),
+          MediumBodyText('Name Surname', AppColors.backgroundColor),
           const SizedBox(height: 12),
           // icon - grade - points - streak
           Row(
@@ -50,7 +50,7 @@ class CollapseMenu extends StatelessWidget {
                     children: [
                       Icon(Icons.school_rounded, color: AppColors.backgroundAccent),
                       const SizedBox(width: 16),
-                      CardText("8. Sınıf", AppColors.backgroundColor)
+                      XSmallBodyText("8. Sınıf", AppColors.backgroundColor)
                     ],
                   ),
                   const SizedBox(height: 4),
@@ -59,7 +59,7 @@ class CollapseMenu extends StatelessWidget {
                     children: [
                       Icon(Icons.bolt, color: AppColors.primaryColor),
                       const SizedBox(width: 16),
-                      CardText("1205", AppColors.backgroundColor)
+                      XSmallBodyText("1205", AppColors.backgroundColor)
                     ],
                   ),
                   const SizedBox(height: 4),
@@ -68,7 +68,7 @@ class CollapseMenu extends StatelessWidget {
                     children: [
                       Icon(Icons.local_fire_department, color: AppColors.secondaryColor),
                       const SizedBox(width: 16),
-                      CardText("5", AppColors.backgroundColor)
+                      XSmallBodyText("5", AppColors.backgroundColor)
                     ],
                   ),
                 ],
@@ -80,7 +80,7 @@ class CollapseMenu extends StatelessWidget {
             width: double.infinity,
             child: CollapseMenuButton(
               onPressed: onProfileTap, 
-              child: CardText('Profil', AppColors.backgroundColor),
+              child: XSmallBodyText('Profil', AppColors.backgroundColor),
             ),
           ),
           const SizedBox(height: 8),
@@ -88,7 +88,7 @@ class CollapseMenu extends StatelessWidget {
             width: double.infinity,
             child: CollapseMenuButton(
               onPressed: onAllLessonsTap, 
-              child: CardText('Tüm Quizler', AppColors.backgroundColor),
+              child: XSmallBodyText('Tüm Quizler', AppColors.backgroundColor),
             ),
           ),
           const SizedBox(height: 8),
@@ -96,7 +96,7 @@ class CollapseMenu extends StatelessWidget {
             width: double.infinity,
             child: CollapseMenuButton(
               onPressed: () {}, 
-              child: CardText('Collapse Menu Button 3', AppColors.backgroundColor),
+              child: XSmallBodyText('Collapse Menu Button 3', AppColors.backgroundColor),
             ),
           ),
         ],

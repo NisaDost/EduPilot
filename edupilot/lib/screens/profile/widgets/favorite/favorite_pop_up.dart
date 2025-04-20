@@ -20,7 +20,7 @@ class _FavoritePopUpState extends ConsumerState<FavoritePopUp> {
     final notFavorites = ref.watch(notFavLessonsProvider);
 
     return AlertDialog(
-      title: CardTitle('Favori Ders Ekle', AppColors.titleColor),
+      title: MediumBodyText('Favori Ders Ekle', AppColors.titleColor),
       content: SizedBox(
         width: double.maxFinite,
         height: 350,
@@ -31,7 +31,7 @@ class _FavoritePopUpState extends ConsumerState<FavoritePopUp> {
             final isSelected = selectedIds.contains(lesson.id);
 
             return ListTile(
-              title: StyledText(lesson.name, AppColors.textColor),
+              title: XSmallBodyText(lesson.name, AppColors.textColor),
               trailing: IconButton(
                 icon: Heart(lesson: lesson, defaultColor: const Color.fromRGBO(200, 200, 220, 1)),
                 onPressed: () {
@@ -51,7 +51,7 @@ class _FavoritePopUpState extends ConsumerState<FavoritePopUp> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: CardText('Kapat', AppColors.textColor),
+          child: XSmallText('Kapat', AppColors.textColor),
         ),
         TextButton(
           onPressed: () {
@@ -65,7 +65,7 @@ class _FavoritePopUpState extends ConsumerState<FavoritePopUp> {
             ref.invalidate(favLessonsProvider);
             Navigator.of(context).pop();
           },
-          child: CardText('Kaydet', AppColors.primaryColor),
+          child: XSmallText('Kaydet', AppColors.primaryColor),
         ),
       ],
     );

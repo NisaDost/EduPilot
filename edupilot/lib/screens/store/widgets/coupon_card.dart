@@ -44,8 +44,8 @@ class _CouponState extends ConsumerState<CouponCard> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              StyledHeading(coupon.name, AppColors.textColor),
-                              CardText(coupon.description, AppColors.titleColor)
+                              MediumText(coupon.name, AppColors.textColor),
+                              XSmallText(coupon.description, AppColors.titleColor)
                             ],
                           ),
                         ),
@@ -69,9 +69,9 @@ class _CouponState extends ConsumerState<CouponCard> {
                                 borderRadius: BorderRadius.circular(8)
                               )
                             ),
-                            child: StyledText('Satın Al', AppColors.backgroundColor)
+                            child: XSmallBodyText('Satın Al', AppColors.backgroundColor)
                           ),
-                          StyledHeading('-${coupon.fee}', AppColors.dangerColor),
+                          LargeText('-${coupon.fee}', AppColors.dangerColor),
                           Icon(Icons.bolt, color: AppColors.primaryColor, size: 36),
                         ],
                       ),

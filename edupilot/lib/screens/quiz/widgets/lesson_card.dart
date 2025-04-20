@@ -39,7 +39,7 @@ class LessonCard extends ConsumerWidget {
               child: Column(
                 children: [
                   Icon(lesson.icon, color: AppColors.backgroundColor, size: 72),
-                  CardText(
+                  XSmallText(
                     lesson.name.length < 12
                         ? lesson.name
                         : '${lesson.name.substring(0, 9)}...',

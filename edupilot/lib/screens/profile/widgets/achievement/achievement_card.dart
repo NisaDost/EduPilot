@@ -48,7 +48,7 @@ class _AchievementCardState extends ConsumerState<AchievementCard> {
                 ),
               ),
               const SizedBox(height: 6),
-              CardText(achievements[index].name, AppColors.primaryAccent),
+              XSmallText(achievements[index].name, AppColors.primaryAccent),
             ],
           ),
         );

@@ -47,7 +47,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: StyledLargeTitle('Hoş Geldin!', AppColors.backgroundColor),
+                  child: XLargeText('Hoş Geldin!', AppColors.backgroundColor),
                 )
               ],
             ),
@@ -103,7 +103,7 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CardHeading('Zaten hesabın var mı?', AppColors.textColor),
+                  MediumText('Zaten hesabın var mı?', AppColors.textColor),
                   const SizedBox(height: 8),
                   FilledButton(
                     onPressed: () {
@@ -116,10 +116,10 @@ class WelcomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: StyledHeading('Giriş Yap', AppColors.backgroundColor)
+                    child: LargeText('Giriş Yap', AppColors.backgroundColor)
                   ),
                   const SizedBox(height: 24),
-                  CardHeading('Veya hesap oluştur!', AppColors.textColor),
+                  MediumText('Veya hesap oluştur!', AppColors.textColor),
                   const SizedBox(height: 8),
                   FilledButton(
                     onPressed: () {
@@ -132,7 +132,7 @@ class WelcomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: StyledHeading('Kayıt Ol', AppColors.backgroundColor)
+                    child: LargeText('Kayıt Ol', AppColors.backgroundColor)
                   ),
                 ],
               ),
@@ -146,9 +146,9 @@ class WelcomeScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                CardTitle('EduPilot', AppColors.backgroundColor),
+                MediumBodyText('EduPilot', AppColors.backgroundColor),
                 Icon(Icons.copyright, color: AppColors.backgroundColor, size: 16),
-                CardTitle(DateTime.now().year.toString(), AppColors.backgroundColor),
+                MediumBodyText(DateTime.now().year.toString(), AppColors.backgroundColor),
               ],
             ),
           ),

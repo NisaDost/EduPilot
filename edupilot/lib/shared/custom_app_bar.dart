@@ -76,7 +76,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           // app name & profile icon
           Row(
             children: [
-              StyledTitle('EduPilot', AppColors.backgroundColor),
+              LargeBodyText('EduPilot', AppColors.backgroundColor),
               const SizedBox(width: 16),
               IconButton(
                 onPressed: onProfileTap, 

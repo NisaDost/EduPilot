@@ -40,8 +40,8 @@ class SelectLessonScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  StyledTitle('8. Sınıf', AppColors.successColor),
-                  CardTitle('Tüm Dersler Listesi', AppColors.textColor),
+                  LargeBodyText('8. Sınıf', AppColors.successColor),
+                  MediumBodyText('Tüm Dersler Listesi', AppColors.textColor),
                 ],
               ),
               const SizedBox(height: 8),

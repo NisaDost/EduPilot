@@ -39,14 +39,14 @@ class QuizCard extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  StyledHeading(quiz.subject.name, AppColors.backgroundColor),
+                  LargeText(quiz.subject.name, AppColors.backgroundColor),
                   SizedBox(height: 4),
                   Row(
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      CardText('Bu quizden ${quiz.pointPerQuestion}', AppColors.titleColor),
+                      XSmallText('Bu quizden ${quiz.pointPerQuestion}', AppColors.titleColor),
                       Icon(Icons.bolt, color: AppColors.titleColor, size: 16),
-                      CardText('kazanabilirsin!', AppColors.titleColor),
+                      XSmallText('kazanabilirsin!', AppColors.titleColor),
                     ],
                   ),
                   const SizedBox(height: 24),
@@ -61,7 +61,7 @@ class QuizCard extends ConsumerWidget {
                             children: [
                               Icon(Icons.school,color: AppColors.backgroundColor, size: 24),
                               const SizedBox(width: 8),
-                              CardText('8. Sınıf', AppColors.textColor)
+                              XSmallText('8. Sınıf', AppColors.textColor)
                             ],
                           ),
                           const SizedBox(height: 8),
@@ -69,7 +69,7 @@ class QuizCard extends ConsumerWidget {
                             children: [
                               Icon(Icons.timer, color: AppColors.backgroundColor, size: 24),
                               const SizedBox(width: 8),
-                              CardText('20 dk', AppColors.textColor)
+                              XSmallText('20 dk', AppColors.textColor)
                             ],
                           )
                         ],
@@ -83,7 +83,7 @@ class QuizCard extends ConsumerWidget {
                             children: [
                               Icon(Icons.assignment, color: AppColors.backgroundColor, size: 24),
                               const SizedBox(width: 8),
-                              CardText('25 soru', AppColors.textColor)
+                              XSmallText('25 soru', AppColors.textColor)
                             ],
                           ),
                           const SizedBox(height: 8),
@@ -91,7 +91,7 @@ class QuizCard extends ConsumerWidget {
                             children: [
                               Icon(Icons.signal_cellular_alt_outlined, color: AppColors.backgroundColor, size: 24),
                               const SizedBox(width: 8),
-                              CardText(quiz.difficulty.name, AppColors.textColor)
+                              XSmallText(quiz.difficulty.name, AppColors.textColor)
                             ],
                           )
                         ],
@@ -103,7 +103,7 @@ class QuizCard extends ConsumerWidget {
                         style: FilledButton.styleFrom(
                           backgroundColor: AppColors.secondaryColor
                         ),
-                        child: StyledHeading('Başla', AppColors.backgroundColor),
+                        child: LargeText('Başla', AppColors.backgroundColor),
                       )
                     ],
                   )

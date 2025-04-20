@@ -42,9 +42,9 @@ class LessonCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                StyledTitle(lesson.name, AppColors.backgroundColor),
+                LargeBodyText(lesson.name, AppColors.backgroundColor),
                 const SizedBox(height: 12),
-                StyledText('Quizleri görmek için tıkla.', AppColors.backgroundColor)
+                XSmallBodyText('Quizleri görmek için tıkla.', AppColors.backgroundColor)
               ],
             ),
           ),

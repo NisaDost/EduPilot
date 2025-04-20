@@ -38,33 +38,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      StyledTitle('Name Surname', AppColors.titleColor),
+                      LargeBodyText('Name Surname', AppColors.titleColor),
                       Row(
                         children: [
                           Icon(Icons.school_rounded, color: AppColors.titleColor, size: 36),
                           const SizedBox(width: 12),
-                          StyledText('8. Sınıf', AppColors.textColor)
+                          XSmallBodyText('8. Sınıf', AppColors.textColor)
                         ],
                       ),
                       Row(
                         children: [
                           Icon(Icons.bolt, color: AppColors.primaryColor, size: 36),
                           const SizedBox(width: 12),
-                          StyledText('1205', AppColors.primaryAccent),
+                          XSmallBodyText('1205', AppColors.primaryAccent),
                         ],
                       ),
                       Row(
                         children: [
                           Icon(Icons.local_fire_department, color: AppColors.secondaryColor, size: 36),
                           const SizedBox(width: 12),
-                          StyledText('9. Gün', AppColors.secondaryAccent),
+                          XSmallBodyText('9. Gün', AppColors.secondaryAccent),
                         ],
                       ),
                       const SizedBox(height: 8),
                       ProfileScreenButton(
                         onPressed: () {}, 
                         color: AppColors.secondaryColor,
-                        child: CardText('Kurum Bilgisi Ekle', AppColors.backgroundColor), 
+                        child: XSmallText('Kurum Bilgisi Ekle', AppColors.backgroundColor), 
                       )
                       ],
                   ),
@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const SizedBox(height: 8),
                             TextButton(
                               onPressed: () {}, 
-                              child: CardText('Avatarını Değiştir', AppColors.backgroundColor)
+                              child: XSmallText('Avatarını Değiştir', AppColors.backgroundColor)
                             ),
                           ],
                         ),
@@ -109,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CardTitle('Favori Dersler', AppColors.titleColor),
+                      MediumBodyText('Favori Dersler', AppColors.titleColor),
                       Row(
                         children: [
                           ProfileScreenButton(
@@ -120,13 +120,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               );
                             }, 
                             color: AppColors.primaryColor,
-                            child: CardText('Favori Ders Ekle', AppColors.backgroundColor), 
+                            child: XSmallText('Favori Ders Ekle', AppColors.backgroundColor), 
                           ),
                           const SizedBox(width: 8),
                           ProfileScreenButton(
                             onPressed: () {}, 
                             color: AppColors.successColor,
-                            child: CardText('Kaydet', AppColors.backgroundColor), 
+                            child: XSmallText('Kaydet', AppColors.backgroundColor), 
                           )
                         ],
                       )
@@ -153,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CardTitle('Başarımlar', AppColors.titleColor),
+                  MediumBodyText('Başarımlar', AppColors.titleColor),
                   SizedBox(height: 12),
                   AchievementCard(),
                 ],

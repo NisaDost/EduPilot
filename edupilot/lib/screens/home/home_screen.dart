@@ -31,9 +31,9 @@ class HomeScreen extends ConsumerWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StyledHeading('Hoş Geldin, USER!', AppColors.successColor),
+                    LargeText('Hoş Geldin, USER!', AppColors.successColor),
                     const SizedBox(height: 8),
-                    StyledText('Bugün nasıl çalışmak istersin?', AppColors.textColor),
+                    XSmallText('Bugün nasıl çalışmak istersin?', AppColors.textColor),
                     const SizedBox(height: 8),
                     // puan bilgisi ve iconu
                     Row(
@@ -43,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
                           size: 40,
                         ),
                         const SizedBox(width: 12),
-                        StyledTitle('1205', AppColors.textColor),
+                        LargeBodyText('1205', AppColors.textColor),
                       ],
                     ),
                     const SizedBox(height: 4),
@@ -55,7 +55,7 @@ class HomeScreen extends ConsumerWidget {
                           size: 40,
                         ),
                         const SizedBox(width: 12),
-                        StyledTitle('5. Gün', AppColors.textColor),
+                        LargeBodyText('5. Gün', AppColors.textColor),
                       ],
                     ),
                   ],

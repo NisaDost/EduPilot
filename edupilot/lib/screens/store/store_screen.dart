@@ -43,7 +43,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 borderRadius: BorderRadius.circular(10)
                               )
                             ),
-                            child: CardTitle('Tüm Kuponlar', AppColors.backgroundColor),
+                            child: MediumBodyText('Tüm Kuponlar', AppColors.backgroundColor),
                           ),
                         ),
                         SizedBox(width: 8),
@@ -58,7 +58,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 borderRadius: BorderRadius.circular(10)
                               )
                             ),
-                            child: CardTitle('Kodlarım', AppColors.backgroundColor),
+                            child: MediumBodyText('Kodlarım', AppColors.backgroundColor),
                           ),
                         ),
                       ],
@@ -99,7 +99,7 @@ class _StoreScreenState extends State<StoreScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      StyledTitle('Dükkan', AppColors.successColor),
+                      LargeBodyText('Dükkan', AppColors.successColor),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
@@ -109,7 +109,7 @@ class _StoreScreenState extends State<StoreScreen> {
                         child: Row(
                           children: [
                             Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
-                            StyledHeading('1.205', AppColors.textColor),
+                            LargeText('1.205', AppColors.textColor),
                           ],
                         ),
                       )

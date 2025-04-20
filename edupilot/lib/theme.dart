@@ -31,44 +31,45 @@ ThemeData primaryTheme = ThemeData(
   ),
 
   // text theme
+  
   textTheme: TextTheme(
-    bodyMedium: TextStyle(
-      color: AppColors.textColor,
-      fontWeight: FontWeight.bold,
-      fontSize: 12,
-      letterSpacing: 1,
-    ),
-    headlineMedium: TextStyle(
-      color: AppColors.titleColor,
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 1,
-    ),
-    titleMedium: TextStyle(
-      color: AppColors.titleColor,
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 2,
-    ),
-    bodySmall: TextStyle(
+    bodySmall: TextStyle( // xSmallText
       color: AppColors.backgroundColor,
       fontWeight: FontWeight.bold,
       fontSize: 12,
       letterSpacing: 0.5,
     ),
-    headlineSmall: TextStyle(
+    bodyMedium: TextStyle( // xSmallBodyText
+      color: AppColors.textColor,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+      letterSpacing: 1,
+    ),
+    headlineSmall: TextStyle( // mediumText
       color: AppColors.backgroundColor,
       fontWeight: FontWeight.bold,
       fontSize: 14,
       letterSpacing: 1,
     ),
-    titleSmall: TextStyle(
+    titleSmall: TextStyle( // mediumBodyText
       color: AppColors.backgroundColor,
       fontWeight: FontWeight.bold,
       fontSize: 16,
       letterSpacing: 1.5,
     ),
-    titleLarge: TextStyle(
+    headlineMedium: TextStyle( // largeText
+      color: AppColors.titleColor,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 1,
+    ),
+    titleMedium: TextStyle( // largeBodyText
+      color: AppColors.titleColor,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 2,
+    ),
+    titleLarge: TextStyle( // xLargeText
       color: AppColors.backgroundColor,
       fontWeight: FontWeight.bold,
       fontSize: 32,
