@@ -13,7 +13,7 @@ class FavoritePopUp extends ConsumerStatefulWidget {
 }
 
 class _FavoritePopUpState extends ConsumerState<FavoritePopUp> {
-  final Set<String> selectedIds = {}; // Store selected quiz IDs
+  final Set<String> selectedIds = {}; // Store selected lessons IDs
 
   @override
   Widget build(BuildContext context) {

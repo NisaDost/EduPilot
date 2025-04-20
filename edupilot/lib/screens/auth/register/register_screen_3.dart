@@ -1,4 +1,5 @@
 import 'package:edupilot/screens/auth/register/register_screen_2.dart';
+import 'package:edupilot/screens/auth/register/widgets/fav_lesson_pop_up.dart';
 import 'package:edupilot/screens/auth/register/widgets/register_info_pop_up.dart';
 import 'package:edupilot/screens/auth/register/widgets/register_loadout.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -13,87 +14,234 @@ class RegisterScreen3 extends StatefulWidget {
 }
 
 class _RegisterScreen3State extends State<RegisterScreen3> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  int? _selectedGrade;
+  final TextEditingController _institutionController = TextEditingController();
+  final TextEditingController _supervisorController = TextEditingController();
+  final TextEditingController _supervisorCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Container(
-          color: AppColors.backgroundAccent,
-          child: Column(
-            children: [
-              RegisterLoadout(
-                title: '3: Okul ve Danışman Bilgiler',
-                infoButtonOnPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => RegisterInfoPopUp(
-                      content: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InfoRow(text: 'Bu alana kullanıcı bilgilerinizi giriniz.'),
-                          const SizedBox(height: 8),
-                          InfoRow(text: 'Merak etme, okulunu ve danışmanlarını daha sonra ekleyebilirsin!'),
-                          const SizedBox(height: 8),
-                          InfoRow(
-                            leading: XSmallBodyText('*', AppColors.dangerColor),
-                            text: 'ile işaretli alanların doldurulması zorunludur.'
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Form(
+            key: _formKey,
+            child: Container(
+              color: AppColors.backgroundAccent,
+              child: Column(
+                children: [
+                  RegisterLoadout(
+                    title: '3: Okul ve Danışman Bilgiler',
+                    infoButtonOnPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => RegisterInfoPopUp(
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InfoRow(text: 'Bu alana okul ve danışman bilgilerinizi giriniz.'),
+                              const SizedBox(height: 8),
+                              InfoRow(text: 'Merak etme, okulunu ve danışmanını daha sonra ekleyebilirsin!'),
+                              const SizedBox(height: 8),
+                              InfoRow(text: 'Danışman bilgisi girmek zorunlu değil ancak danışman eklemek istersen her iki alanı da doldurman gerek!'),
+                              const SizedBox(height: 8),
+                              InfoRow(
+                                leading: XSmallBodyText('*', AppColors.dangerColor),
+                                text: 'ile işaretli alanların doldurulması zorunludur.',
+                              ),
+                            ],
                           ),
-                        ],
-                      )
-                    ),
-                  );
-                },
-                pageNumber: 3,
-              ),
+                        ),
+                      );
+                    },
+                    pageNumber: 3,
+                  ),
+                  const SizedBox(height: 16),
 
-
-              // Buttons
-              const Expanded(child: SizedBox()),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 36),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    FilledButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const RegisterScreen2()));
-                      },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.primaryAccent,
-                        padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                      child: XLargeText('Geri', AppColors.backgroundColor),
+                  _buildContainer([
+                    _buildLabelWithAsterisk('Sınıfın:'),
+                    DropdownButtonFormField<int>(
+                      value: _selectedGrade,
+                      decoration: _inputDecoration(),
+                      hint: const Text("Sınıf seçiniz"),
+                      items: List.generate(12, (index) => index + 1)
+                          .map((grade) => DropdownMenuItem(
+                                value: grade,
+                                child: Text('$grade. Sınıf'),
+                              ))
+                          .toList(),
+                      validator: (value) => value == null ? 'Lütfen bir sınıf seçiniz.' : null,
+                      onChanged: (value) => setState(() => _selectedGrade = value),
                     ),
-                    FilledButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => const RegisterScreen3()));
+                    const SizedBox(height: 24),
+                    _buildLabel('Okulunun İsmi:'),
+                    TextFormField(
+                      controller: _institutionController,
+                      decoration: _inputDecoration(),
+                    ),
+                  ]),
+
+                  _buildContainer([
+                    _buildLabel('Danışman İsmi:'),
+                    TextFormField(
+                      controller: _supervisorController,
+                      decoration: _inputDecoration(),
+                      validator: (value) {
+                        final nameFilled = value != null && value.trim().isNotEmpty;
+                        final codeFilled = _supervisorCodeController.text.trim().isNotEmpty;
+                        if (nameFilled != codeFilled) {
+                          return 'Danışman alanları birlikte doldurulmalıdır.';
                         }
+                        return null;
                       },
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.secondaryColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      ),
-                      child: XLargeText('Kaydol', AppColors.backgroundColor),
                     ),
-                  ],
-                ),
+                    const SizedBox(height: 24),
+                    _buildLabel('Danışman Kodu:'),
+                    TextFormField(
+                      controller: _supervisorCodeController,
+                      decoration: _inputDecoration(),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        final codeFilled = value != null && value.trim().isNotEmpty;
+                        final nameFilled = _supervisorController.text.trim().isNotEmpty;
+                        if (codeFilled != nameFilled) {
+                          return 'Danışman alanları birlikte doldurulmalıdır.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ]),
+
+                  _buildContainer([
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LargeText('Favori Derslerini Seç', AppColors.textColor),
+                        const SizedBox(height: 8),
+                        XSmallBodyText('Seçtiğin dersler hızlı erişimde görüntülenecek', AppColors.titleColor),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Center(
+                      child: FilledButton(
+                        onPressed: () async {
+                          if (_selectedGrade == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('"Dersleri Gör" butonunu kullanmadan önce sınıf seçmeniz gerekiyor.'),
+                                showCloseIcon: true,
+                                duration: Duration(milliseconds: 1750),
+                                backgroundColor: AppColors.dangerColor,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+                              ),
+                            );
+                            return;
+                          }
+                          await showDialog<String>(
+                            context: context,
+                            builder: (context) => FavLessonPopUp(selectedGrade: _selectedGrade!),
+                          );
+                        },
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 8),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        child: LargeText('Dersleri Gör', AppColors.backgroundColor),
+                      ),
+                    ),
+                  ]),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 36),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        FilledButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const RegisterScreen2()));
+                          },
+                          style: FilledButton.styleFrom(
+                            backgroundColor: AppColors.primaryAccent,
+                            padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 8),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          ),
+                          child: XLargeText('Geri', AppColors.backgroundColor),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              // Proceed to next
+                            }
+                          },
+                          style: FilledButton.styleFrom(
+                            backgroundColor: AppColors.secondaryColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          ),
+                          child: XLargeText('Kayıt Ol', AppColors.backgroundColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ]
-          )
-        )
-      )
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLabel(String text) => Row(children: [LargeText(text, AppColors.textColor)]);
+
+  Widget _buildLabelWithAsterisk(String text) => Row(children: [
+        LargeText(text, AppColors.textColor),
+        const SizedBox(width: 4),
+        LargeText('*', AppColors.dangerColor),
+      ]);
+
+  Widget _buildContainer(List<Widget> children) => Container(
+        margin: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.backgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(100),
+              blurRadius: 4,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(children: children),
+      );
+
+  InputDecoration _inputDecoration() {
+    return InputDecoration(
+      filled: true,
+      fillColor: const Color.fromRGBO(217, 217, 217, 1),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.black.withAlpha(64), width: 1),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: AppColors.dangerColor, width: 1.5),
+      ),
     );
   }
 }

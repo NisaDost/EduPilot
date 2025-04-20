@@ -33,11 +33,11 @@ class AchievementPopUp extends StatelessWidget {
             const SizedBox(height: 16),
             LargeBodyText(achievement.name, AppColors.titleColor),
             const SizedBox(height: 8),
-            LargeBodyText(achievement.description, AppColors.textColor),
+            XSmallBodyText(achievement.description, AppColors.textColor),
             const SizedBox(height: 16),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: XSmallText('Kapat', AppColors.primaryColor),
+              child: XSmallBodyText('Kapat', AppColors.primaryColor),
             )
           ],
         ),

@@ -6,14 +6,12 @@ class XSmallText extends StatelessWidget {
   const XSmallText(this.text, this.color, {
     super.key,
     this.textAlign,
-    this.overflow,
     this.maxLines,
   });
 
   final String text;
   final Color? color;
   final TextAlign? textAlign;
-  final TextOverflow? overflow;
   final int? maxLines;
 
   @override
@@ -25,7 +23,6 @@ class XSmallText extends StatelessWidget {
       ),
       softWrap: true,
       textAlign: textAlign ?? TextAlign.start,
-      overflow: overflow ?? TextOverflow.ellipsis,
       maxLines: maxLines,
     );
   }
@@ -34,14 +31,12 @@ class XSmallBodyText extends StatelessWidget {
   const XSmallBodyText(this.text, this.color, {
     super.key,
     this.textAlign,
-    this.overflow,
     this.maxLines,
   });
 
   final String text;
   final Color? color;
   final TextAlign? textAlign;
-  final TextOverflow? overflow;
   final int? maxLines;
 
   @override
@@ -52,7 +47,6 @@ class XSmallBodyText extends StatelessWidget {
       ),
       softWrap: true,
       textAlign: textAlign ?? TextAlign.start,
-      overflow: overflow ?? TextOverflow.ellipsis,
       maxLines: maxLines,
     );
   }
@@ -62,14 +56,12 @@ class MediumText extends StatelessWidget {
   const MediumText(this.text, this.color, {
     super.key,
     this.textAlign,
-    this.overflow,
     this.maxLines,
   });
 
   final String text;
   final Color? color;
   final TextAlign? textAlign;
-  final TextOverflow? overflow;
   final int? maxLines;
 
   @override
@@ -81,7 +73,6 @@ class MediumText extends StatelessWidget {
       ),
       softWrap: true,
       textAlign: textAlign ?? TextAlign.start,
-      overflow: overflow ?? TextOverflow.ellipsis,
       maxLines: maxLines,
     );
   }
@@ -91,14 +82,12 @@ class MediumBodyText extends StatelessWidget {
   const MediumBodyText(this.text, this.color, {
     super.key,
     this.textAlign,
-    this.overflow,
     this.maxLines,
   });
 
   final String text;
   final Color? color;
   final TextAlign? textAlign;
-  final TextOverflow? overflow;
   final int? maxLines;
 
   @override
@@ -109,7 +98,6 @@ class MediumBodyText extends StatelessWidget {
       ),
       softWrap: true,
       textAlign: textAlign ?? TextAlign.start,
-      overflow: overflow ?? TextOverflow.ellipsis,
       maxLines: maxLines,
     );
   }
@@ -119,14 +107,12 @@ class LargeText extends StatelessWidget {
   const LargeText(this.text, this.color, {
     super.key,
     this.textAlign,
-    this.overflow,
     this.maxLines,
   });
 
   final String text;
   final Color? color;
   final TextAlign? textAlign;
-  final TextOverflow? overflow;
   final int? maxLines;
 
   @override
@@ -137,7 +123,6 @@ class LargeText extends StatelessWidget {
       ),
       softWrap: true,
       textAlign: textAlign ?? TextAlign.start,
-      overflow: overflow ?? TextOverflow.ellipsis,
       maxLines: maxLines,
     );
   }
@@ -147,15 +132,15 @@ class LargeBodyText extends StatelessWidget {
   const LargeBodyText(this.text, this.color, {
     super.key,
     this.textAlign,
-    this.overflow,
     this.maxLines,
+    this.overflow,
   });
 
   final String text;
   final Color? color;
   final TextAlign? textAlign;
-  final TextOverflow? overflow;
   final int? maxLines;
+  final TextOverflow? overflow;
 
   @override
   Widget build(BuildContext context) {
@@ -165,8 +150,8 @@ class LargeBodyText extends StatelessWidget {
       ),
       softWrap: true,
       textAlign: textAlign ?? TextAlign.start,
-      overflow: overflow ?? TextOverflow.ellipsis,
       maxLines: maxLines,
+      overflow: overflow ?? TextOverflow.visible,
     );
   }
 }
@@ -174,14 +159,12 @@ class XLargeText extends StatelessWidget {
   const XLargeText(this.text, this.color, {
     super.key,
     this.textAlign,
-    this.overflow,
     this.maxLines,
   });
 
   final String text;
   final Color? color;
   final TextAlign? textAlign;
-  final TextOverflow? overflow;
   final int? maxLines;
 
   @override
@@ -192,7 +175,6 @@ class XLargeText extends StatelessWidget {
       ),
       softWrap: true,
       textAlign: textAlign ?? TextAlign.start,
-      overflow: overflow ?? TextOverflow.ellipsis,
       maxLines: maxLines,
     );
   }

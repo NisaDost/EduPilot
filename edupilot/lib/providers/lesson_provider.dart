@@ -7,17 +7,17 @@ part 'lesson_provider.g.dart';
 // dart run build_runner watch
 
 List<Lesson> allLessons = [
-  Lesson(id: '1', name: 'Matematik', icon: Icons.calculate),
-  Lesson(id: '2', name: 'Geometri', icon: Icons.architecture),
-  Lesson(id: '3', name: 'Fizik', icon: Icons.engineering),
-  Lesson(id: '4', name: 'Kimya', icon: Icons.science),
-  Lesson(id: '5', name: 'Biyoloji', icon: Icons.biotech),
-  Lesson(id: '6', name: 'Tarih', icon: Icons.history_edu),
-  Lesson(id: '7', name: 'Coğrafya', icon: Icons.terrain),
-  Lesson(id: '8', name: 'Felsefe', icon: Icons.psychology_alt),
-  Lesson(id: '9', name: 'Din Kültürü ve Ahlak Bilgisi', icon: Icons.self_improvement),
-  Lesson(id: '10', name: 'Türkçe', icon: Icons.menu_book),
-  Lesson(id: '11', name: 'İngilizce', icon: Icons.language),
+  Lesson(id: '1', name: 'Matematik', icon: Icons.calculate, grade: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+  Lesson(id: '2', name: 'Geometri', icon: Icons.architecture, grade: [9, 10, 11, 12]),
+  Lesson(id: '3', name: 'Fizik', icon: Icons.engineering, grade: [9, 10, 11, 12]),
+  Lesson(id: '4', name: 'Kimya', icon: Icons.science, grade: [9, 10, 11, 12]),
+  Lesson(id: '5', name: 'Biyoloji', icon: Icons.biotech, grade: [9, 10, 11, 12]),
+  Lesson(id: '6', name: 'Tarih', icon: Icons.history_edu, grade: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+  Lesson(id: '7', name: 'Coğrafya', icon: Icons.terrain, grade: [9, 10, 11, 12]),
+  Lesson(id: '8', name: 'Felsefe', icon: Icons.psychology_alt, grade: [9, 10, 11, 12]),
+  Lesson(id: '9', name: 'Din Kültürü ve Ahlak Bilgisi', icon: Icons.self_improvement, grade: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+  Lesson(id: '10', name: 'Türkçe', icon: Icons.menu_book, grade: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+  Lesson(id: '11', name: 'İngilizce', icon: Icons.language, grade: [5, 6, 7, 8, 9, 10, 11, 12]),
 ];
 
 @riverpod

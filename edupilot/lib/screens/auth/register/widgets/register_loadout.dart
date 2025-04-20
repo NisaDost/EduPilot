@@ -59,14 +59,13 @@ class RegisterLoadout extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: LargeBodyText(
                         title,
                         AppColors.secondaryColor,
                         textAlign: TextAlign.left,
-                        overflow: TextOverflow.visible,
                         maxLines: 2, // Optional: control how many lines it wraps to
                       ),
                     ),

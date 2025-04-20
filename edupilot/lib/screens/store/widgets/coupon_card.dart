@@ -44,7 +44,7 @@ class _CouponState extends ConsumerState<CouponCard> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              MediumText(coupon.name, AppColors.textColor),
+                              LargeText(coupon.name, AppColors.textColor),
                               XSmallText(coupon.description, AppColors.titleColor)
                             ],
                           ),
