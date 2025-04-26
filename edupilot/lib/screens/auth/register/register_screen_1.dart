@@ -227,14 +227,18 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                     ),
                     FilledButton(
                       onPressed: () async {
-                        // alttaki bilgiler sırayla 2. ve 3. register ekranına gönderilecek ve kayıt orda yapılacak.
-                        // final firstName = _firstNameController.text.trim();
-                        // final middleName = _middleNameController.text.trim();
-                        // final lastName = _lastNameController.text.trim();
+                        final firstName = _firstNameController.text.trim();
+                        final middleName = _middleNameController.text.trim();
+                        final lastName = _lastNameController.text.trim();
 
                         if (_formKey.currentState!.validate()) {
                           setState(() {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen2()));
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => RegisterScreen2(
+                                firstName: firstName,
+                                middleName: middleName,
+                                lastName: lastName,
+                              )));
                           });
                         }
                       }, 

@@ -8,7 +8,16 @@ import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen2 extends StatefulWidget {
-  const RegisterScreen2({super.key});
+  const RegisterScreen2({
+    super.key,
+    required this.firstName,
+    required this.middleName,
+    required this.lastName,
+  });
+
+  final String firstName;
+  final String middleName;
+  final String lastName;
 
   @override
   State<RegisterScreen2> createState() => _RegisterScreen2State();
@@ -257,9 +266,9 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                         FilledButton(
                           onPressed: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const RegisterScreen1()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen1()));
                           },
                           style: FilledButton.styleFrom(
                             backgroundColor: AppColors.primaryAccent,
@@ -270,11 +279,24 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                         ),
                         FilledButton(
                           onPressed: () {
+                            final email = _emailController.text.trim();
+                            final password = _password1Controller.text.trim();
+                            final phoneNumber = _phoneController.text.trim();
+                            final avatarPath = _selectedAvatarPath;
+
                             if (_formKey.currentState!.validate()) {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const RegisterScreen3()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterScreen3(
+                                      firstName: widget.firstName,
+                                      middleName: widget.middleName,
+                                      lastName: widget.lastName,
+                                      email: email,
+                                      password: password,
+                                      phoneNumber: phoneNumber,
+                                      avatarPath: avatarPath,
+                                    )));
                             }
                           },
                           style: FilledButton.styleFrom(

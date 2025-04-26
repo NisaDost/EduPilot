@@ -1,3 +1,4 @@
+import 'package:edupilot/screens/auth/login/login_screen.dart';
 import 'package:edupilot/screens/auth/register/register_screen_2.dart';
 import 'package:edupilot/screens/auth/register/widgets/fav_lesson_pop_up.dart';
 import 'package:edupilot/screens/auth/register/widgets/register_info_pop_up.dart';
@@ -7,7 +8,24 @@ import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen3 extends StatefulWidget {
-  const RegisterScreen3({super.key});
+  const RegisterScreen3({
+    super.key,
+    required this.firstName,
+    required this.middleName,
+    required this.lastName,
+    required this.email,
+    required this.password,
+    required this.phoneNumber,
+    required this.avatarPath,
+  });
+
+  final String firstName;
+  final String middleName;
+  final String lastName;
+  final String email;
+  final String password;
+  final String phoneNumber;
+  final String avatarPath;
 
   @override
   State<RegisterScreen3> createState() => _RegisterScreen3State();
@@ -164,9 +182,13 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                         FilledButton(
                           onPressed: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const RegisterScreen2()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen2(
+                                    firstName: '',
+                                    middleName: '',
+                                    lastName: '',
+                                  )));
                           },
                           style: FilledButton.styleFrom(
                             backgroundColor: AppColors.primaryAccent,
@@ -178,7 +200,7 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                         FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // Proceed to next
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                             }
                           },
                           style: FilledButton.styleFrom(

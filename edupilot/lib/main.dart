@@ -2,20 +2,11 @@ import 'package:edupilot/screens/auth/welcome_screen.dart';
 import 'package:edupilot/screens/main/main_screen.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // firebase
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'firebase_options.dart';
 
 void main() async {
-
-  // allows firebase to use platform channels to call native code
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-  );
 
   runApp(const ProviderScope(child: MyApp()));
 }
