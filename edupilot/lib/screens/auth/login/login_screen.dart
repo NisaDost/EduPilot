@@ -1,5 +1,6 @@
 import 'package:edupilot/screens/auth/welcome_screen.dart';
 import 'package:edupilot/screens/main/main_screen.dart';
+import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -221,9 +221,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (_formKey.currentState!.validate()) {
                         // Perform login action here
                         try {
-                          // await FirestoreService().login(email, password);
-                          // If login is successful, navigate to the main screen
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+                          if (await StudentsApiHandler().loginStudent(email, password)) {
+                            // Navigate to main screen
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Giriş başarılı!')));
+                      
+                            await Future.delayed(const Duration(seconds: 1));
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Giriş başarısız!')));
+                          }
                         } catch (e) {
                           // Handle login error here
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Giriş başarısız: $e')));

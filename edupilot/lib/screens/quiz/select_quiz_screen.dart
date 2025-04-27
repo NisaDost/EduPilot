@@ -1,4 +1,4 @@
-import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/quiz/subject.dart';
 import 'package:edupilot/screens/quiz/widgets/quiz_card.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 class SelectQuizScreen extends StatefulWidget {
   const SelectQuizScreen({required this.lesson, super.key});
 
-  final Lesson lesson;
+  final LessonsByGradeDTO lesson;
 
   @override
   State<SelectQuizScreen> createState() => _SelectQuizScreenState();

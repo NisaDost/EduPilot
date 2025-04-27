@@ -1,4 +1,4 @@
-@EduPilot.Api_HostAddress = http://localhost:5113
+@EduPilot.Api_HostAddress = https://localhost:5113
 
 GET {{EduPilot.Api_HostAddress}}/weatherforecast/
 Accept: application/json

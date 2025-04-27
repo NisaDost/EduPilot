@@ -1,10 +1,11 @@
-import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/helpers/icon_conversion.dart';
+import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:flutter/material.dart';
 import 'package:edupilot/theme.dart';
 
 class LessonCard extends StatelessWidget {
-  final Lesson lesson;
+  final FavoriteLessonDTO lesson;
   final VoidCallback? onTap;
 
   const LessonCard({
@@ -30,7 +31,7 @@ class LessonCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8),
             child: Icon(
-              lesson.icon,
+              IconConversion().getIconFromString(lesson.lessonIcon),
               size: 112,
               color: AppColors.backgroundColor,
             ),
@@ -42,7 +43,7 @@ class LessonCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                LargeBodyText(lesson.name, AppColors.backgroundColor),
+                LargeBodyText(lesson.lessonName, AppColors.backgroundColor),
                 const SizedBox(height: 12),
                 XSmallBodyText('Quizleri görmek için tıkla.', AppColors.backgroundColor)
               ],

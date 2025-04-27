@@ -12,14 +12,15 @@ class FavoriteLessonDTO
 
     factory FavoriteLessonDTO.fromJson(Map<String, dynamic> json) =>
         FavoriteLessonDTO(
-            lessonId: json['LessonId'] as String,
-            lessonName: json['LessonName'] as String,
-            lessonIcon: json['LessonIcon'] as String,
+          lessonId: json['lessonId']?.toString() ?? '',
+          lessonName: json['lessonName']?.toString() ?? '',
+          lessonIcon: json['lessonIcon']?.toString() ?? '',
         );
 
+
     Map<String, dynamic> toJson() => {
-          'LessonId': lessonId,
-          'LessonName': lessonName,
-          'LessonIcon': lessonIcon,
+          'lessonId': lessonId,
+          'lessonName': lessonName,
+          'lessonIcon': lessonIcon,
         };
 }

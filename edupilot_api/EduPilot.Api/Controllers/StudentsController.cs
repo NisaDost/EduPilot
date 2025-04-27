@@ -2,6 +2,7 @@
 using EduPilot.Api.Data.Models;
 using EduPilot.Api.DTOs;
 using EduPilot.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace EduPilot.Api.Controllers
 {
     [Route("api/students")]
     [ApiController]
+    [Authorize]
     public class StudentsController : ControllerBase
     {
         private readonly ApiDbContext _context;
@@ -106,6 +108,21 @@ namespace EduPilot.Api.Controllers
             return achievements;
         }
 
+        [HttpGet("{id}/favoritelessons")]
+        public async Task<ActionResult<List<FavoriteLessonDTO>>> GetStudentFavoriteLessons(Guid id)
+        {
+            var favLessons = await _context.StudentFavLessons
+                .Where(sfl => sfl.StudentId.Equals(id))
+                .Select(fl => new FavoriteLessonDTO()
+                {
+                    LessonId = fl.LessonId,
+                    LessonName = fl.Lesson.Name,
+                    LessonIcon = fl.Lesson.Icon
+                }).ToListAsync();
+
+            return favLessons;
+        }
+
         [HttpPut("{id}/favoritelessons")]
         public async Task<ActionResult> UpdateStudentFavoriteLessons(Guid id, [FromBody] List<Guid> lessonIds)
         {
@@ -155,8 +172,8 @@ namespace EduPilot.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var supervisor = new Supervisor();
-                if (string.IsNullOrWhiteSpace(student.SupervisorName) && string.IsNullOrWhiteSpace(student.SupervisorUniqueCode.ToString()))
+                Supervisor? supervisor = null;
+                if (!string.IsNullOrWhiteSpace(student.SupervisorName) && !string.IsNullOrWhiteSpace(student.SupervisorUniqueCode.ToString()))
                 {
                     supervisor = await _context.Supervisors.FirstOrDefaultAsync(s => s.UniqueCode == student.SupervisorUniqueCode && s.FirstName == student.SupervisorName);
                     if (supervisor == null)
@@ -204,7 +221,7 @@ namespace EduPilot.Api.Controllers
                 _context.Students.Add(studentEntity);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(PostStudent), new { id = studentEntity.Id });
+                return CreatedAtAction(nameof(PostStudent), new { status = 201, id = studentEntity.Id });
             }
 
             return BadRequest(ModelState);

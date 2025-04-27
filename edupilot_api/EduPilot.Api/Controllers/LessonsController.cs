@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using EduPilot.Api.Data;
 using EduPilot.Api.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduPilot.Api.Controllers
 {
     [Route("api")]
     [ApiController]
+    [Authorize]
     public class LessonsController : ControllerBase
     {
         private readonly ApiDbContext _context;

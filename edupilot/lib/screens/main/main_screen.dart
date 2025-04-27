@@ -1,4 +1,6 @@
-import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
+import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
+import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
 import 'package:edupilot/screens/quiz/select_lesson_screen.dart';
@@ -19,7 +21,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 3;
   bool _collapseMenuOpened = false;
-  //Lesson? _selectedLesson;
+  late StudentDTO _student;
+  late LessonsByGradeDTO _lessonsByGrade;
 
   late List<Widget> _screens;
 
@@ -30,14 +33,12 @@ class _MainScreenState extends State<MainScreen> {
       StoreScreen(),
       Placeholder(),
       Placeholder(),
-      HomeScreen(onLessonTap: _navigateToSelectQuiz),
+      HomeScreen(onLessonTap: _navigateToSelectQuizFromFav),
       const ProfileScreen(),
       SelectLessonScreen(onLessonTap: _navigateToSelectQuiz), // 5
       const Placeholder(), // temporary, will get replaced with SelectQuizScreen
     ];
   }
-
-
 
   void _toggleCollapseMenu() {
     setState(() {
@@ -71,15 +72,21 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  void _navigateToSelectQuiz(Lesson lesson) {
+  void _navigateToSelectQuizFromFav(FavoriteLessonDTO lessons) {
     setState(() {
       //_selectedLesson = lesson;
-      _screens[6] = SelectQuizScreen(lesson: lesson); // replace dynamic screen
+      _screens[6] = SelectQuizScreen(lesson: _lessonsByGrade); // replace dynamic screen
       _selectedIndex = 6;
     });
   }
 
-
+  void _navigateToSelectQuiz(LessonsByGradeDTO lessons) {
+    setState(() {
+      //_selectedLesson = lesson;
+      _screens[6] = SelectQuizScreen(lesson: _lessonsByGrade); // replace dynamic screen
+      _selectedIndex = 6;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

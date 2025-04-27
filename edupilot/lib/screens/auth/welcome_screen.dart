@@ -1,3 +1,4 @@
+import 'package:edupilot/screens/auth/login/login_screen.dart';
 import 'package:edupilot/screens/auth/register/register_screen_1.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
@@ -107,7 +108,7 @@ class WelcomeScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   FilledButton(
                     onPressed: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                     },
                     style: FilledButton.styleFrom(
                       backgroundColor: AppColors.secondaryColor,

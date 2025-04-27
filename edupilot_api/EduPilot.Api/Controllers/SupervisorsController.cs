@@ -1,5 +1,6 @@
 ﻿using EduPilot.Api.Data;
 using EduPilot.Api.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace EduPilot.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SupervisorsController : ControllerBase
     {
         private readonly ApiDbContext _context;

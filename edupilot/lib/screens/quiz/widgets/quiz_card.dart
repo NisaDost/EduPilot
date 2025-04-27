@@ -1,4 +1,4 @@
-import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/quiz/quiz.dart';
 import 'package:edupilot/providers/quiz_provider.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -13,7 +13,7 @@ class QuizCard extends ConsumerWidget {
     super.key,
   });
 
-  final Lesson lesson;
+  final LessonsByGradeDTO lesson;
   final String? subjectFilter;
 
   @override

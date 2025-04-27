@@ -3,6 +3,7 @@ import 'package:edupilot/screens/auth/register/register_screen_2.dart';
 import 'package:edupilot/screens/auth/register/widgets/fav_lesson_pop_up.dart';
 import 'package:edupilot/screens/auth/register/widgets/register_info_pop_up.dart';
 import 'package:edupilot/screens/auth/register/widgets/register_loadout.dart';
+import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   int? _selectedGrade;
+  final List<String> _favLessonIds = [];
   final TextEditingController _institutionController = TextEditingController();
   final TextEditingController _supervisorController = TextEditingController();
   final TextEditingController _supervisorCodeController = TextEditingController();
@@ -200,6 +202,51 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                         FilledButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
+
+                              final supervisorName = _supervisorController.text.trim().isNotEmpty ? _supervisorController.text : null;
+                              final supervisorCode = _supervisorCodeController.text.trim().isNotEmpty ? int.tryParse(_supervisorCodeController.text) : null;
+
+                              StudentsApiHandler().registerStudent(
+                                widget.firstName,
+                                widget.middleName,
+                                widget.lastName,
+                                _selectedGrade!,
+                                widget.email,
+                                widget.password,
+                                widget.phoneNumber,
+                                widget.avatarPath,
+                                _favLessonIds,
+                                supervisorName,
+                                supervisorCode,
+                                ).then((response) {
+                                  if (response.status == 201) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Kayıt işlemi başarılı!'),
+                                        showCloseIcon: true,
+                                        duration: Duration(milliseconds: 1750),
+                                        backgroundColor: AppColors.successColor,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+                                      ),
+                                    );
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                                      (route) => false,
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Kayıt işlemi başarısız!'),
+                                        showCloseIcon: true,
+                                        duration: Duration(milliseconds: 1750),
+                                        backgroundColor: AppColors.dangerColor,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+                                      ),
+                                    );
+                                  }
+                                });
+                            } else {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                             }
                           },

@@ -1,4 +1,4 @@
-import 'package:edupilot/models/quiz/lesson.dart';
+import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/screens/quiz/widgets/lesson_card.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SelectLessonScreen extends StatelessWidget {
-  final void Function(Lesson) onLessonTap;
+  final void Function(LessonsByGradeDTO) onLessonTap;
 
   const SelectLessonScreen({super.key, required this.onLessonTap});
 
