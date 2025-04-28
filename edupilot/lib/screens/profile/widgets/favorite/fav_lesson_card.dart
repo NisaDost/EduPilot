@@ -1,5 +1,8 @@
-import 'package:edupilot/providers/lesson_provider.dart';
+import 'package:edupilot/helpers/icon_conversion.dart';
+import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
+import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/screens/profile/widgets/heart.dart';
+import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -10,39 +13,50 @@ class FavLessonCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lessons = ref.watch(favLessonsProvider);
-
-    return Row(
-      children: List.generate(lessons.length, (index) {
-        return Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: Stack(
-            children: [
-              ConstrainedBox(
-                constraints: BoxConstraints(minWidth: 170),
-                child: Card(
-                  color: AppColors.secondaryAccent,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(lessons[index].icon, size: 96, color: AppColors.backgroundColor),
-                        MediumBodyText(lessons[index].name, AppColors.backgroundColor)
-                      ],
+    return FutureBuilder<List<FavoriteLessonDTO>>(
+      future: StudentsApiHandler().getFavoriteLessons(),
+      builder: (BuildContext context, AsyncSnapshot<List<FavoriteLessonDTO>> studentSnapshot) {
+        if (studentSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (studentSnapshot.hasError) {
+          return Center(child: Text('Hata oluştu: ${studentSnapshot.error}'));
+        } else if (!studentSnapshot.hasData) {
+          return const Center(child: Text('Favori ders bulunamadı.'));
+        }
+        final List<FavoriteLessonDTO> lessons = studentSnapshot.data!;
+        return Row(
+          children: List.generate(lessons.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Stack(
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: 170),
+                    child: Card(
+                      color: AppColors.secondaryAccent,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(IconConversion().getIconFromString(lessons[index].lessonIcon), size: 96, color: AppColors.backgroundColor),
+                            MediumBodyText(lessons[index].lessonName, AppColors.backgroundColor)
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Positioned(
+                    top: 5,
+                    right: 5,
+                    child: Heart(lesson: LessonsByGradeDTO.fromFavoriteLessonDTO(lessons[index]), defaultColor: AppColors.backgroundColor),
+                  ),
+                ],
               ),
-              Positioned(
-                top: 5,
-                right: 5,
-                child: Heart(lesson: lessons[index], defaultColor: AppColors.backgroundColor),
-              ),
-            ],
-          ),
+            );
+          }),
         );
-      }),
+      },
     );
   }
 }

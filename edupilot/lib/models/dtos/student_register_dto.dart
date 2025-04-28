@@ -1,5 +1,5 @@
 class StudentRegisterDTO {
-  final String name;
+  final String firstName;
   final String? middleName;
   final String lastName;
   final int grade;
@@ -12,7 +12,7 @@ class StudentRegisterDTO {
   final int? supervisorUniqueCode;
 
   const StudentRegisterDTO({
-    required this.name,
+    required this.firstName,
     this.middleName,
     required this.lastName,
     required this.grade,
@@ -27,31 +27,31 @@ class StudentRegisterDTO {
 
   factory StudentRegisterDTO.fromJson(Map<String, dynamic> json) =>
       StudentRegisterDTO(
-        name: json['Name'] as String,
-        middleName: json['MiddleName'] as String?,
-        lastName: json['LastName'] as String,
-        grade: json['Grade'] as int,
-        email: json['Email'] as String,
-        password: json['Password'] as String,
-        phoneNumber: json['PhoneNumber'] as String,
-        avatar: json['Avatar'] as String,
+        firstName: json['firstName'] as String,
+        middleName: json['middleName'] as String?,
+        lastName: json['lastName'] as String,
+        grade: json['grade'] as int,
+        email: json['email'] as String,
+        password: json['password'] as String,
+        phoneNumber: json['phoneNumber'] as String,
+        avatar: json['avatar'] as String,
         favoriteLessons:
-            (json['FavoriteLessons'] as List<dynamic>).map((e) => e as String).toList(),
-        supervisorName: json['SupervisorName'] as String?,
-        supervisorUniqueCode: json['SupervisorUniqueCode'] as int?,
+            (json['favoriteLessons'] as List<dynamic>).map((e) => e as String).toList(),
+        supervisorName: json['supervisorName'] as String?,
+        supervisorUniqueCode: json['supervisorUniqueCode'] as int?,
       );
 
   Map<String, dynamic> toJson() => {
-        'Name': name,
-        'MiddleName': middleName,
-        'LastName': lastName,
-        'Grade': grade,
-        'Email': email,
-        'Password': password,
-        'PhoneNumber': phoneNumber,
-        'Avatar': avatar,
-        'FavoriteLessons': favoriteLessons,
-        'SupervisorName': supervisorName,
-        'SupervisorUniqueCode': supervisorUniqueCode,
+        'name': firstName,
+        'middleName': middleName,
+        'lastName': lastName,
+        'grade': grade,
+        'email': email,
+        'password': password,
+        'phoneNumber': phoneNumber,
+        'avatar': avatar,
+        'favoriteLessons': favoriteLessons,
+        'supervisorName': supervisorName,
+        'supervisorUniqueCode': supervisorUniqueCode,
       };
 }

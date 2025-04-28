@@ -9,12 +9,12 @@ class StudentSupervisorDTO {
 
   factory StudentSupervisorDTO.fromJson(Map<String, dynamic> json) =>
       StudentSupervisorDTO(
-        supervisorId: json['SupervisorId'] as String,
-        supervisorName: json['SupervisorName'] as String,
+        supervisorId: json['supervisorId'] as String,
+        supervisorName: json['supervisorName'] as String,
       );
 
   Map<String, dynamic> toJson() => {
-        'SupervisorId': supervisorId,
-        'SupervisorName': supervisorName,
+        'supervisorId': supervisorId,
+        'supervisorName': supervisorName,
       };
 }

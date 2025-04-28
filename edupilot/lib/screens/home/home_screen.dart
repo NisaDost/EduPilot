@@ -1,33 +1,29 @@
 import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
+import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/home/widgets/lesson_card.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatelessWidget {
   final void Function(FavoriteLessonDTO) onLessonTap;
 
   const HomeScreen({required this.onLessonTap, super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return FutureBuilder<List<FavoriteLessonDTO>>(
-      future: StudentsApiHandler().getFavoriteLessons(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // While loading, show a spinner
+  Widget build(BuildContext context) {
+    return FutureBuilder<StudentDTO>(
+      future: StudentsApiHandler().getLoggedInStudent(),
+      builder: (BuildContext context, AsyncSnapshot studentSnapshot) {
+        if (studentSnapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          // If there's an error, show error text
-          return Center(child: Text('Hata oluştu: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          // If no data found
-          return const Center(child: Text('Favori ders bulunamadı.'));
+        } else if (studentSnapshot.hasError) {
+          return Center(child: Text('Hata oluştu: ${studentSnapshot.error}'));
+        } else if (!studentSnapshot.hasData) {
+          return const Center(child: Text('Öğrenci bulunamadı.'));
         }
-
-        final List<FavoriteLessonDTO> favLessons = snapshot.data!;
+        final StudentDTO student = studentSnapshot.data!;
 
         return SingleChildScrollView(
           child: Column(
@@ -44,7 +40,7 @@ class HomeScreen extends ConsumerWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        LargeText('Hoş Geldin, USER!', AppColors.successColor),
+                        LargeText('Hoş Geldin, ${student.firstName}!', AppColors.successColor),
                         const SizedBox(height: 8),
                         XSmallText('Bugün nasıl çalışmak istersin?', AppColors.textColor),
                         const SizedBox(height: 8),
@@ -55,7 +51,7 @@ class HomeScreen extends ConsumerWidget {
                               size: 40,
                             ),
                             const SizedBox(width: 12),
-                            LargeBodyText('1205', AppColors.textColor),
+                            LargeBodyText(student.points.toString(), AppColors.textColor),
                           ],
                         ),
                         const SizedBox(height: 4),
@@ -66,7 +62,7 @@ class HomeScreen extends ConsumerWidget {
                               size: 40,
                             ),
                             const SizedBox(width: 12),
-                            LargeBodyText('5. Gün', AppColors.textColor),
+                            LargeBodyText('${student.dailyStreakCount}. Gün', AppColors.textColor),
                           ],
                         ),
                       ],
@@ -89,11 +85,11 @@ class HomeScreen extends ConsumerWidget {
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: favLessons.length,
+                  itemCount: student.favoriteLessons?.length ?? 0,
                   itemBuilder: (context, index) {
                     return LessonCard(
-                      lesson: favLessons[index],
-                      onTap: () => onLessonTap(favLessons[index]),
+                      lesson: student.favoriteLessons![index],
+                      onTap: () => onLessonTap(student.favoriteLessons![index]),
                     );
                   },
                 ),

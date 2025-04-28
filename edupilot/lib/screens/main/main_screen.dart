@@ -1,6 +1,5 @@
 import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
-import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
 import 'package:edupilot/screens/quiz/select_lesson_screen.dart';
@@ -21,7 +20,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 3;
   bool _collapseMenuOpened = false;
-  late StudentDTO _student;
   late LessonsByGradeDTO _lessonsByGrade;
 
   late List<Widget> _screens;

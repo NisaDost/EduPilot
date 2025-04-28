@@ -1,3 +1,5 @@
+import 'package:edupilot/screens/auth/welcome_screen.dart';
+import 'package:edupilot/sessions/student_session.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
@@ -97,6 +99,26 @@ class CollapseMenu extends StatelessWidget {
             child: CollapseMenuButton(
               onPressed: () {}, 
               child: XSmallBodyText('Collapse Menu Button 3', AppColors.backgroundColor),
+            ),
+          ),
+
+          Expanded(child: SizedBox()),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: () {
+                StudentSession.clearStudentId();
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => const WelcomeScreen(),
+                ));
+              }, 
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.secondaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: XSmallBodyText('Çıkış Yap', AppColors.backgroundColor),
             ),
           ),
         ],

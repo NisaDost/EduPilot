@@ -37,7 +37,7 @@ class CollapseMenuButton extends StatelessWidget {
       style: TextButton.styleFrom(
         backgroundColor: AppColors.primaryColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
         ),
       ),
       child: child,

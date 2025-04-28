@@ -1,10 +1,11 @@
+import 'package:edupilot/helpers/icon_conversion.dart';
+import 'package:edupilot/models/dtos/student_achievement_dto.dart';
 import 'package:flutter/material.dart';
-import 'package:edupilot/models/achievement/achievement.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 
 class AchievementPopUp extends StatelessWidget {
-  final Achievement achievement;
+  final StudentAchievementDTO achievement;
 
   const AchievementPopUp({super.key, required this.achievement});
 
@@ -22,18 +23,18 @@ class AchievementPopUp extends StatelessWidget {
               backgroundColor: AppColors.primaryAccent,
               radius: 48,
               child: Hero(
-                tag: achievement.id,
+                tag: achievement.achievementId,
                 child: Icon(
-                  achievement.icon,
+                  IconConversion().getIconFromString(achievement.achievementIcon),
                   color: AppColors.backgroundColor,
                   size: 64,
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            LargeBodyText(achievement.name, AppColors.titleColor),
+            LargeBodyText(achievement.achievementName, AppColors.titleColor),
             const SizedBox(height: 8),
-            XSmallBodyText(achievement.description, AppColors.textColor),
+            XSmallBodyText(achievement.achievementDescription, AppColors.textColor),
             const SizedBox(height: 16),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),

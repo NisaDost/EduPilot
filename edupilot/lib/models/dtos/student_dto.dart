@@ -32,40 +32,40 @@ class StudentDTO {
   });
 
   factory StudentDTO.fromJson(Map<String, dynamic> json) => StudentDTO(
-        studentId: json['StudentId'] as String,
-        firstName: json['FirstName'] as String,
-        middleName: json['MiddleName'] as String?,
-        lastName: json['LastName'] as String,
-        grade: json['Grade'] as int,
-        avatar: json['Avatar'] as String,
-        points: json['Points'] as int,
-        dailyStreakCount: json['DailyStreakCount'] as int,
-        institutionName: json['InstitutionName'] as String?,
-        favoriteLessons: (json['FavoriteLessons'] as List<dynamic>?)
+        studentId: json['studentId'] as String,
+        firstName: json['firstName'] as String,
+        middleName: json['middleName'] as String?,
+        lastName: json['lastName'] as String,
+        grade: json['grade'] as int,
+        avatar: json['avatar'] as String,
+        points: json['points'] as int,
+        dailyStreakCount: json['dailyStreakCount'] as int,
+        institutionName: json['institutionName'] as String?,
+        favoriteLessons: (json['favoriteLessons'] as List<dynamic>?)
             ?.map((e) => FavoriteLessonDTO.fromJson(e))
             .toList(),
-        studentAchievements: (json['StudentAchievements'] as List<dynamic>?)
+        studentAchievements: (json['studentAchievements'] as List<dynamic>?)
             ?.map((e) => StudentAchievementDTO.fromJson(e))
             .toList(),
-        studentSupervisors: (json['StudentSupervisors'] as List<dynamic>?)
+        studentSupervisors: (json['studentSupervisors'] as List<dynamic>?)
             ?.map((e) => StudentSupervisorDTO.fromJson(e))
             .toList(),
       );
       
   Map<String, dynamic> toJson() => {
-        'StudentId': studentId,
-        'FirstName': firstName,
-        'MiddleName': middleName,
-        'LastName': lastName,
-        'Grade': grade,
-        'Avatar': avatar,
-        'Points': points,
-        'DailyStreakCount': dailyStreakCount,
-        'InstitutionName': institutionName,
-        'FavoriteLessons': favoriteLessons?.map((e) => e.toJson()).toList(),
-        'StudentAchievements':
+        'studentId': studentId,
+        'firstName': firstName,
+        'middleName': middleName,
+        'lastName': lastName,
+        'grade': grade,
+        'avatar': avatar,
+        'points': points,
+        'dailyStreakCount': dailyStreakCount,
+        'institutionName': institutionName,
+        'favoriteLessons': favoriteLessons?.map((e) => e.toJson()).toList(),
+        'dtudentAchievements':
             studentAchievements?.map((e) => e.toJson()).toList(),
-        'StudentSupervisors':
+        'studentSupervisors':
             studentSupervisors?.map((e) => e.toJson()).toList(),
       };
 }

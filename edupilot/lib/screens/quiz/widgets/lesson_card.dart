@@ -13,12 +13,10 @@ class LessonCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lessonsFuture = LessonsApiHandler().getLessonsByGrade();
-
     return Padding(
       padding: const EdgeInsets.all(16),
       child: FutureBuilder<List<LessonsByGradeDTO>>(
-        future: lessonsFuture,
+        future: LessonsApiHandler().getLessonsByGrade(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

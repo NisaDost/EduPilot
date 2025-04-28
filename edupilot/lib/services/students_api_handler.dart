@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
+import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/sessions/student_session.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,7 @@ class StudentsApiHandler {
 
   Future<StudentDTO> getStudent(String studentId) async {
     final student = await client.get(
-      Uri.parse('$baseUrl/$studentId'),
+      Uri.parse('$baseUrl/students/$studentId'),
       headers: <String, String>{
         'Authorization':
             'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
@@ -32,7 +33,26 @@ class StudentsApiHandler {
       },
     );
     if (student.statusCode == 200) {
-      return StudentDTO.fromJson(jsonDecode(student.body));
+      StudentDTO studentBody = StudentDTO.fromJson(jsonDecode(student.body));
+      return studentBody;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+  
+  Future<StudentDTO> getLoggedInStudent() async {
+    final studentId = await StudentSession.getStudentId();
+    final student = await client.get(
+      Uri.parse('$baseUrl/students/$studentId'),
+      headers: <String, String>{
+        'Authorization':
+            'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (student.statusCode == 200) {
+      StudentDTO studentBody = StudentDTO.fromJson(jsonDecode(student.body));
+      return studentBody;
     } else {
       throw Exception('Failed to load data');
     }
@@ -61,7 +81,6 @@ class StudentsApiHandler {
     }
   }
 
-  // same for registerStudent and getFavoriteLessons: use client.post and client.get
   Future<dynamic> registerStudent(
       String firstName,
       String? middleName,
@@ -122,5 +141,38 @@ class StudentsApiHandler {
     } else {
       throw Exception('Failed to load data');
     }
-  } 
+  }
+
+  Future<List<LessonsByGradeDTO>> getNotFavLessons() async {
+    final student = await StudentsApiHandler().getLoggedInStudent();
+    
+    final allLessonsResponse = await client.get(
+      Uri.parse('$baseUrl/lessons/${student.grade}'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    final allLessons = jsonDecode(allLessonsResponse.body) as List<dynamic>;
+    final favLessonsResponse = await client.get(
+      Uri.parse('$baseUrl/students/${student.studentId}/favoritelessons'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    final favLessons = jsonDecode(favLessonsResponse.body) as List<dynamic>;
+
+    final notFavLessons = allLessons.where((lesson) {
+      return !favLessons.any((favLesson) => favLesson['lessonId'] == lesson['lessonId']);
+    }).toList();
+
+    if (notFavLessons.isNotEmpty) {
+      return notFavLessons
+          .map((lesson) => LessonsByGradeDTO.fromJson(lesson))
+          .toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }

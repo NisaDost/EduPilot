@@ -14,16 +14,16 @@ class StudentAchievementDTO
 
     factory StudentAchievementDTO.fromJson(Map<String, dynamic> json) =>
         StudentAchievementDTO(
-            achievementId: json['AchievementId'] as String,
-            achievementName: json['AchievementName'] as String,
-            achievementIcon: json['AchievementIcon'] as String,
-            achievementDescription: json['AchievementDescription'] as String,
+            achievementId: json['achievementId'] as String,
+            achievementName: json['achievementName'] as String,
+            achievementIcon: json['achievementIcon'] as String,
+            achievementDescription: json['achievementDescription'] as String,
         );
 
     Map<String, dynamic> toJson() => {
-          'AchievementId': achievementId,
-          'AchievementName': achievementName,
-          'AchievementIcon': achievementIcon,
-          'AchievementDescription': achievementDescription,
+          'achievementId': achievementId,
+          'achievementName': achievementName,
+          'achievementIcon': achievementIcon,
+          'achievementDescription': achievementDescription,
         };
 }

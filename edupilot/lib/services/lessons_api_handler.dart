@@ -27,9 +27,9 @@ class LessonsApiHandler {
     if (studentId == null) {
       throw Exception('Student ID not found in session');
     }
-    final student = await StudentsApiHandler().getStudent(studentId);
+    final student = await StudentsApiHandler().getLoggedInStudent();
     
-    final lessons = await http.get(
+    final lessons = await client.get(
       Uri.parse('$baseUrl/lessons/${student.grade}'),
       headers: <String, String>{
         'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',

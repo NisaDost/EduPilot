@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
 
 class LessonsByGradeDTO {
 
@@ -14,14 +14,22 @@ class LessonsByGradeDTO {
 
   factory LessonsByGradeDTO.fromJson(Map<String, dynamic> json) =>
       LessonsByGradeDTO(
-        id: json['Id'] as String,
-        name: json['Name'] as String,
-        icon: json['Icon'] as String,
+        id: json['id'] as String,
+        name: json['name'] as String,
+        icon: json['icon'] as String,
       );
 
   Map<String, dynamic> toJson() => {
-        'Id': id,
-        'Name': name,
-        'Icon': icon,
+        'id': id,
+        'name': name,
+        'icon': icon,
       };
+
+  static fromFavoriteLessonDTO(FavoriteLessonDTO lesson) {
+    return LessonsByGradeDTO(
+      id: lesson.lessonId,
+      name: lesson.lessonName,
+      icon: lesson.lessonIcon,
+    );
+  }
 }
