@@ -21,15 +21,15 @@ class _FavoritePopUpState extends ConsumerState<FavoritePopUp> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<LessonsByGradeDTO>>(
       future: StudentsApiHandler().getNotFavLessons(),
-      builder: (BuildContext context, AsyncSnapshot studentSnapshot) {
-        if (studentSnapshot.connectionState == ConnectionState.waiting) {
+      builder: (BuildContext context, AsyncSnapshot notFavoritesSnapshot) {
+        if (notFavoritesSnapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } else if (studentSnapshot.hasError) {
-          return Center(child: Text('Hata oluştu: ${studentSnapshot.error}'));
-        } else if (!studentSnapshot.hasData) {
-          return const Center(child: Text('Dersler bulunamadı.'));
+        } else if (notFavoritesSnapshot.hasError) {
+          return Center(child: Text('Hata oluştu: ${notFavoritesSnapshot.error}'));
+        } else if (!notFavoritesSnapshot.hasData) {
+          return const Center(child: Text('Favori olmayan ders bulunamadı.'));
         }
-        final List<LessonsByGradeDTO> notFavorites = studentSnapshot.data!;
+        final List<LessonsByGradeDTO> notFavorites = notFavoritesSnapshot.data!;
 
         return AlertDialog(
           title: MediumBodyText('Favori Ders Ekle', AppColors.titleColor),
@@ -39,19 +39,19 @@ class _FavoritePopUpState extends ConsumerState<FavoritePopUp> {
             child: ListView.builder(
               itemCount: notFavorites.length,
               itemBuilder: (context, index) {
-                final lesson = notFavorites[index];
-                final isSelected = selectedIds.contains(lesson.id);
+                final notFavlesson = notFavorites[index];
+                final isSelected = selectedIds.contains(notFavlesson.id);
 
                 return ListTile(
-                  title: XSmallBodyText(lesson.name, AppColors.textColor),
+                  title: XSmallBodyText(notFavlesson.name, AppColors.textColor),
                   trailing: IconButton(
-                    icon: Heart(lesson: lesson, defaultColor: const Color.fromRGBO(200, 200, 220, 1)),
+                    icon: Heart(lesson: notFavlesson, defaultColor: const Color.fromRGBO(200, 200, 220, 1)),
                     onPressed: () {
                       setState(() {
                         if (isSelected) {
-                          selectedIds.remove(lesson.id);
+                          selectedIds.remove(notFavlesson.id);
                         } else {
-                          selectedIds.add(lesson.id);
+                          selectedIds.add(notFavlesson.id);
                         }
                       });
                     },

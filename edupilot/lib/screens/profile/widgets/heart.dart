@@ -67,7 +67,7 @@ class _HeartState extends State<Heart> with SingleTickerProviderStateMixin{
                 if (!favLessons.any((fl) => fl.lessonId == widget.lesson.id)) {
                   _controller.forward();
                 }
-                widget.lesson.toggleIsFav();
+                // widget.lesson.toggleIsFav();
               },
             );
           }
