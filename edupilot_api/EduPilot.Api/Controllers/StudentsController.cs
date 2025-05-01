@@ -162,7 +162,7 @@ namespace EduPilot.Api.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok();
         }
 
         [HttpPost("register")]
