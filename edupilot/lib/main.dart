@@ -5,8 +5,6 @@ import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// firebase
-
 void main() async {
 
   runApp(const ProviderScope(child: MyApp()));

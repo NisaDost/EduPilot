@@ -48,43 +48,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // kişisel bilgiler
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          LargeBodyText(
-                            '${student.firstName} ${student.middleName != null 
-                            ? '${student.middleName!.substring(0,1)}. '
-                            : ''}${student.lastName}', 
-                            AppColors.titleColor),
-                          Row(
-                            children: [
-                              Icon(Icons.school_rounded, color: AppColors.titleColor, size: 36),
-                              const SizedBox(width: 12),
-                              XSmallBodyText('${student.grade}. Sınıf', AppColors.textColor)
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(Icons.bolt, color: AppColors.primaryColor, size: 36),
-                              const SizedBox(width: 12),
-                              XSmallBodyText(student.points.toString(), AppColors.primaryAccent),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(Icons.local_fire_department, color: AppColors.secondaryColor, size: 36),
-                              const SizedBox(width: 12),
-                              XSmallBodyText('${student.dailyStreakCount}. Gün', AppColors.secondaryAccent),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          ProfileScreenButton(
-                            onPressed: () {}, 
-                            color: AppColors.secondaryColor,
-                            child: XSmallText('Kurum Bilgisi Ekle', AppColors.backgroundColor), 
-                          )
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LargeBodyText(
+                              '${student.firstName} ${student.middleName != null 
+                              ? '${student.middleName!.substring(0,1)}. '
+                              : ''}${student.lastName}', 
+                              AppColors.titleColor),
+                            Row(
+                              children: [
+                                Icon(Icons.school_rounded, color: AppColors.titleColor, size: 36),
+                                const SizedBox(width: 12),
+                                XSmallBodyText('${student.grade}. Sınıf', AppColors.textColor)
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.bolt, color: AppColors.primaryColor, size: 36),
+                                const SizedBox(width: 12),
+                                XSmallBodyText(student.points.toString(), AppColors.primaryAccent),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(Icons.local_fire_department, color: AppColors.secondaryColor, size: 36),
+                                const SizedBox(width: 12),
+                                XSmallBodyText('${student.dailyStreakCount}. Gün', AppColors.secondaryAccent),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                 ProfileScreenButton(
+                                  onPressed: () {}, 
+                                  color: AppColors.primaryColor,
+                                  child: XSmallText('Danışmanlarım', AppColors.backgroundColor), 
+                                ),
+                                const SizedBox(width: 8),
+                                 ProfileScreenButton(
+                                  onPressed: () {}, 
+                                  color: AppColors.primaryColor,
+                                  child: XSmallText('Okulum', AppColors.backgroundColor), 
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ProfileScreenButton(
+                                onPressed: () {}, 
+                                color: AppColors.secondaryColor,
+                                child: XSmallText('Danışman Ekle', AppColors.backgroundColor), 
+                              ),
+                            )
                           ],
+                        ),
                       ),
+                      const SizedBox(width: 12),
                   
                       // avatar
                       Column(
@@ -131,26 +153,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           MediumBodyText('Favori Dersler', AppColors.titleColor),
-                          Row(
-                            children: [
-                              ProfileScreenButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => const FavoritePopUp(),
-                                  );
-                                }, 
-                                color: AppColors.primaryColor,
-                                child: XSmallText('Favori Ders Ekle', AppColors.backgroundColor), 
-                              ),
-                              const SizedBox(width: 8),
-                              ProfileScreenButton(
-                                onPressed: () {}, 
-                                color: AppColors.successColor,
-                                child: XSmallText('Kaydet', AppColors.backgroundColor), 
-                              )
-                            ],
-                          )
+                          ProfileScreenButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => FavoritePopUp(
+                                  onSave: () {
+                                    setState(() {});
+                                  },
+                                ),
+                              );
+                            }, 
+                            color: AppColors.secondaryColor,
+                            child: XSmallText('Düzenle', AppColors.backgroundColor),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -168,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(16), bottom: Radius.circular(16)),
                     color: AppColors.backgroundColor,
                   ),
                   child: Column(

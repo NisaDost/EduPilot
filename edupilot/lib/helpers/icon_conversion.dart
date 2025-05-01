@@ -8,12 +8,24 @@ class IconConversion {
         return Icons.calculate;
       case 'Icons.science':
         return Icons.science;
-      case 'Icons.history':
-        return Icons.history;
+      case 'Icons.history_edu':
+        return Icons.history_edu;
       case 'Icons.terrain':
         return Icons.terrain;
       case 'Icons.language':
         return Icons.language;
+      case 'Icons.engineering':
+        return Icons.engineering;
+      case 'Icons.self_improvement':
+        return Icons.self_improvement;
+      case 'Icons.menu_book':
+        return Icons.menu_book;
+      case 'Icons.architecture':
+        return Icons.architecture;
+      case 'Icons.biotech':
+        return Icons.biotech;
+      case 'Icons.psychology_alt':
+        return Icons.psychology_alt;
       default:
         return Icons.menu_book_outlined;
     }

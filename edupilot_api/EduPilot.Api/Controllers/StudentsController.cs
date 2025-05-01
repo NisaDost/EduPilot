@@ -124,9 +124,9 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPut("{id}/favoritelessons")]
-        public async Task<ActionResult> UpdateStudentFavoriteLessons(Guid id, [FromBody] List<Guid> lessonIds)
+        public async Task<ActionResult> UpdateStudentFavoriteLessons(Guid id, [FromBody] UpdateFavoriteLessonsDTO updateFavoriteLessons)
         {
-            if (lessonIds == null || lessonIds.Count == 0)
+            if (updateFavoriteLessons == null || updateFavoriteLessons.LessonIds.Count == 0)
             {
                 ModelState.AddModelError("LessonIds", "En az bir favori ders seçilmelidir.");
                 return BadRequest(ModelState);
@@ -137,16 +137,26 @@ namespace EduPilot.Api.Controllers
             {
                 return NotFound();
             }
+            
+            var studentFavLessons = await _context.StudentFavLessons.Where(sfl => sfl.StudentId.Equals(id)).ToListAsync();
 
-            student.StudentFavLessons.Clear();
-            foreach (var lessonId in lessonIds)
+            foreach (var studentFavLesson in studentFavLessons)
+            {
+                _context.StudentFavLessons.Remove(studentFavLesson);
+            }
+            await _context.SaveChangesAsync();
+
+            foreach (var lessonId in updateFavoriteLessons.LessonIds)
             {
                 var lesson = await _context.Lessons.FindAsync(lessonId);
                 if (lesson != null)
                 {
-                    student.StudentFavLessons.Add(new StudentFavLesson()
+                    _context.StudentFavLessons.Add(new StudentFavLesson()
                     {
-                        Lesson = lesson
+                        StudentId = student.Id,
+                        LessonId = lesson.Id,
+                        Lesson = lesson,
+                        Student = student
                     });
                 }
             }

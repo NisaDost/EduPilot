@@ -13,11 +13,15 @@ class RegisterScreen2 extends StatefulWidget {
     required this.firstName,
     required this.middleName,
     required this.lastName,
+    required this.grade,
+    required this.favLessonIds,
   });
 
   final String firstName;
   final String middleName;
   final String lastName;
+  final int grade;
+  final List<String> favLessonIds;
 
   @override
   State<RegisterScreen2> createState() => _RegisterScreen2State();
@@ -282,7 +286,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                             final email = _emailController.text.trim();
                             final password = _password1Controller.text.trim();
                             final phoneNumber = _phoneController.text.trim();
-                            final avatarPath = _selectedAvatarPath;
+                            final avatar = _selectedAvatarPath.split('/').last;
 
                             if (_formKey.currentState!.validate()) {
                               Navigator.push(
@@ -292,10 +296,12 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                                       firstName: widget.firstName,
                                       middleName: widget.middleName,
                                       lastName: widget.lastName,
+                                      grade: widget.grade,
                                       email: email,
                                       password: password,
                                       phoneNumber: phoneNumber,
-                                      avatarPath: avatarPath,
+                                      avatarPath: avatar,
+                                      favLessonIds: widget.favLessonIds,
                                     )));
                             }
                           },

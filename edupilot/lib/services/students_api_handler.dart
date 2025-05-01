@@ -32,7 +32,7 @@ class StudentsApiHandler {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    if (student.statusCode == 200) {
+    if (student.statusCode >= 200 && student.statusCode < 300) {
       StudentDTO studentBody = StudentDTO.fromJson(jsonDecode(student.body));
       return studentBody;
     } else {
@@ -50,7 +50,7 @@ class StudentsApiHandler {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    if (student.statusCode == 200) {
+    if (student.statusCode >= 200 && student.statusCode < 300) {
       StudentDTO studentBody = StudentDTO.fromJson(jsonDecode(student.body));
       return studentBody;
     } else {
@@ -73,7 +73,7 @@ class StudentsApiHandler {
       }),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       StudentSession.saveStudentId(response.body);
       return true;
     } else {
@@ -81,7 +81,7 @@ class StudentsApiHandler {
     }
   }
 
-  Future<dynamic> registerStudent(
+  Future<bool> registerStudent(
       String firstName,
       String? middleName,
       String lastName,
@@ -109,16 +109,14 @@ class StudentsApiHandler {
         'password': password,
         'phoneNumber': phoneNumber,
         'avatar': avatar,
-        'favLessonIds': favLessonIds,
-        'supervisorName': supervisorName,
+        'favoriteLessons': favLessonIds,
         'supervisorUniqueCode': supervisorUniqueCode,
+        'supervisorName': supervisorName,
       }),
     );
 
-    if (response.statusCode == 201) {
-      return jsonDecode(response.body);
-    } else if (response.statusCode == 400) {
-      return jsonDecode(response.body);
+    if (response.statusCode >= 200 && response.statusCode < 300) {  
+      return true;
     } else {
       throw Exception('Failed to register student');
     }
@@ -133,7 +131,7 @@ class StudentsApiHandler {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    if (lessons.statusCode == 200) {
+    if (lessons.statusCode >= 200 && lessons.statusCode < 300) {
       List<dynamic> jsonResponse = jsonDecode(lessons.body);
       return jsonResponse
           .map((lesson) => FavoriteLessonDTO.fromJson(lesson))
@@ -163,9 +161,8 @@ class StudentsApiHandler {
     );
     final favLessons = jsonDecode(favLessonsResponse.body) as List<dynamic>;
 
-    final notFavLessons = allLessons.where((lesson) {
-      return !favLessons.any((favLesson) => favLesson['lessonId'] == lesson['lessonId']);
-    }).toList();
+    final notFavLessons = allLessons.where((lessonId)  => 
+        !favLessons.any((favLesson) => favLesson['lessonId'] == lessonId['id'])).toList();
 
     if (notFavLessons.isNotEmpty) {
       return notFavLessons
@@ -175,4 +172,23 @@ class StudentsApiHandler {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<bool> updateFavoriteLessons(List<String> lessonIds) async {
+    final studentId = await StudentSession.getStudentId();
+    final response = await client.put(
+      Uri.parse('$baseUrl/students/$studentId/favoritelessons'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, List<String>>{
+        'lessonIds': lessonIds,
+      }),
+    );
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return true;
+    } else {
+      throw Exception('Failed to update favorite lessons');
+    }
+  } 
 }

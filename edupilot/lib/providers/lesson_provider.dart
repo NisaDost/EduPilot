@@ -1,10 +1,13 @@
 import 'package:edupilot/models/quiz/lesson.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 part 'lesson_provider.g.dart';
 
 // dart run build_runner watch
+
+final favLessonsRefreshProvider = StateProvider<bool>((ref) => false);
 
 List<Lesson> allLessons = [
   Lesson(id: '1', name: 'Matematik', icon: Icons.calculate, grade: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),

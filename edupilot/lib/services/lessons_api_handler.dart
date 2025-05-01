@@ -36,7 +36,25 @@ class LessonsApiHandler {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    if (lessons.statusCode == 200) {
+    if (lessons.statusCode >= 200 && lessons.statusCode < 300) {
+      List<dynamic> jsonResponse = jsonDecode(lessons.body);
+      return jsonResponse
+          .map((lesson) => LessonsByGradeDTO.fromJson(lesson))
+          .toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<List<LessonsByGradeDTO>> getLessonsByGradeForRegister(int grade) async {
+    final lessons = await client.get(
+      Uri.parse('$baseUrl/lessons/$grade'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (lessons.statusCode >= 200 && lessons.statusCode < 300) {
       List<dynamic> jsonResponse = jsonDecode(lessons.body);
       return jsonResponse
           .map((lesson) => LessonsByGradeDTO.fromJson(lesson))

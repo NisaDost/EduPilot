@@ -1,3 +1,5 @@
+import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
+
 class FavoriteLessonDTO
 {
     final String lessonId;
@@ -23,4 +25,12 @@ class FavoriteLessonDTO
           'lessonName': lessonName,
           'lessonIcon': lessonIcon,
         };
+
+    static FavoriteLessonDTO fromLessonsByGradeDTO(LessonsByGradeDTO lessons) {
+      return FavoriteLessonDTO(
+        lessonId: lessons.id,
+        lessonName: lessons.name,
+        lessonIcon: lessons.icon,
+      );
+    }
 }

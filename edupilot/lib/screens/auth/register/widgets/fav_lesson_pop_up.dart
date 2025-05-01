@@ -1,91 +1,120 @@
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
-import 'package:edupilot/providers/lesson_provider.dart';
 import 'package:edupilot/screens/profile/widgets/heart.dart';
-import 'package:edupilot/services/students_api_handler.dart';
+import 'package:edupilot/services/lessons_api_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:edupilot/theme.dart';
 import 'package:edupilot/shared/styled_text.dart';
 
-class FavLessonPopUp extends ConsumerStatefulWidget {
-  final int selectedGrade;
+class FavLessonPopUp extends StatefulWidget {
+  const FavLessonPopUp({
+    super.key,
+    required this.onSave,
+    required this.selectedGrade,
+    required this.selectedLessons,
+  });
 
-  const FavLessonPopUp({super.key, required this.selectedGrade});
+  final VoidCallback onSave;
+  final int selectedGrade;
+  final List<String> selectedLessons;
 
   @override
-  ConsumerState<FavLessonPopUp> createState() => _FavoritePopUpState();
+  State<FavLessonPopUp> createState() => _FavoritePopUpState();
 }
 
-class _FavoritePopUpState extends ConsumerState<FavLessonPopUp> {
-  final Set<String> selectedIds = {};
+class _FavoritePopUpState extends State<FavLessonPopUp> {
+  late List<LessonsByGradeDTO> allLessons;
+  late Set<String> favoriteLessonIds = {};
+
+  bool isLoading = true;
+  bool hasError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    favoriteLessonIds = widget.selectedLessons.toSet();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      allLessons = await LessonsApiHandler().getLessonsByGradeForRegister(widget.selectedGrade);
+    } catch (e) {
+      hasError = true;
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<LessonsByGradeDTO>>(
-      future: StudentsApiHandler().getNotFavLessons(),
-      builder: (BuildContext context, AsyncSnapshot notFavLessonSnapshot) {
-        if (notFavLessonSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (notFavLessonSnapshot.hasError) {
-          return Center(child: Text('Hata oluştu: ${notFavLessonSnapshot.error}'));
-        } else if (!notFavLessonSnapshot.hasData) {
-          return const Center(child: Text('Öğrenci bulunamadı.'));
-        }
-        final List<LessonsByGradeDTO> notFavLessons = notFavLessonSnapshot.data!;
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (hasError) {
+      return const Center(child: Text('Bir hata oluştu'));
+    }
 
-        return AlertDialog(
-          title: MediumBodyText('Favori Ders Ekle', AppColors.titleColor),
-          content: SizedBox(
-            width: double.maxFinite,
-            height: 350,
-            child: notFavLessons.isEmpty
-                ? Center(child: XSmallBodyText('Bu sınıfa uygun ders bulunamadı.', AppColors.textColor))
-                : ListView.builder(
-                    itemCount: notFavLessons.length,
-                    itemBuilder: (context, index) {
-                      final lesson = notFavLessons[index];
-                      final isSelected = selectedIds.contains(lesson.id);
+    return AlertDialog(
+      title: MediumBodyText('Favori Ders Ekle', AppColors.titleColor),
+      content: SizedBox(
+        width: double.maxFinite,
+        height: 350,
+        child: ListView.builder(
+          itemCount: allLessons.length,
+          itemBuilder: (context, index) {
+            final lesson = allLessons[index];
+            final isFavorite = favoriteLessonIds.contains(lesson.id);
 
-                      return ListTile(
-                        title: XSmallBodyText(lesson.name, AppColors.textColor),
-                        trailing: IconButton(
-                          icon: Heart(lesson: lesson, defaultColor: const Color.fromRGBO(200, 200, 220, 1)),
-                          onPressed: () {
-                            setState(() {
-                              if (isSelected) {
-                                selectedIds.remove(lesson.id);
-                              } else {
-                                selectedIds.add(lesson.id);
-                              }
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: XSmallText('Kapat', AppColors.textColor),
-            ),
-            TextButton(
-              onPressed: () {
-                final allLessons = ref.read(lessonsProvider);
-                for (final lesson in allLessons) {
-                  if (selectedIds.contains(lesson.id)) {
-                    lesson.toggleIsFav();
-                  }
-                }
-                ref.invalidate(notFavLessonsProvider);
-                ref.invalidate(favLessonsProvider);
-                Navigator.of(context).pop();
-              },
-              child: XSmallText('Kaydet', AppColors.primaryColor),
-            ),
-          ],
-        );
-      },
+            return ListTile(
+              title: XSmallBodyText(lesson.name, AppColors.textColor),
+              trailing: SizedBox(
+                width: 48,
+                height: 48,
+                child: Heart(
+                  isFavorite: isFavorite,
+                  defaultColor: const Color.fromRGBO(200, 200, 220, 1),
+                  onTap: () {
+                    setState(() {
+                      if (isFavorite) {
+                        favoriteLessonIds.remove(lesson.id);
+                      } else {
+                        favoriteLessonIds.add(lesson.id);
+                      }
+                    });
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: XSmallText('Kapat', AppColors.textColor),
+        ),
+        TextButton(
+          onPressed: () async {
+            final success = favoriteLessonIds.isNotEmpty;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: XSmallBodyText(
+                  success ? 'Favori dersler başarıyla kaydedildi.' : 'Favori dersler kaydedilemedi.',
+                  AppColors.textColor,
+                ),
+                backgroundColor: success ? AppColors.successColor : AppColors.dangerColor,
+              ),
+            );
+            if (success) {
+              widget.onSave();
+            }
+            Navigator.pop(context, favoriteLessonIds);
+          },
+          child: XSmallText('Kaydet', AppColors.primaryColor),
+        ),
+      ],
     );
   }
 }

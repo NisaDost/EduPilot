@@ -33,8 +33,8 @@ class _AchievementCardState extends ConsumerState<AchievementCard> {
         childAspectRatio: 0.9,
       ), 
       itemBuilder: (context, index) {
-        if (widget.student.studentAchievements!.isEmpty) {
-          return const Center(child: Text('Henüz bir başarı kazanmadınız.'));
+        if (widget.student.studentAchievements! == 0) {
+          return Center(child: MediumBodyText('Henüz bir başarı kazanmadınız.', AppColors.textColor));
         }
         return GestureDetector(
           onTap: () {

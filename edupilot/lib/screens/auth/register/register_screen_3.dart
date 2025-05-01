@@ -1,6 +1,5 @@
 import 'package:edupilot/screens/auth/login/login_screen.dart';
 import 'package:edupilot/screens/auth/register/register_screen_2.dart';
-import 'package:edupilot/screens/auth/register/widgets/fav_lesson_pop_up.dart';
 import 'package:edupilot/screens/auth/register/widgets/register_info_pop_up.dart';
 import 'package:edupilot/screens/auth/register/widgets/register_loadout.dart';
 import 'package:edupilot/services/students_api_handler.dart';
@@ -15,6 +14,8 @@ class RegisterScreen3 extends StatefulWidget {
     required this.middleName,
     required this.lastName,
     required this.email,
+    required this.grade,
+    required this.favLessonIds,
     required this.password,
     required this.phoneNumber,
     required this.avatarPath,
@@ -24,6 +25,8 @@ class RegisterScreen3 extends StatefulWidget {
   final String middleName;
   final String lastName;
   final String email;
+  final int grade;
+  final List<String> favLessonIds;
   final String password;
   final String phoneNumber;
   final String avatarPath;
@@ -34,10 +37,6 @@ class RegisterScreen3 extends StatefulWidget {
 
 class _RegisterScreen3State extends State<RegisterScreen3> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  int? _selectedGrade;
-  final List<String> _favLessonIds = [];
-  final TextEditingController _institutionController = TextEditingController();
   final TextEditingController _supervisorController = TextEditingController();
   final TextEditingController _supervisorCodeController = TextEditingController();
 
@@ -55,7 +54,7 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
               child: Column(
                 children: [
                   RegisterLoadout(
-                    title: '3: Okul ve Danışman Bilgiler',
+                    title: '3: Okul ve Danışman Bilgileri',
                     infoButtonOnPressed: () {
                       showDialog(
                         context: context,
@@ -81,30 +80,6 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                     pageNumber: 3,
                   ),
                   const SizedBox(height: 16),
-
-                  _buildContainer([
-                    _buildLabelWithAsterisk('Sınıfın:'),
-                    DropdownButtonFormField<int>(
-                      value: _selectedGrade,
-                      decoration: _inputDecoration(),
-                      hint: const Text("Sınıf seçiniz"),
-                      items: List.generate(12, (index) => index + 1)
-                          .map((grade) => DropdownMenuItem(
-                                value: grade,
-                                child: Text('$grade. Sınıf'),
-                              ))
-                          .toList(),
-                      validator: (value) => value == null ? 'Lütfen bir sınıf seçiniz.' : null,
-                      onChanged: (value) => setState(() => _selectedGrade = value),
-                    ),
-                    const SizedBox(height: 24),
-                    _buildLabel('Okulunun İsmi:'),
-                    TextFormField(
-                      controller: _institutionController,
-                      decoration: _inputDecoration(),
-                    ),
-                  ]),
-
                   _buildContainer([
                     _buildLabel('Danışman İsmi:'),
                     TextFormField(
@@ -136,46 +111,6 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                     ),
                   ]),
 
-                  _buildContainer([
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        LargeText('Favori Derslerini Seç', AppColors.textColor),
-                        const SizedBox(height: 8),
-                        XSmallBodyText('Seçtiğin dersler hızlı erişimde görüntülenecek', AppColors.titleColor),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: FilledButton(
-                        onPressed: () async {
-                          if (_selectedGrade == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('"Dersleri Gör" butonunu kullanmadan önce sınıf seçmeniz gerekiyor.'),
-                                showCloseIcon: true,
-                                duration: Duration(milliseconds: 1750),
-                                backgroundColor: AppColors.dangerColor,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
-                              ),
-                            );
-                            return;
-                          }
-                          await showDialog<String>(
-                            context: context,
-                            builder: (context) => FavLessonPopUp(selectedGrade: _selectedGrade!),
-                          );
-                        },
-                        style: FilledButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 8),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        child: LargeText('Dersleri Gör', AppColors.backgroundColor),
-                      ),
-                    ),
-                  ]),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 36),
                     child: Row(
@@ -190,6 +125,8 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                                     firstName: '',
                                     middleName: '',
                                     lastName: '',
+                                    grade: 0,
+                                    favLessonIds: [],
                                   )));
                           },
                           style: FilledButton.styleFrom(
@@ -200,54 +137,50 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                           child: XLargeText('Geri', AppColors.backgroundColor),
                         ),
                         FilledButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
 
                               final supervisorName = _supervisorController.text.trim().isNotEmpty ? _supervisorController.text : null;
                               final supervisorCode = _supervisorCodeController.text.trim().isNotEmpty ? int.tryParse(_supervisorCodeController.text) : null;
 
-                              StudentsApiHandler().registerStudent(
-                                widget.firstName,
-                                widget.middleName,
-                                widget.lastName,
-                                _selectedGrade!,
-                                widget.email,
-                                widget.password,
-                                widget.phoneNumber,
-                                widget.avatarPath,
-                                _favLessonIds,
-                                supervisorName,
-                                supervisorCode,
-                                ).then((response) {
-                                  if (response.status == 201) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('Kayıt işlemi başarılı!'),
-                                        showCloseIcon: true,
-                                        duration: Duration(milliseconds: 1750),
-                                        backgroundColor: AppColors.successColor,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
-                                      ),
-                                    );
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                                      (route) => false,
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('Kayıt işlemi başarısız!'),
-                                        showCloseIcon: true,
-                                        duration: Duration(milliseconds: 1750),
-                                        backgroundColor: AppColors.dangerColor,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
-                                      ),
-                                    );
-                                  }
-                                });
+                              try {
+                                if (await StudentsApiHandler().registerStudent(
+                                  widget.firstName,
+                                  widget.middleName,
+                                  widget.lastName,
+                                  widget.grade,
+                                  widget.email,
+                                  widget.password,
+                                  widget.phoneNumber,
+                                  widget.avatarPath,
+                                  widget.favLessonIds,
+                                  supervisorName,
+                                  supervisorCode,
+                                )) {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text('Kayıt başarılı!'), 
+                                  backgroundColor: AppColors.successColor,
+                                ));
+                                await Future.delayed(const Duration(milliseconds: 500));
+                                Navigator.pushReplacement(context, MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
+                                } else {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar
+                                (content: Text('Kayıt başarısız!'),
+                                  backgroundColor: AppColors.dangerColor,
+                                ));
+                                }
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text('Bir hata oluştu: $e'),
+                                  backgroundColor: AppColors.dangerColor,
+                                ));
+                              }
                             } else {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar
+                                (content: Text('Kayıt başarısız!'),
+                                  backgroundColor: AppColors.dangerColor,
+                                ));
                             }
                           },
                           style: FilledButton.styleFrom(
@@ -270,12 +203,6 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
   }
 
   Widget _buildLabel(String text) => Row(children: [LargeText(text, AppColors.textColor)]);
-
-  Widget _buildLabelWithAsterisk(String text) => Row(children: [
-        LargeText(text, AppColors.textColor),
-        const SizedBox(width: 4),
-        LargeText('*', AppColors.dangerColor),
-      ]);
 
   Widget _buildContainer(List<Widget> children) => Container(
         margin: const EdgeInsets.all(12),
