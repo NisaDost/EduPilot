@@ -1,7 +1,9 @@
 import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/profile/widgets/achievement/achievement_card.dart';
+import 'package:edupilot/screens/profile/widgets/avatar/avatar_pop_up.dart';
 import 'package:edupilot/screens/profile/widgets/favorite/fav_lesson_card.dart';
 import 'package:edupilot/screens/profile/widgets/favorite/favorite_pop_up.dart';
+import 'package:edupilot/screens/profile/widgets/institution_list_pop_up.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -9,7 +11,9 @@ import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, required this.onRefreshStudent});
+
+  final VoidCallback onRefreshStudent;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -53,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             LargeBodyText(
-                              '${student.firstName} ${student.middleName != null 
+                              '${student.firstName} ${student.middleName != ''
                               ? '${student.middleName!.substring(0,1)}. '
                               : ''}${student.lastName}', 
                               AppColors.titleColor),
@@ -88,7 +92,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(width: 8),
                                  ProfileScreenButton(
-                                  onPressed: () {}, 
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => InstitutionListPopUp(institutionName: student.institutionName),
+                                    );
+                                  }, 
                                   color: AppColors.primaryColor,
                                   child: XSmallText('Okulum', AppColors.backgroundColor), 
                                 ),
@@ -128,7 +137,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 
                                 const SizedBox(height: 8),
                                 TextButton(
-                                  onPressed: () {}, 
+                                  onPressed: () async {
+                                    final selectedAvatar = await showDialog(
+                                      context: context,
+                                      builder: (context) => AvatarPopUp(
+                                        onSave: () async {
+                                          widget.onRefreshStudent();
+                                        },
+                                      ),
+                                    );
+                                    if (selectedAvatar != null) {
+                                      final success = await StudentsApiHandler().updateAvatar(selectedAvatar);
+                                      if (success) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Avatar başarıyla güncellendi'), backgroundColor: AppColors.successColor,),
+                                        );
+                                        setState(() {}); // to refresh the avatar shown
+                                      }
+                                    }
+                                  }, 
                                   child: XSmallText('Avatarını Değiştir', AppColors.backgroundColor)
                                 ),
                               ],
@@ -158,8 +185,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               showDialog(
                                 context: context,
                                 builder: (context) => FavoritePopUp(
-                                  onSave: () {
+                                  onSave: () async {
                                     setState(() {});
+                                    widget.onRefreshStudent();
                                   },
                                 ),
                               );

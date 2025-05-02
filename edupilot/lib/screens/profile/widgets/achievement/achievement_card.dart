@@ -4,9 +4,8 @@ import 'package:edupilot/screens/profile/widgets/achievement/achievement_pop_up.
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AchievementCard extends ConsumerStatefulWidget {
+class AchievementCard extends StatefulWidget {
   const AchievementCard({
     super.key,
     required this.student,
@@ -15,13 +14,25 @@ class AchievementCard extends ConsumerStatefulWidget {
   final StudentDTO student;
 
   @override
-  ConsumerState<AchievementCard> createState() => _AchievementCardState();
+  State<AchievementCard> createState() => _AchievementCardState();
 }
 
-class _AchievementCardState extends ConsumerState<AchievementCard> {
+class _AchievementCardState extends State<AchievementCard> {
   @override
   Widget build(BuildContext context) {
-
+    final achievements = widget.student.studentAchievements;
+    if (achievements!.isEmpty) {
+      return SizedBox(
+        width: double.infinity,
+        child: Column(
+          children: [
+            Center(child: MediumText('Henüz bir başarım kazanmadın.', AppColors.textColor)),
+            const SizedBox(height: 8),
+            Center(child: MediumBodyText('Çalışmaya devam et!', AppColors.textColor)),
+          ],
+        )
+      );
+    }
     return GridView.builder(
       itemCount: widget.student.studentAchievements!.length,
       shrinkWrap: true,
@@ -33,9 +44,6 @@ class _AchievementCardState extends ConsumerState<AchievementCard> {
         childAspectRatio: 0.9,
       ), 
       itemBuilder: (context, index) {
-        if (widget.student.studentAchievements! == 0) {
-          return Center(child: MediumBodyText('Henüz bir başarı kazanmadınız.', AppColors.textColor));
-        }
         return GestureDetector(
           onTap: () {
             showDialog(
@@ -47,7 +55,7 @@ class _AchievementCardState extends ConsumerState<AchievementCard> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                backgroundColor: AppColors.primaryAccent,
+                backgroundColor: AppColors.secondaryAccent,
                 foregroundColor: AppColors.backgroundColor,
                 radius: 36,
                 child: Hero(

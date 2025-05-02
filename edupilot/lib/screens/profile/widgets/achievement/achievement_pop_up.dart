@@ -20,7 +20,7 @@ class AchievementPopUp extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.primaryAccent,
+              backgroundColor: AppColors.secondaryAccent,
               radius: 48,
               child: Hero(
                 tag: achievement.achievementId,

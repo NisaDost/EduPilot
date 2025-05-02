@@ -190,5 +190,24 @@ class StudentsApiHandler {
     } else {
       throw Exception('Failed to update favorite lessons');
     }
-  } 
+  }
+
+  Future<bool> updateAvatar(String avatar) async {
+    final studentId = await StudentSession.getStudentId();
+    final response = await client.put(
+      Uri.parse('$baseUrl/students/$studentId/avatar'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'avatar': avatar,
+      }),
+    );
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return true;
+    } else {
+      throw Exception('Failed to update avatar');
+    }
+  }
 }

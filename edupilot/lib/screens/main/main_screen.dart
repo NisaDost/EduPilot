@@ -1,10 +1,12 @@
 import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
+import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
 import 'package:edupilot/screens/quiz/select_lesson_screen.dart';
 import 'package:edupilot/screens/quiz/select_quiz_screen.dart';
 import 'package:edupilot/screens/store/store_screen.dart';
+import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/custom_app_bar.dart';
 import 'package:edupilot/shared/custom_bottom_bar.dart';
 import 'package:edupilot/shared/collapse_menu.dart';
@@ -21,34 +23,31 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 3;
   bool _collapseMenuOpened = false;
   late LessonsByGradeDTO _lessonsByGrade;
-
-  late List<Widget> _screens;
+  final ValueNotifier<StudentDTO?> _studentNotifier = ValueNotifier(null);
 
   @override
   void initState() {
     super.initState();
-    _screens = [
-      StoreScreen(),
-      Placeholder(),
-      Placeholder(),
-      HomeScreen(onLessonTap: _navigateToSelectQuizFromFav),
-      const ProfileScreen(),
-      SelectLessonScreen(onLessonTap: _navigateToSelectQuiz), // 5
-      const Placeholder(), // temporary, will get replaced with SelectQuizScreen
-    ];
+    _loadStudent();
+  }
+
+  Future<void> _loadStudent() async {
+    final student = await StudentsApiHandler().getLoggedInStudent();
+    _studentNotifier.value = student;
+  }
+
+  void _refreshStudent() async {
+    final updatedStudent = await StudentsApiHandler().getLoggedInStudent();
+    _studentNotifier.value = updatedStudent;
   }
 
   void _toggleCollapseMenu() {
-    setState(() {
-      _collapseMenuOpened = !_collapseMenuOpened;
-    });
+    setState(() => _collapseMenuOpened = !_collapseMenuOpened);
   }
 
   void _closeCollapseMenu() {
     if (_collapseMenuOpened) {
-      setState(() {
-        _collapseMenuOpened = false;
-      });
+      setState(() => _collapseMenuOpened = false);
     }
   }
 
@@ -70,21 +69,30 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  void _navigateToSelectQuizFromFav(FavoriteLessonDTO lessons) {
+  void _navigateToSelectQuizFromFav(FavoriteLessonDTO lesson) {
     setState(() {
-      //_selectedLesson = lesson;
-      _screens[6] = SelectQuizScreen(lesson: _lessonsByGrade); // replace dynamic screen
+      _screens[6] = SelectQuizScreen(lesson: _lessonsByGrade); // placeholder usage
       _selectedIndex = 6;
     });
   }
 
-  void _navigateToSelectQuiz(LessonsByGradeDTO lessons) {
+  void _navigateToSelectQuiz(LessonsByGradeDTO lesson) {
     setState(() {
-      //_selectedLesson = lesson;
-      _screens[6] = SelectQuizScreen(lesson: _lessonsByGrade); // replace dynamic screen
+      _screens[6] = SelectQuizScreen(lesson: _lessonsByGrade);
       _selectedIndex = 6;
     });
   }
+
+  late final List<Widget> _screens = [
+    StoreScreen(),
+    const Placeholder(),
+    const Placeholder(),
+    // These will be rebuilt inside build() using studentNotifier
+    const SizedBox(), // Home
+    const SizedBox(), // Profile
+    SelectLessonScreen(onLessonTap: _navigateToSelectQuiz),
+    const Placeholder(), // SelectQuizScreen (dynamic)
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -100,13 +108,32 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           // Main screen content
           Positioned.fill(
-            child: IndexedStack(
-              index: _selectedIndex,
-              children: _screens,
+            child: ValueListenableBuilder<StudentDTO?>(
+              valueListenable: _studentNotifier,
+              builder: (context, student, _) {
+                if (student == null) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                _screens[3] = HomeScreen(
+                  student: student,
+                  onLessonTap: _navigateToSelectQuizFromFav,
+                  onRefreshStudent: _refreshStudent,
+                );
+
+                _screens[4] = ProfileScreen(
+                  onRefreshStudent: _refreshStudent,
+                );
+
+                return IndexedStack(
+                  index: _selectedIndex,
+                  children: _screens,
+                );
+              },
             ),
           ),
 
-          // CollapseMenu
+          // Collapse menu overlay
           if (_collapseMenuOpened)
             Positioned(
               left: screenWidth * 0.75,
@@ -115,12 +142,13 @@ class _MainScreenState extends State<MainScreen> {
               right: 0,
               child: GestureDetector(
                 onTap: _closeCollapseMenu,
-                child: Container(color:Colors.black54),
+                child: Container(color: Colors.black54),
               ),
             ),
 
+          // Slide-in collapse menu
           AnimatedPositioned(
-            duration: Duration(milliseconds: 250),
+            duration: const Duration(milliseconds: 250),
             left: _collapseMenuOpened ? 0 : -screenWidth * 0.75,
             top: 0,
             bottom: 0,

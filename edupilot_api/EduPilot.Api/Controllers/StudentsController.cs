@@ -165,6 +165,20 @@ namespace EduPilot.Api.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}/avatar")]
+        public async Task<ActionResult> UpdateStudentAvatar(Guid id, [FromBody] UpdateAvatarDTO updateAvatar)
+        {
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            student.Avatar = updateAvatar.Avatar;
+            _context.Entry(student).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
         [HttpPost("register")]
         public async Task<ActionResult> PostStudent(StudentRegisterDTO student)
         {

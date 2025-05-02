@@ -26,6 +26,12 @@ class IconConversion {
         return Icons.biotech;
       case 'Icons.psychology_alt':
         return Icons.psychology_alt;
+      case 'Icons.military_tech=outlined':
+        return Icons.military_tech_outlined;
+      case 'Icons.stars_outlined':
+        return Icons.stars_outlined;
+      case 'Icons.emoji_events':
+        return Icons.emoji_events;
       default:
         return Icons.menu_book_outlined;
     }

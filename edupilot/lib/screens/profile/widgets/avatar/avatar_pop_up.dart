@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ChangeAvatarPopUp extends StatefulWidget {
-  const ChangeAvatarPopUp({super.key});
+class AvatarPopUp extends StatefulWidget {
+  const AvatarPopUp({super.key, required this.onSave});
+
+  final VoidCallback onSave;
 
   @override
-  State<ChangeAvatarPopUp> createState() => _ChangeAvatarPopUpState();
+  State<AvatarPopUp> createState() => _AvatarPopUpState();
 }
 
-class _ChangeAvatarPopUpState extends State<ChangeAvatarPopUp> {
+class _AvatarPopUpState extends State<AvatarPopUp> {
   List<String> avatarPaths = [];
 
   @override
@@ -45,7 +47,8 @@ class _ChangeAvatarPopUpState extends State<ChangeAvatarPopUp> {
                 children: avatarPaths.map((path) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pop(context, path);
+                      final avatarFileName = path.split('/').last;
+                      Navigator.pop(context, avatarFileName);
                     },
                     child: Image.asset(
                       path,

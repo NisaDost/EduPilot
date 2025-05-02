@@ -1,4 +1,6 @@
+import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/auth/welcome_screen.dart';
+import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/sessions/student_session.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -17,112 +19,125 @@ class CollapseMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.primaryAccent,
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          // name-surname
-          MediumBodyText('Name Surname', AppColors.backgroundColor),
-          const SizedBox(height: 12),
-          // icon - grade - points - streak
-          Row(
+    return FutureBuilder<StudentDTO>(
+      future: StudentsApiHandler().getLoggedInStudent(),
+      builder: (BuildContext context, AsyncSnapshot studentSnapshot) {
+        if (studentSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (studentSnapshot.hasError) {
+          return Center(child: Text('Hata oluştu: ${studentSnapshot.error}'));
+        } else if (!studentSnapshot.hasData) {
+          return const Center(child: Text('Öğrenci bulunamadı.'));
+        }
+        final StudentDTO student = studentSnapshot.data!;
+        return Container(
+          color: AppColors.primaryAccent,
+          padding: const EdgeInsets.all(16),
+          child: Column(
             children: [
-              // icon
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              // name-surname
+              LargeText(
+                '${student.firstName} ${student.middleName!.isNotEmpty 
+              ? student.middleName 
+              : null} ${student.lastName}', AppColors.backgroundColor),
+              const SizedBox(height: 12),
+              // icon - grade - points - streak
+              Row(
                 children: [
-                  CircleAvatar(
-                    backgroundColor: AppColors.backgroundColor,
-                    radius: 48,
-                    child: Icon(Icons.person, 
-                      color: AppColors.primaryAccent,
-                      size: 96,
-                    ),
+                  // icon
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 64,
+                        child: Image.asset('assets/img/avatar/${student.avatar}')
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 16),
+                  // grade - points - streak
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // grade
+                      Row(
+                        children: [
+                          Icon(Icons.school_rounded, color: AppColors.backgroundAccent),
+                          const SizedBox(width: 16),
+                          XSmallBodyText("${student.grade}. Sınıf", AppColors.backgroundColor)
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      // points
+                      Row(
+                        children: [
+                          Icon(Icons.bolt, color: AppColors.primaryColor),
+                          const SizedBox(width: 16),
+                          XSmallBodyText("${student.points}", AppColors.backgroundColor)
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      //streak
+                      Row(
+                        children: [
+                          Icon(Icons.local_fire_department, color: AppColors.secondaryColor),
+                          const SizedBox(width: 16),
+                          XSmallBodyText("${student.dailyStreakCount}", AppColors.backgroundColor)
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(width: 16),
-              // grade - points - streak
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // grade
-                  Row(
-                    children: [
-                      Icon(Icons.school_rounded, color: AppColors.backgroundAccent),
-                      const SizedBox(width: 16),
-                      XSmallBodyText("8. Sınıf", AppColors.backgroundColor)
-                    ],
+              const SizedBox(height: 36),
+              SizedBox(
+                width: double.infinity,
+                child: CollapseMenuButton(
+                  onPressed: onProfileTap, 
+                  child: XSmallBodyText('Profil', AppColors.backgroundColor),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: CollapseMenuButton(
+                  onPressed: onAllLessonsTap, 
+                  child: XSmallBodyText('Tüm Dersler', AppColors.backgroundColor),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: CollapseMenuButton(
+                  onPressed: () {}, 
+                  child: XSmallBodyText('Collapse Menu Button 3', AppColors.backgroundColor),
+                ),
+              ),
+
+              Expanded(child: SizedBox()),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () {
+                    StudentSession.clearStudentId();
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => const WelcomeScreen(),
+                    ));
+                  }, 
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.secondaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
-                  const SizedBox(height: 4),
-                  // points
-                  Row(
-                    children: [
-                      Icon(Icons.bolt, color: AppColors.primaryColor),
-                      const SizedBox(width: 16),
-                      XSmallBodyText("1205", AppColors.backgroundColor)
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  //streak
-                  Row(
-                    children: [
-                      Icon(Icons.local_fire_department, color: AppColors.secondaryColor),
-                      const SizedBox(width: 16),
-                      XSmallBodyText("5", AppColors.backgroundColor)
-                    ],
-                  ),
-                ],
+                  child: XSmallBodyText('Çıkış Yap', AppColors.backgroundColor),
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 36),
-          SizedBox(
-            width: double.infinity,
-            child: CollapseMenuButton(
-              onPressed: onProfileTap, 
-              child: XSmallBodyText('Profil', AppColors.backgroundColor),
-            ),
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            child: CollapseMenuButton(
-              onPressed: onAllLessonsTap, 
-              child: XSmallBodyText('Tüm Dersler', AppColors.backgroundColor),
-            ),
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            child: CollapseMenuButton(
-              onPressed: () {}, 
-              child: XSmallBodyText('Collapse Menu Button 3', AppColors.backgroundColor),
-            ),
-          ),
-
-          Expanded(child: SizedBox()),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: () {
-                StudentSession.clearStudentId();
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => const WelcomeScreen(),
-                ));
-              }, 
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.secondaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: XSmallBodyText('Çıkış Yap', AppColors.backgroundColor),
-            ),
-          ),
-        ],
-      ),
-    );
+        );
+      },
+    );  
   }
 }
