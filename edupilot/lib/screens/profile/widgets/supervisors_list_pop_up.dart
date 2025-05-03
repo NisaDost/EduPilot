@@ -2,13 +2,13 @@ import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 
-class InstitutionListPopUp extends StatelessWidget {
-  const InstitutionListPopUp({
+class SupervisorsListPopUp extends StatelessWidget {
+  const SupervisorsListPopUp({
     super.key,
-    this.institutionName,
+    this.supervisorsList,
   });
 
-  final String? institutionName;
+  final List<String>? supervisorsList;
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +22,19 @@ class InstitutionListPopUp extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MediumBodyText('Okulun', AppColors.titleColor),
+              MediumBodyText('Danışmanların', AppColors.titleColor),
               const SizedBox(height: 16),
-              if (institutionName == null || institutionName!.isEmpty)
+              if (supervisorsList == null || supervisorsList!.isEmpty)
                 Center(
                   child: XSmallBodyText(
-                    'Kayıtlı olduğun bir okul bulamadık.',
+                    'Herhangi bir danışman bulamadık.',
                     AppColors.textColor,
                   ),
                 )
               else
                 Expanded(
                   child: ListView.builder(
-                    itemCount: 1,
+                    itemCount: supervisorsList!.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
@@ -44,7 +44,7 @@ class InstitutionListPopUp extends StatelessWidget {
                             Text("• ", style: TextStyle(color: AppColors.secondaryColor, fontSize: 24)),
                             Expanded(
                               child: MediumBodyText(
-                                institutionName!,
+                                supervisorsList![index],
                                 AppColors.textColor,
                               ),
                             ),

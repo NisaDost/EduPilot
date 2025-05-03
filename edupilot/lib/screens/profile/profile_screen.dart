@@ -1,9 +1,11 @@
 import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/profile/widgets/achievement/achievement_card.dart';
+import 'package:edupilot/screens/profile/widgets/add_supervisor_pop_up.dart';
 import 'package:edupilot/screens/profile/widgets/avatar/avatar_pop_up.dart';
 import 'package:edupilot/screens/profile/widgets/favorite/fav_lesson_card.dart';
 import 'package:edupilot/screens/profile/widgets/favorite/favorite_pop_up.dart';
 import 'package:edupilot/screens/profile/widgets/institution_list_pop_up.dart';
+import 'package:edupilot/screens/profile/widgets/supervisors_list_pop_up.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -86,7 +88,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                  ProfileScreenButton(
-                                  onPressed: () {}, 
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => SupervisorsListPopUp(
+                                        supervisorsList: student.studentSupervisors?.map((s) => s.supervisorName).toList()
+                                      ),
+                                    );
+                                  }, 
                                   color: AppColors.primaryColor,
                                   child: XSmallText('Danışmanlarım', AppColors.backgroundColor), 
                                 ),
@@ -107,7 +116,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               width: double.infinity,
                               child: ProfileScreenButton(
-                                onPressed: () {}, 
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AddSupervisorPopUp(
+                                      onSave: () async {
+                                        setState(() {});
+                                        widget.onRefreshStudent();
+                                      },
+                                    ),
+                                  );
+                                }, 
                                 color: AppColors.secondaryColor,
                                 child: XSmallText('Danışman Ekle', AppColors.backgroundColor), 
                               ),

@@ -6,7 +6,17 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("https://localhost:7222")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Database
 builder.Services.AddDbContext<ApiDbContext>(options =>
@@ -74,6 +84,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
 
 // Make sure authentication comes BEFORE authorization
