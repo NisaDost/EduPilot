@@ -149,6 +149,53 @@ namespace EduPilot.Api.Data
                 .HasMaxLength(250);
             #endregion
 
+            #region Supervisor  
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.InstitutionId)
+                .IsRequired(false);
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.FirstName)
+                .IsRequired()
+                .HasMaxLength(50);
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.MiddleName)
+                .HasMaxLength(50)
+                .IsRequired(false);
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.LastName)
+                .IsRequired()
+                .HasMaxLength(50);
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.Email)
+                .IsRequired()
+                .HasMaxLength(50);
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.Password)
+                .IsRequired()
+                .HasMaxLength(50);
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.PhoneNumber)
+                .IsRequired()
+                .HasMaxLength(11);
+            modelBuilder.Entity<Supervisor>()
+                .Property(s => s.UniqueCode)
+                .IsRequired()
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Supervisor>()
+                .HasMany(s => s.StudentSupervisors)
+                .WithOne(ss => ss.Supervisor)
+                .HasForeignKey(ss => ss.SupervisorId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Supervisor>()
+                .HasOne(s => s.Institution)
+                .WithMany(i => i.Supervisors)
+                .HasForeignKey(s => s.InstitutionId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
             #region Attendance
             modelBuilder.Entity<Attendance>()
                 .HasKey(a => a.Id);
