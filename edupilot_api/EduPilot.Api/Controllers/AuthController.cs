@@ -1,4 +1,5 @@
 ﻿using EduPilot.Api.Data;
+using EduPilot.Api.DTOs;
 using EduPilot.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,21 @@ namespace EduPilot.Api.Controllers
             }
 
             return Ok(student.Id);
+        }
+
+        [HttpPost("login/institution")]
+        public async Task<ActionResult<Guid>> InstitutionLogin([FromBody] InstitutionLoginRequestDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var institution = await _context.Institutions.FirstOrDefaultAsync(i => i.Email == request.Email && i.Password == request.Password);
+            if (institution == null)
+            {
+                return Unauthorized("Invalid email or password");
+            }
+            return Ok(institution.Id);
         }
     }
 }

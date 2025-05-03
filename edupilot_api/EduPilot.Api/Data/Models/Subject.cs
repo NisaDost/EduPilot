@@ -7,5 +7,6 @@
         public string Name { get; set; }
         public int Grade { get; set; }
         public Lesson Lesson { get; set; }
+        public List<Quiz> Quizzes { get; set; }
     }
 }

@@ -8,5 +8,6 @@
         public int Grade { get; set; }
         public List<Attendance> Attendances { get; set; }
         public List<StudentFavLesson> StudentFavLessons { get; set; }
+        public List<Subject> Subjects { get; set; }
     }
 }

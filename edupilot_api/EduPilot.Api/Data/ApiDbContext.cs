@@ -13,8 +13,13 @@ namespace EduPilot.Api.Data
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
         public DbSet<Supervisor> Supervisors { get; set; }
         public DbSet<Achievement> Achievements { get; set; }
+        public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Choice> Choices { get; set; }
         public DbSet<StudentFavLesson> StudentFavLessons { get; set; }
         public DbSet<StudentAchievement> StudentAchievements { get; set; }
         public DbSet<StudentSupervisor> StudentSupervisors { get; set; }
@@ -136,6 +141,10 @@ namespace EduPilot.Api.Data
                 .HasMaxLength(250);
             modelBuilder.Entity<Institution>()
                 .Property(i => i.Logo)
+                .IsRequired(false)
+                .HasMaxLength(250);
+            modelBuilder.Entity<Institution>()
+                .Property(i => i.Website)
                 .IsRequired(false)
                 .HasMaxLength(250);
             #endregion
@@ -270,6 +279,138 @@ namespace EduPilot.Api.Data
                 .HasMany(l => l.StudentFavLessons)
                 .WithOne(sl => sl.Lesson)
                 .HasForeignKey(sl => sl.LessonId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
+            #region Publisher
+            modelBuilder.Entity<Publisher>()
+                .HasKey(p => p.Id);
+            modelBuilder.Entity<Publisher>()
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Publisher>()
+                .Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(250);
+            modelBuilder.Entity<Publisher>()
+                .Property(p => p.Email)
+                .IsRequired()
+                .HasMaxLength(250);
+            modelBuilder.Entity<Publisher>()
+                .Property(p => p.Password)
+                .IsRequired()
+                .HasMaxLength(250);
+            modelBuilder.Entity<Publisher>()
+                .Property(p => p.Address)
+                .IsRequired(false)
+                .HasMaxLength(250);
+            modelBuilder.Entity<Publisher>()
+                .Property(p => p.Logo)
+                .IsRequired(false)
+                .HasMaxLength(250);
+            modelBuilder.Entity<Publisher>()
+                .Property(p => p.Website)
+                .IsRequired(false)
+                .HasMaxLength(250);
+            #endregion
+
+            #region Subjects
+            modelBuilder.Entity<Subject>()
+                .HasKey(s => s.Id);
+            modelBuilder.Entity<Subject>()
+                .Property(s => s.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Subject>()
+                .Property(s => s.Name)
+                .IsRequired()
+                .HasMaxLength(250);
+            modelBuilder.Entity<Subject>()
+                .Property(s => s.Grade)
+                .IsRequired();
+            modelBuilder.Entity<Subject>()
+                .Property(s => s.LessonId)
+                .IsRequired();
+            modelBuilder.Entity<Subject>()
+                .HasOne(s => s.Lesson)
+                .WithMany(l => l.Subjects)
+                .HasForeignKey(s => s.LessonId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
+            #region Quizzes
+            modelBuilder.Entity<Quiz>()
+                .HasKey(q => q.Id);
+            modelBuilder.Entity<Quiz>()
+                .Property(q => q.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Quiz>()
+                .Property(q => q.SubjectId)
+                .IsRequired();
+            modelBuilder.Entity<Quiz>()
+                .HasOne(q => q.Subject)
+                .WithMany(s => s.Quizzes)
+                .HasForeignKey(q => q.SubjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
+            #region Questions
+            modelBuilder.Entity<Question>()
+                .HasKey(q => q.Id);
+            modelBuilder.Entity<Question>()
+                .Property(q => q.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Question>()
+                .Property(q => q.QuizId)
+                .IsRequired();
+            modelBuilder.Entity<Question>()
+                .Property(q => q.QuestionContent)
+                .IsRequired()
+                .HasColumnType("nvarchar(MAX)");
+            modelBuilder.Entity<Question>()
+                .Property(q => q.QuestionImage)
+                .IsRequired(false)
+                .HasMaxLength(250);
+            modelBuilder.Entity<Question>()
+                .Property(q => q.IsActive)
+                .IsRequired()
+                .HasDefaultValue(true);
+            modelBuilder.Entity<Question>()
+                .HasOne(q => q.Quiz)
+                .WithMany(q => q.Questions)
+                .HasForeignKey(q => q.QuizId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Question>()
+                .HasMany(q => q.Choices)
+                .WithOne(c => c.Question)
+                .HasForeignKey(c => c.QuestionId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
+            #region Choices
+            modelBuilder.Entity<Choice>()
+                .HasKey(c => c.Id);
+            modelBuilder.Entity<Choice>()
+                .Property(c => c.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Choice>()
+                .Property(c => c.QuestionId)
+                .IsRequired();
+            modelBuilder.Entity<Choice>()
+                .Property(c => c.OptionContent)
+                .IsRequired()
+                .HasColumnType("nvarchar(MAX)");
+            modelBuilder.Entity<Choice>()
+                .Property(c => c.IsCorrect)
+                .IsRequired()
+                .HasDefaultValue(false);
+            modelBuilder.Entity<Choice>()
+                .Property(c => c.IsActive)
+                .IsRequired()
+                .HasDefaultValue(true);
+            modelBuilder.Entity<Choice>()
+                .HasOne(c => c.Question)
+                .WithMany(q => q.Choices)
+                .HasForeignKey(c => c.QuestionId)
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
         }

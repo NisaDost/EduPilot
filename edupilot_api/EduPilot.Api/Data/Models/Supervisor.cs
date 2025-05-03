@@ -3,7 +3,7 @@
     public class Supervisor
     {
         public Guid Id { get; set; }
-        public Guid InstitutionId { get; set; }
+        public Guid? InstitutionId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
