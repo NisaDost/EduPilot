@@ -57,5 +57,20 @@ namespace EduPilot.Api.Controllers
             }
             return Ok(institution.Id);
         }
+
+        [HttpPost("login/publisher")]
+        public async Task<ActionResult<Guid>> PublisherLogin([FromBody] PublisherLoginRequestDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var publisher = await _context.Publishers.FirstOrDefaultAsync(p => p.Email == request.Email && p.Password == request.Password);
+            if (publisher == null)
+            {
+                return Unauthorized("Invalid email or password");
+            }
+            return Ok(publisher.Id);
+        }
     }
 }

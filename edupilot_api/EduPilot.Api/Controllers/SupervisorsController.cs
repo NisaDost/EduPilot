@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduPilot.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/supervisors")]
     [ApiController]
     [Authorize]
     public class SupervisorsController : ControllerBase

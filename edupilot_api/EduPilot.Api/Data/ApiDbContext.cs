@@ -347,6 +347,14 @@ namespace EduPilot.Api.Data
                 .Property(q => q.SubjectId)
                 .IsRequired();
             modelBuilder.Entity<Quiz>()
+                .Property(q => q.PublisherId)
+                .IsRequired();
+            modelBuilder.Entity<Quiz>()
+                .HasOne(q => q.Publisher)
+                .WithMany(p => p.Quizzes)
+                .HasForeignKey(q => q.PublisherId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Quiz>()
                 .HasOne(q => q.Subject)
                 .WithMany(s => s.Quizzes)
                 .HasForeignKey(q => q.SubjectId)
