@@ -22,7 +22,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 3;
   bool _collapseMenuOpened = false;
-  late LessonsByGradeDTO _lessonsByGrade;
   final ValueNotifier<StudentDTO?> _studentNotifier = ValueNotifier(null);
 
   @override
@@ -71,14 +70,14 @@ class _MainScreenState extends State<MainScreen> {
 
   void _navigateToSelectQuizFromFav(FavoriteLessonDTO lesson) {
     setState(() {
-      _screens[6] = SelectQuizScreen(lesson: _lessonsByGrade); // placeholder usage
+      _screens[6] = SelectQuizScreen(lesson: LessonsByGradeDTO.fromFavoriteLessonDTO(lesson)); // placeholder usage
       _selectedIndex = 6;
     });
   }
 
   void _navigateToSelectQuiz(LessonsByGradeDTO lesson) {
     setState(() {
-      _screens[6] = SelectQuizScreen(lesson: _lessonsByGrade);
+      _screens[6] = SelectQuizScreen(lesson: lesson);
       _selectedIndex = 6;
     });
   }

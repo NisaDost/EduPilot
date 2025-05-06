@@ -38,8 +38,8 @@ class CollapseMenu extends StatelessWidget {
               // name-surname
               LargeText(
                 '${student.firstName} ${student.middleName!.isNotEmpty 
-              ? student.middleName 
-              : null} ${student.lastName}', AppColors.backgroundColor),
+              ? '${student.middleName} '
+              : ''}${student.lastName}', AppColors.backgroundColor),
               const SizedBox(height: 12),
               // icon - grade - points - streak
               Row(
@@ -63,7 +63,7 @@ class CollapseMenu extends StatelessWidget {
                       // grade
                       Row(
                         children: [
-                          Icon(Icons.school_rounded, color: AppColors.backgroundAccent),
+                          Icon(Icons.school_rounded, color: AppColors.backgroundColor),
                           const SizedBox(width: 16),
                           XSmallBodyText("${student.grade}. Sınıf", AppColors.backgroundColor)
                         ],
@@ -90,30 +90,11 @@ class CollapseMenu extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 36),
-              SizedBox(
-                width: double.infinity,
-                child: CollapseMenuButton(
-                  onPressed: onProfileTap, 
-                  child: XSmallBodyText('Profil', AppColors.backgroundColor),
-                ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: CollapseMenuButton(
-                  onPressed: onAllLessonsTap, 
-                  child: XSmallBodyText('Tüm Dersler', AppColors.backgroundColor),
-                ),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: CollapseMenuButton(
-                  onPressed: () {}, 
-                  child: XSmallBodyText('Collapse Menu Button 3', AppColors.backgroundColor),
-                ),
-              ),
+              const SizedBox(height: 28),
+              _buttonWidget('Profil', onProfileTap),
+              _buttonWidget('Tüm Dersler', onAllLessonsTap),
+              _buttonWidget('Collapse Menu Button 3', () {}),
+              _buttonWidget('Collapse Menu Button 4', () {}),
 
               Expanded(child: SizedBox()),
               SizedBox(
@@ -139,5 +120,20 @@ class CollapseMenu extends StatelessWidget {
         );
       },
     );  
+  }
+
+  _buttonWidget(String text, VoidCallback onPressed) {
+    return Column(
+      children: [
+        const SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: CollapseMenuButton(
+            onPressed: onPressed, 
+            child: XSmallBodyText(text, AppColors.backgroundColor),
+          ),
+        ),
+      ],
+    );
   }
 }

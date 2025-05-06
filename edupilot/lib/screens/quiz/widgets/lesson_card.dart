@@ -33,8 +33,8 @@ class LessonCard extends ConsumerWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              mainAxisSpacing: 24,
-              crossAxisSpacing: 24,
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 20,
               childAspectRatio: 0.9,
             ),
             itemBuilder: (context, index) {
@@ -42,14 +42,19 @@ class LessonCard extends ConsumerWidget {
               return GestureDetector(
                 onTap: () => onLessonTap(lesson),
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(16)),
                     color: AppColors.secondaryColor,
                   ),
                   child: Column(
                     children: [
-                      Icon(IconConversion().getIconFromString(lesson.icon), color: AppColors.backgroundColor, size: 72),
+                        Icon(
+                          IconConversion().getIconFromString(lesson.icon), 
+                          color: AppColors.backgroundColor, 
+                          size: 72
+                      ),
+                      const SizedBox(height: 10),
                       XSmallText(
                         lesson.name.length < 12
                             ? lesson.name

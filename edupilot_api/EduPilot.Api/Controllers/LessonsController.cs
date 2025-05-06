@@ -36,5 +36,30 @@ namespace EduPilot.Api.Controllers
 
             return lesson;
         }
+
+        [HttpGet("lessons/{lessonId}/subjects")]
+        public async Task<ActionResult<List<SubjectDTO>>> GetSubjectsByLessonId(Guid lessonId)
+        {
+            var subjects = await _context.Subjects
+                .Where(s => s.LessonId.Equals(lessonId))
+                .Select(s => new SubjectDTO()
+                {
+                    Id = s.Id,
+                    LessonId = s.LessonId,
+                    Name = s.Name,
+                    Grade = s.Grade,
+                    Quizzes = s.Quizzes.Select(q => new SubjectQuizDTO()
+                    {
+                        QuizId = q.Id,
+                        SubjectId = q.SubjectId,
+                    }).ToList()
+                }).ToListAsync();
+
+            if (subjects == null || !subjects.Any())
+            {
+                return NotFound();
+            }
+            return subjects;
+        }
     }
 }

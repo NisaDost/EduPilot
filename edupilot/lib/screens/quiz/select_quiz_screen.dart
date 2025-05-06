@@ -1,6 +1,7 @@
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
-import 'package:edupilot/models/quiz/subject.dart';
+import 'package:edupilot/models/dtos/subject_dto.dart';
 import 'package:edupilot/screens/quiz/widgets/quiz_card.dart';
+import 'package:edupilot/services/lessons_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -31,108 +32,122 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double topBarHeight = 96;
+    // Get all subjects from the lesson
+    return FutureBuilder<List<SubjectDTO>>(
+        future: LessonsApiHandler().getSubjectsByLessonId(widget.lesson.id),
+        builder: (BuildContext context, AsyncSnapshot subjectSnapshot) {
+          if (subjectSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (subjectSnapshot.hasError) {
+            return Center(child: Text('Hata oluştu: ${subjectSnapshot.error}'));
+          } else if (!subjectSnapshot.hasData) {
+            return const Center(child: Text('Konu bulunamadı.'));
+          }
+          final List<SubjectDTO> subjects = subjectSnapshot.data!;
 
-    // Filter subjects related to this lesson
-    final lessonSubjects = allSubjects.where((s) => s.lesson.name == widget.lesson.name).toList();
-    final subjectNames = ['Tümü'] + lessonSubjects.map((s) => s.name).toList();
+        const double topBarHeight = 96;
 
-    // Defensive fallback in case selectedSubject no longer exists
-    final String dropdownValue = subjectNames.contains(selectedSubject) ? selectedSubject ?? 'Tümü' : 'Tümü';
+        // Filter subjects related to this lesson
+        final subjectNames = ['Tümü'] + subjects.map((s) => s.name).toList();
 
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: topBarHeight),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryAccent,
-                      borderRadius: BorderRadius.circular(16),
+        // Defensive fallback in case selectedSubject no longer exists
+        final String dropdownValue = subjectNames.contains(selectedSubject) ? selectedSubject ?? 'Tümü' : 'Tümü';
+
+        return Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: topBarHeight),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryAccent,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+                          dropdownColor: AppColors.primaryAccent,
+                          borderRadius: BorderRadius.circular(16),
+                          isExpanded: true,
+                          items: subjectNames.map((subjectName) {
+                            return DropdownMenuItem<String>(
+                              value: subjectName,
+                              child: LargeText(subjectName, AppColors.backgroundColor),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedSubject = value == 'Tümü' ? null : value;
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                    child: DropdownButton<String>(
-                      value: dropdownValue,
-                      dropdownColor: AppColors.primaryAccent,
-                      borderRadius: BorderRadius.circular(16),
-                      isExpanded: true,
-                      items: subjectNames.map((subjectName) {
-                        return DropdownMenuItem<String>(
-                          value: subjectName,
-                          child: LargeText(subjectName, AppColors.backgroundColor),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedSubject = value == 'Tümü' ? null : value;
-                        });
-                      },
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
+                      child: QuizCard(
+                        key: ValueKey(selectedSubject ?? 'all'),
+                        lesson: widget.lesson,
+                        subjectFilter: selectedSubject,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  switchInCurve: Curves.easeIn,
-                  switchOutCurve: Curves.easeOut,
-                  transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
-                  child: QuizCard(
-                    key: ValueKey(selectedSubject ?? 'all'),
-                    lesson: widget.lesson,
-                    subjectFilter: selectedSubject,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-        Container(
-          height: topBarHeight,
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.backgroundColor,
-            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Container(
+              height: topBarHeight,
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.backgroundColor,
+                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LargeBodyText(
-                    widget.lesson.name.length < 12
-                        ? widget.lesson.name
-                        : widget.lesson.name.substring(0, 11),
-                    AppColors.successColor,
-                  ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
-                      LargeText('1.205', AppColors.textColor),
+                      LargeBodyText(
+                        widget.lesson.name.length < 12
+                            ? widget.lesson.name
+                            : widget.lesson.name.substring(0, 11),
+                        AppColors.successColor,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
+                          LargeText('1.205', AppColors.textColor),
+                        ],
+                      ),
                     ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Hadi, soru çözüp puan toplayalım!',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                      color: AppColors.titleColor,
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Hadi, soru çözüp puan toplayalım!',
-                style: GoogleFonts.montserrat(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
-                  color: AppColors.titleColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
