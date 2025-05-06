@@ -8,5 +8,6 @@
         public string Icon { get; set; }
         public int Fee { get; set; }
         public bool IsAvailable { get; set; }
+        public List<ClaimedCoupon> ClaimedCoupons { get; set; }
     }
 }

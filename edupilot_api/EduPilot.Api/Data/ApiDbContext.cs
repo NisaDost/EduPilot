@@ -228,6 +228,31 @@ namespace EduPilot.Api.Data
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
+            #region Achievement
+            modelBuilder.Entity<Achievement>()
+                .HasKey(a => a.Id);
+            modelBuilder.Entity<Achievement>()
+                .Property(a => a.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Achievement>()
+                .Property(a => a.Name)
+                .IsRequired()
+                .HasMaxLength(250);
+            modelBuilder.Entity<Achievement>()
+                .Property(a => a.Description)
+                .IsRequired()
+                .HasColumnType("nvarchar(MAX)");
+            modelBuilder.Entity<Achievement>()
+                .Property(a => a.Icon)
+                .IsRequired()
+                .HasMaxLength(250);
+            modelBuilder.Entity<Achievement>()
+                .HasMany(a => a.StudentAchievements)
+                .WithOne(sa => sa.Achievement)
+                .HasForeignKey(sa => sa.AchievementId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
             #region StudentSupervisor   
             modelBuilder.Entity<StudentSupervisor>()
                 .HasKey(ss => ss.Id);
@@ -468,6 +493,75 @@ namespace EduPilot.Api.Data
                 .HasForeignKey(c => c.QuestionId)
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
+
+            #region Coupon
+            modelBuilder.Entity<Coupon>()
+                .HasKey(c => c.Id);
+            modelBuilder.Entity<Coupon>()
+                .Property(c => c.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Coupon>()
+                .Property(c => c.Name)
+                .IsRequired()
+                .HasColumnType("nvarchar(MAX)");
+            modelBuilder.Entity<Coupon>()
+                .Property(c => c.Description)
+                .IsRequired()
+                .HasColumnType("nvarchar(MAX)");
+            modelBuilder.Entity<Coupon>()
+                .Property(c => c.Icon)
+                .IsRequired()
+                .HasMaxLength(250);
+            modelBuilder.Entity<Coupon>()
+                .Property(c => c.Fee)
+                .IsRequired()
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Coupon>()
+                .Property(c => c.IsAvailable)
+                .IsRequired()
+                .HasDefaultValue(true);
+            #endregion
+
+            #region ClaimedCoupons
+            modelBuilder.Entity<ClaimedCoupon>()
+                .HasKey(cc => cc.Id);
+            modelBuilder.Entity<ClaimedCoupon>()
+                .Property(cc => cc.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<ClaimedCoupon>()
+                .Property(cc => cc.StudentId)
+                .IsRequired();
+            modelBuilder.Entity<ClaimedCoupon>()
+                .Property(cc => cc.CouponId)
+                .IsRequired();
+            modelBuilder.Entity<ClaimedCoupon>()
+                .Property(cc => cc.Code)
+                .IsRequired()
+                .HasMaxLength(50);
+            modelBuilder.Entity<ClaimedCoupon>()
+                .Property(cc => cc.IsUsed)
+                .IsRequired()
+                .HasDefaultValue(false);
+            modelBuilder.Entity<ClaimedCoupon>()
+                .Property(cc => cc.ClaimedDate)
+                .IsRequired()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<ClaimedCoupon>()
+                .Property(cc => cc.ExpirationDate)
+                .IsRequired()
+                .HasDefaultValueSql("DATEADD(DAY, 30, GETDATE())");
+            modelBuilder.Entity<ClaimedCoupon>()
+                .HasOne(cc => cc.Student)
+                .WithMany(s => s.ClaimedCoupons)
+                .HasForeignKey(cc => cc.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ClaimedCoupon>()
+                .HasOne(cc => cc.Coupon)
+                .WithMany(c => c.ClaimedCoupons)
+                .HasForeignKey(cc => cc.CouponId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
         }
     }
 }
