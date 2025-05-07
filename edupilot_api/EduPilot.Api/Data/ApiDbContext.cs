@@ -20,9 +20,13 @@ namespace EduPilot.Api.Data
         public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Choice> Choices { get; set; }
+        public DbSet<Simulation> Simulations { get; set; }
+        public DbSet<StudentSimulation> StudentSimulations { get; set; }
         public DbSet<StudentFavLesson> StudentFavLessons { get; set; }
         public DbSet<StudentAchievement> StudentAchievements { get; set; }
         public DbSet<StudentSupervisor> StudentSupervisors { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<ClaimedCoupon> ClaimedCoupons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -494,7 +498,7 @@ namespace EduPilot.Api.Data
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
-            #region Coupon
+            #region Coupons
             modelBuilder.Entity<Coupon>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Coupon>()
@@ -532,8 +536,18 @@ namespace EduPilot.Api.Data
                 .Property(cc => cc.StudentId)
                 .IsRequired();
             modelBuilder.Entity<ClaimedCoupon>()
+                .HasOne(cc => cc.Student)
+                .WithMany(s => s.ClaimedCoupons)
+                .HasForeignKey(cc => cc.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ClaimedCoupon>()
                 .Property(cc => cc.CouponId)
                 .IsRequired();
+            modelBuilder.Entity<ClaimedCoupon>()
+                .HasOne(cc => cc.Coupon)
+                .WithMany(s => s.ClaimedCoupons)
+                .HasForeignKey(cc => cc.CouponId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ClaimedCoupon>()
                 .Property(cc => cc.Code)
                 .IsRequired()
@@ -560,6 +574,54 @@ namespace EduPilot.Api.Data
                 .WithMany(c => c.ClaimedCoupons)
                 .HasForeignKey(cc => cc.CouponId)
                 .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
+            #region Simulations
+            modelBuilder.Entity<Simulation>()
+                .HasKey(s => s.Id);
+            modelBuilder.Entity<Simulation>()
+                .Property(s => s.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Simulation>()
+                .Property(s => s.Name)
+                .IsRequired()
+                .HasMaxLength(250);
+            modelBuilder.Entity<Simulation>()
+                .Property(s => s.StudyDuration)
+                .IsRequired()
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Simulation>()
+                .Property(s => s.BreakDuration)
+                .IsRequired()
+                .HasDefaultValue(0);
+            #endregion
+
+            #region StudentSimulation
+            modelBuilder.Entity<StudentSimulation>()
+                .HasKey(ss => ss.Id);
+            modelBuilder.Entity<StudentSimulation>()
+                .Property(ss => ss.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<StudentSimulation>()
+                .Property(ss => ss.SimulationId)
+                .IsRequired();
+            modelBuilder.Entity<StudentSimulation>()
+                .HasOne(ss => ss.Simulation)
+                .WithMany(s => s.StudentSimulations)
+                .HasForeignKey(ss => ss.SimulationId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<StudentSimulation>()
+                .Property(ss => ss.StudentId)
+                .IsRequired();
+            modelBuilder.Entity<StudentSimulation>()
+                .HasOne(ss => ss.Student)
+                .WithMany(s => s.StudentSimulations)
+                .HasForeignKey(ss => ss.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<StudentSimulation>()
+                .Property(ss => ss.StudiedAt)
+                .IsRequired()
+                .HasDefaultValueSql("GETDATE()");
             #endregion
 
         }

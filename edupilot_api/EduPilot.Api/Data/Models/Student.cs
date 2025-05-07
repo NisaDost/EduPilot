@@ -20,6 +20,7 @@
         public List<StudentSupervisor> StudentSupervisors { get; set; }
         public List<StudentFavLesson> StudentFavLessons { get; set; }
         public List<StudentAchievement> StudentAchievements { get; set; }
+        public List<StudentSimulation> StudentSimulations { get; set; }
         public List<ClaimedCoupon> ClaimedCoupons { get; set; }
     }
 }

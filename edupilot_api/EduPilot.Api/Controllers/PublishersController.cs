@@ -117,5 +117,31 @@ namespace EduPilot.Api.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpPost("question/quiz/{id}")]
+        public async Task<IActionResult> AddQuestionToQuiz(Guid id, [FromBody] QuestionDTO question)
+        {
+            var quiz = await _context.Quizzes
+                .Include(q => q.Questions) // Ensure questions are included
+                .FirstOrDefaultAsync(q => q.Id == id);
+            if (quiz == null)
+            {
+                return NotFound("Quiz not found");
+            }
+            var questionEntity = new Question()
+            {
+                QuestionContent = question.QuestionContent,
+                QuestionImage = question.QuestionImage,
+                Choices = question.Choices.Select(c => new Choice()
+                {
+                    OptionContent = c.ChoiceContent,
+                    IsCorrect = c.IsCorrect
+                }).ToList()
+            };
+            quiz.Questions.Add(questionEntity);
+            _context.Quizzes.Update(quiz);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(AddQuestionToQuiz), new { status = 201, id = questionEntity.Id });
+        }
     }
 }

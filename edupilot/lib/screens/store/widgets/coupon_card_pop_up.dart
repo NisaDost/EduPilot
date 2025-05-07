@@ -1,11 +1,12 @@
-import 'package:edupilot/models/coupon/coupon.dart';
+import 'package:edupilot/helpers/icon_conversion.dart';
+import 'package:edupilot/models/dtos/coupon_dto.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 
 class CouponCardPopUp extends StatelessWidget {
-  final Coupon coupon;
+  final CouponDTO coupon;
 
   const CouponCardPopUp({super.key, required this.coupon});
 
@@ -23,7 +24,7 @@ class CouponCardPopUp extends StatelessWidget {
               Hero(
                 tag: coupon.id,
                 child: Icon(
-                  coupon.icon,
+                  IconConversion().getIconFromString(coupon.icon),
                   color: AppColors.secondaryColor,
                   size: 64,
                 ),

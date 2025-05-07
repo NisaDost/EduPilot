@@ -2,6 +2,7 @@ import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/subject_dto.dart';
 import 'package:edupilot/screens/quiz/widgets/quiz_card.dart';
 import 'package:edupilot/services/lessons_api_handler.dart';
+import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -34,16 +35,16 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
   Widget build(BuildContext context) {
     // Get all subjects from the lesson
     return FutureBuilder<List<SubjectDTO>>(
-        future: LessonsApiHandler().getSubjectsByLessonId(widget.lesson.id),
-        builder: (BuildContext context, AsyncSnapshot subjectSnapshot) {
-          if (subjectSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (subjectSnapshot.hasError) {
-            return Center(child: Text('Hata oluştu: ${subjectSnapshot.error}'));
-          } else if (!subjectSnapshot.hasData) {
-            return const Center(child: Text('Konu bulunamadı.'));
-          }
-          final List<SubjectDTO> subjects = subjectSnapshot.data!;
+      future: LessonsApiHandler().getSubjectsByLessonId(widget.lesson.id),
+      builder: (BuildContext context, AsyncSnapshot subjectSnapshot) {
+        if (subjectSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (subjectSnapshot.hasError) {
+          return Center(child: Text('Hata oluştu: ${subjectSnapshot.error}'));
+        } else if (!subjectSnapshot.hasData) {
+          return const Center(child: Text('Konu bulunamadı.'));
+        }
+        final List<SubjectDTO> subjects = subjectSnapshot.data!;
 
         const double topBarHeight = 96;
 
@@ -127,7 +128,20 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
-                          LargeText('1.205', AppColors.textColor),
+                          FutureBuilder<int>(
+                            future: StudentsApiHandler().getLoggedInStudent().then((student) => student.points),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator(color: AppColors.primaryColor);
+                              } else if (snapshot.hasError) {
+                                return Text('Hata: ${snapshot.error}');
+                              } else if (!snapshot.hasData) {
+                                return Text('0', style: TextStyle(color: AppColors.textColor));
+                              }
+                              final int points = snapshot.data!;
+                              return LargeText(points.toString(), AppColors.textColor);
+                            },
+                          ),
                         ],
                       ),
                     ],

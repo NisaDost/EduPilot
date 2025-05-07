@@ -32,6 +32,12 @@ class IconConversion {
         return Icons.stars_outlined;
       case 'Icons.emoji_events':
         return Icons.emoji_events;
+      case 'Icons.theaters_rounded':
+        return Icons.theaters_rounded;
+      case 'Icons.coffe':
+        return Icons.coffee;
+      case 'Icons.sell':
+        return Icons.sell;
       default:
         return Icons.menu_book_outlined;
     }

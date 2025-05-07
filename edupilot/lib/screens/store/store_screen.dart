@@ -1,5 +1,6 @@
 import 'package:edupilot/screens/store/widgets/code.dart';
 import 'package:edupilot/screens/store/widgets/coupon_card.dart';
+import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +110,20 @@ class _StoreScreenState extends State<StoreScreen> {
                         child: Row(
                           children: [
                             Icon(Icons.bolt, color: AppColors.primaryColor, size: 32),
-                            LargeText('1.205', AppColors.textColor),
+                            FutureBuilder<int>(
+                              future: StudentsApiHandler().getLoggedInStudent().then((student) => student.points),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return CircularProgressIndicator(color: AppColors.primaryColor);
+                                } else if (snapshot.hasError) {
+                                  return Text('Hata: ${snapshot.error}');
+                                } else if (!snapshot.hasData) {
+                                  return Text('0', style: TextStyle(color: AppColors.textColor));
+                                }
+                                final int points = snapshot.data!;
+                                return LargeText(points.toString(), AppColors.textColor);
+                              },
+                            ),
                           ],
                         ),
                       )

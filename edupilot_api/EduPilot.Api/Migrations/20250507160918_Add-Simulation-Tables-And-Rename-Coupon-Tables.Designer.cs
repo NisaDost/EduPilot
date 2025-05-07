@@ -4,6 +4,7 @@ using EduPilot.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduPilot.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250507160918_Add-Simulation-Tables-And-Rename-Coupon-Tables")]
+    partial class AddSimulationTablesAndRenameCouponTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -365,7 +368,7 @@ namespace EduPilot.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Simulations");
+                    b.ToTable("Simulation");
                 });
 
             modelBuilder.Entity("EduPilot.Api.Data.Models.Student", b =>
@@ -498,7 +501,7 @@ namespace EduPilot.Api.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentSimulations");
+                    b.ToTable("StudentSimulation");
                 });
 
             modelBuilder.Entity("EduPilot.Api.Data.Models.StudentSupervisor", b =>
