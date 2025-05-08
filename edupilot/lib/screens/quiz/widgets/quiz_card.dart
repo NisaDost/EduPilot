@@ -2,7 +2,7 @@ import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/quiz_dto.dart';
 import 'package:edupilot/models/dtos/subject_dto.dart';
 import 'package:edupilot/services/lessons_api_handler.dart';
-import 'package:edupilot/services/quizzes_api_controller.dart';
+import 'package:edupilot/services/quizzes_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +45,7 @@ class QuizCard extends ConsumerWidget {
                   if (subject.quizzes.isNotEmpty) 
                     // if (subjectFilter == null || subject.name == subjectFilter)
                     FutureBuilder<QuizDTO>(
-                      future: QuizzesApiController().getQuizzesBySubjectId(subject.id),
+                      future: QuizzesApiHandler().getQuizzesBySubjectId(subject.id),
                       builder: (context, quizSnapshot) {
                         if (quizSnapshot.connectionState == ConnectionState.waiting) {
                           return const Center(child: CircularProgressIndicator());

@@ -6,14 +6,14 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:http/io_client.dart';
 
-class SimulationsApiController {
+class SimulationsApiHandler {
   final String baseUrl = 'https://10.0.2.2:7104/api';
   final String authUsername = 'admin';
   final String authPassword = 'password';
 
   late http.Client client;
 
-  SimulationsApiController() {
+  SimulationsApiHandler() {
     // Create a custom client that ignores bad certificates
     final ioc = HttpClient()
       ..badCertificateCallback =
@@ -23,7 +23,7 @@ class SimulationsApiController {
 
   Future<List<SimulationDTO>> getSimulations() async {
     final response = await client.get(
-      Uri.parse('$baseUrl/simulations'),
+      Uri.parse('$baseUrl/simulation'),
       headers: <String, String>{
         'Authorization':
             'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',

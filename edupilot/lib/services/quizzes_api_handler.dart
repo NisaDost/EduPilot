@@ -5,14 +5,14 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:http/io_client.dart';
 
-class QuizzesApiController {
+class QuizzesApiHandler {
   final String baseUrl = 'https://10.0.2.2:7104/api';
   final String authUsername = 'admin';
   final String authPassword = 'password';
 
   late http.Client client;
 
-  QuizzesApiController() {
+  QuizzesApiHandler() {
     // Create a custom client that ignores bad certificates
     final ioc = HttpClient()
       ..badCertificateCallback =
