@@ -77,7 +77,6 @@ namespace EduPilot.Api.Controllers
                 return NotFound("Publisher not found");
             }
             publisherEntity.Name = publisher.Name;
-            publisherEntity.Email = publisher.Email;
             publisherEntity.Password = publisher.Password;
             publisherEntity.Address = publisher.Address;
             publisherEntity.Logo = publisher.Logo;

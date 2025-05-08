@@ -118,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
                   onRefreshStudent: _refreshStudent,
                 );
 
-                // _screens[2] = const SimulationScreen();
+                _screens[2] = const SimulationScreen();
 
                 _screens[3] = HomeScreen(
                   student: student,
