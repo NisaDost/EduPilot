@@ -19,6 +19,29 @@ namespace EduPilot.Api.Controllers
             _context = context;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PublisherDTO>> GetPublisherById(Guid id)
+        {
+            var publisher = await _context.Publishers
+                .Select(p => new PublisherDTO()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Email = p.Email,
+                    Address = p.Address ?? string.Empty,  
+                    Logo = p.Logo ?? string.Empty,        
+                    Website = p.Website ?? string.Empty,  
+                })
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (publisher == null)
+            {
+                return NotFound();
+            }
+
+            return publisher;
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> PostPublisher([FromBody] PublisherRegisterDTO publisher)
         {
@@ -61,7 +84,7 @@ namespace EduPilot.Api.Controllers
             publisherEntity.Website = publisher.Website;
             _context.Entry(publisherEntity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok();
         }
 
         [HttpPost("{id}/add/quiz")]
