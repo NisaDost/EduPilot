@@ -64,13 +64,14 @@ namespace EduPilot.Api.Controllers
             return NoContent();
         }
 
-        [HttpPost("addquiz")]
-        public async Task<IActionResult> AddQuiz([FromBody] QuizDTO quiz)
+        [HttpPost("{id}/add/quiz")]
+        public async Task<IActionResult> AddQuiz(Guid id, [FromBody] QuizDTO quiz)
         {
             if (ModelState.IsValid)
             {
                 var quizEntity = new Quiz()
                 {
+                    PublisherId = id,
                     SubjectId = quiz.SubjectId,
                     Difficulty = quiz.Difficulty,
                     PointPerQuestion = quiz.Difficulty == Difficulty.Easy ? 10 : quiz.Difficulty == Difficulty.Medium ? 20 : 40,

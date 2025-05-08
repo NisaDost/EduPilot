@@ -104,7 +104,7 @@ namespace EduPilot.Api.Controllers
             var claimedCoupons = await _context.ClaimedCoupons
                 .Include(cc => cc.Coupon)
                 .Include(cc => cc.Student)
-                .Where(cc => cc.StudentId == studentId && cc.ExpirationDate >= DateTime.UtcNow)
+                .Where(cc => cc.StudentId == studentId && cc.ExpirationDate >= DateTime.UtcNow && !cc.IsUsed)
                 .Select(cc => new ClaimedCouponDTO()
                 {
                     Id = cc.Id,

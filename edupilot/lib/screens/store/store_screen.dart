@@ -1,4 +1,4 @@
-import 'package:edupilot/screens/store/widgets/code.dart';
+import 'package:edupilot/screens/store/widgets/claimed_coupon_card.dart';
 import 'package:edupilot/screens/store/widgets/coupon_card.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -76,8 +76,7 @@ class _StoreScreenState extends State<StoreScreen> {
                   else
                     Column(
                       children: [
-                        Text('Kodlarım içeriği burada'),
-                        Code(),
+                        ClaimedCouponCard(),
                       ],
                     )
                 ],
@@ -90,7 +89,7 @@ class _StoreScreenState extends State<StoreScreen> {
             Container(
               height: topBarHeight,
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
               decoration: BoxDecoration(
                 color: AppColors.backgroundColor,
                 borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
@@ -131,7 +130,7 @@ class _StoreScreenState extends State<StoreScreen> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Text(
                     'Quizlerden kazandığın puanları ödüllere dönüştürelim!',
                     style: GoogleFonts.montserrat(

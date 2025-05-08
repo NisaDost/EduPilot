@@ -5,6 +5,7 @@ import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
 import 'package:edupilot/screens/quiz/select_lesson_screen.dart';
 import 'package:edupilot/screens/quiz/select_quiz_screen.dart';
+import 'package:edupilot/screens/simulation/simulation_screen.dart';
 import 'package:edupilot/screens/store/store_screen.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/custom_app_bar.dart';
@@ -85,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
   late final List<Widget> _screens = [
     const SizedBox(), // StoreScreen (dynamic)
     const Placeholder(),
-    const Placeholder(),
+    const SizedBox(), // SimulationScreen (dynamic)
     // These will be rebuilt inside build() using studentNotifier
     const SizedBox(), // Home
     const SizedBox(), // Profile
@@ -116,6 +117,8 @@ class _MainScreenState extends State<MainScreen> {
                 _screens[0] = StoreScreen(
                   onRefreshStudent: _refreshStudent,
                 );
+
+                _screens[2] = const SimulationScreen();
 
                 _screens[3] = HomeScreen(
                   student: student,
