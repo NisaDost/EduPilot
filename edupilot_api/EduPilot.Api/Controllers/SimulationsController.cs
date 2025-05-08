@@ -62,7 +62,7 @@ namespace EduPilot.Api.Controllers
             _context.StudentSimulations.Add(studiedSimulation);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(StudiedSimulation), new { status = 201, id = studiedSimulation.Id });
+            return CreatedAtAction(nameof(PostStudiedSimulation), new { status = 201, id = studiedSimulation.Id });
         }
     }
 }

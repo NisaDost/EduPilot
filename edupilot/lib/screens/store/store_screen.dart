@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StoreScreen extends StatefulWidget {
-  const StoreScreen({super.key});
+  const StoreScreen({super.key, required this.onRefreshStudent});
+
+  final VoidCallback onRefreshStudent;
 
   @override
   State<StoreScreen> createState() => _StoreScreenState();

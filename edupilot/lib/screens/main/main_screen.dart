@@ -83,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   late final List<Widget> _screens = [
-    StoreScreen(),
+    const SizedBox(), // StoreScreen (dynamic)
     const Placeholder(),
     const Placeholder(),
     // These will be rebuilt inside build() using studentNotifier
@@ -113,6 +113,9 @@ class _MainScreenState extends State<MainScreen> {
                 if (student == null) {
                   return const Center(child: CircularProgressIndicator());
                 }
+                _screens[0] = StoreScreen(
+                  onRefreshStudent: _refreshStudent,
+                );
 
                 _screens[3] = HomeScreen(
                   student: student,

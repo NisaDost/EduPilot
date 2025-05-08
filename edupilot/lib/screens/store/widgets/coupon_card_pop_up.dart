@@ -1,5 +1,7 @@
 import 'package:edupilot/helpers/icon_conversion.dart';
 import 'package:edupilot/models/dtos/coupon_dto.dart';
+import 'package:edupilot/models/dtos/student_dto.dart';
+import 'package:edupilot/services/coupons_api_handler.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -7,8 +9,9 @@ import 'package:edupilot/theme.dart';
 
 class CouponCardPopUp extends StatelessWidget {
   final CouponDTO coupon;
+  final StudentDTO student;
 
-  const CouponCardPopUp({super.key, required this.coupon});
+  const CouponCardPopUp({super.key, required this.coupon, required this.student});
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +52,35 @@ class CouponCardPopUp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ProfileScreenButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
+                    onPressed: () async {
+                      if (student.points >= coupon.fee) {
+                        var response = await CouponsApiHandler().claimCoupon(coupon.id);
+                        if (response.toString() == 'Ok') {
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Kupon başarıyla alındı!'),
+                              backgroundColor: AppColors.successColor,
+                            ),
+                          );
+                        } else if (response.toString() == 'Not enough points') {
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Yeterli puanınız yok!'),
+                              backgroundColor: AppColors.dangerColor,
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Kupon alınırken hata oluştu. Lütfen tekrar deneyin.'),
+                              backgroundColor: Colors.blueGrey[900],
+                            ),
+                          );
+                          Navigator.of(context).pop();
+                        }
+                      }
                     },
                     color: AppColors.successColor,
                     child: Padding(

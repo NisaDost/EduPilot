@@ -1,8 +1,6 @@
 import 'dart:convert';
+import 'package:edupilot/models/dtos/claimed_coupon_dto.dart';
 import 'package:edupilot/models/dtos/coupon_dto.dart';
-import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
-import 'package:edupilot/models/dtos/subject_dto.dart';
-import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/sessions/student_session.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,6 +34,50 @@ class CouponsApiHandler {
       List<dynamic> jsonResponse = jsonDecode(coupons.body);
       return jsonResponse
           .map((coupon) => CouponDTO.fromJson(coupon))
+          .toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<String> claimCoupon(String couponId) async {
+    final studentId = await StudentSession.getStudentId();
+    if (studentId == null) {
+      throw Exception('Student ID not found');
+    }
+    final response = await client.post(
+      Uri.parse('$baseUrl/coupon/$couponId/student/$studentId'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{'couponId': couponId}),
+    );
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return 'Ok';
+    } else if (response.statusCode == 400) {
+      return 'Not enough points';
+    } else {
+      throw Exception('Failed to claim coupon');
+    }
+  }
+
+  Future<List<ClaimedCouponDTO>> getClaimedCoupons() async {
+    final studentId = await StudentSession.getStudentId();
+    if (studentId == null) {
+      throw Exception('Student ID not found');
+    }
+    final response = await client.get(
+      Uri.parse('$baseUrl/coupon/claimed/student/$studentId'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse
+          .map((coupon) => ClaimedCouponDTO.fromJson(coupon))
           .toList();
     } else {
       throw Exception('Failed to load data');

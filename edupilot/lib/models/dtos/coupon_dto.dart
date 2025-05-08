@@ -13,15 +13,6 @@ class CouponDTO {
     required this.fee,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'description': description,
-      'icon': icon,
-      'fee': fee,
-    };
-  }
   factory CouponDTO.fromJson(Map<String, dynamic> json) {
     return CouponDTO(
       id: json['id'],
@@ -30,5 +21,14 @@ class CouponDTO {
       icon: json['icon'],
       fee: json['fee'],
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'icon': icon,
+      'fee': fee,
+    };
   }
 }
