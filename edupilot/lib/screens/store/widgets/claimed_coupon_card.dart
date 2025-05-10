@@ -4,6 +4,7 @@ import 'package:edupilot/services/coupons_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ClaimedCouponCard extends StatefulWidget {
   const ClaimedCouponCard({super.key});
@@ -19,7 +20,11 @@ class _ClaimedCouponCardState extends State<ClaimedCouponCard> {
       future: CouponsApiHandler().getClaimedCoupons(),
       builder: (BuildContext context, AsyncSnapshot claimedCouponSnapshot) {
         if (claimedCouponSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              ));
         } else if (claimedCouponSnapshot.hasError) {
           return Center(child: Text('Hata oluştu: ${claimedCouponSnapshot.error}'));
         } else if (!claimedCouponSnapshot.hasData || claimedCouponSnapshot.data!.isEmpty) {

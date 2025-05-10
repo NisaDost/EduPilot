@@ -5,6 +5,7 @@ import 'package:edupilot/services/students_api_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:edupilot/theme.dart';
 import 'package:edupilot/shared/styled_text.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FavoritePopUp extends StatefulWidget {
   const FavoritePopUp({
@@ -48,7 +49,11 @@ class _FavoritePopUpState extends State<FavoritePopUp> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              ));
     }
 
     if (hasError) {

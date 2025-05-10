@@ -5,6 +5,7 @@ import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   final StudentDTO student;
@@ -28,7 +29,12 @@ class HomeScreen extends StatelessWidget {
         future: StudentsApiHandler().getLoggedInStudent(),
         builder: (BuildContext context, AsyncSnapshot studentSnapshot) {
           if (studentSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              )
+            );
           } else if (studentSnapshot.hasError) {
             return Center(child: Text('Hata oluştu: ${studentSnapshot.error}'));
           } else if (!studentSnapshot.hasData) {

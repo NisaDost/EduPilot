@@ -11,7 +11,9 @@ import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/custom_app_bar.dart';
 import 'package:edupilot/shared/custom_bottom_bar.dart';
 import 'package:edupilot/shared/collapse_menu.dart';
+import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -112,7 +114,11 @@ class _MainScreenState extends State<MainScreen> {
               valueListenable: _studentNotifier,
               builder: (context, student, _) {
                 if (student == null) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: LoadingAnimationWidget.flickr(
+                    leftDotColor: AppColors.primaryColor,
+                    rightDotColor: AppColors.secondaryColor,
+                    size: 72,
+                    ));
                 }
                 _screens[0] = StoreScreen(
                   onRefreshStudent: _refreshStudent,

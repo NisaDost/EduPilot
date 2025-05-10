@@ -7,6 +7,7 @@ import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SimulationScreen extends StatefulWidget {
   const SimulationScreen({super.key});
@@ -101,7 +102,11 @@ class _SimulationScreenState extends State<SimulationScreen> {
       future: SimulationsApiHandler().getSimulations(),
       builder: (BuildContext context, AsyncSnapshot<List<SimulationDTO>> simulationSnapshot) {
         if (simulationSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              ));
         } else if (simulationSnapshot.hasError) {
           return Center(child: Text('Hata oluştu: ${simulationSnapshot.error}'));
         } else if (!simulationSnapshot.hasData || simulationSnapshot.data!.isEmpty) {

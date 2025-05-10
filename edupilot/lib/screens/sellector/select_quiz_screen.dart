@@ -7,6 +7,7 @@ import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SelectQuizScreen extends StatefulWidget {
   const SelectQuizScreen({required this.lesson, super.key});
@@ -38,7 +39,11 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
       future: LessonsApiHandler().getSubjectsByLessonId(widget.lesson.id),
       builder: (BuildContext context, AsyncSnapshot subjectSnapshot) {
         if (subjectSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              ));
         } else if (subjectSnapshot.hasError) {
           return Center(child: Text('Hata oluştu: ${subjectSnapshot.error}'));
         } else if (!subjectSnapshot.hasData) {
@@ -162,7 +167,11 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
                             future: StudentsApiHandler().getLoggedInStudent().then((student) => student.points),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator(color: AppColors.primaryColor);
+                                return Center(child: LoadingAnimationWidget.flickr(
+                                  leftDotColor: AppColors.primaryColor,
+                                  rightDotColor: AppColors.secondaryColor,
+                                  size: 72,
+                                  ));
                               } else if (snapshot.hasError) {
                                 return Text('Hata: ${snapshot.error}');
                               } else if (!snapshot.hasData) {

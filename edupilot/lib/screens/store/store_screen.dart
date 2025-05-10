@@ -5,6 +5,7 @@ import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class StoreScreen extends StatefulWidget {
   const StoreScreen({super.key, required this.onRefreshStudent});
@@ -115,7 +116,11 @@ class _StoreScreenState extends State<StoreScreen> {
                               future: StudentsApiHandler().getLoggedInStudent().then((student) => student.points),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return CircularProgressIndicator(color: AppColors.primaryColor);
+                                  return Center(child: LoadingAnimationWidget.flickr(
+                                    leftDotColor: AppColors.primaryAccent,
+                                    rightDotColor: AppColors.secondaryAccent,
+                                    size: 16,
+                                    ));
                                 } else if (snapshot.hasError) {
                                   return Text('Hata: ${snapshot.error}');
                                 } else if (!snapshot.hasData) {

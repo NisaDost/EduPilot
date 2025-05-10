@@ -1,13 +1,19 @@
 import 'package:edupilot/screens/auth/welcome_screen.dart';
 import 'package:edupilot/screens/main/main_screen.dart';
+import 'package:edupilot/screens/splash/custom_splash_screen.dart';
 import 'package:edupilot/sessions/student_session.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const CustomSplashScreen(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,7 +38,12 @@ class MyApp extends StatelessWidget {
         future: decideStartScreen(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(body: Center(child: CircularProgressIndicator()));
+            return Scaffold(body: Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              ))
+            );
           } else if (snapshot.hasData) {
             return snapshot.data!;
           } else {

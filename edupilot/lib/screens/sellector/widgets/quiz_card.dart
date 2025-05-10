@@ -7,6 +7,7 @@ import 'package:edupilot/services/quizzes_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class QuizCard extends StatelessWidget {
@@ -26,7 +27,11 @@ class QuizCard extends StatelessWidget {
         future: LessonsApiHandler().getSubjectsByLessonId(lesson.id),
         builder: (BuildContext context, AsyncSnapshot subjectSnapshot) {
           if (subjectSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              ));
           } else if (subjectSnapshot.hasError) {
             return Center(child: Text('Hata oluştu: ${subjectSnapshot.error}'));
           } else if (!subjectSnapshot.hasData) {

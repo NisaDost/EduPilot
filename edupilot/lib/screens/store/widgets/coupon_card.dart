@@ -7,6 +7,7 @@ import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CouponCard extends StatefulWidget {
   const CouponCard({super.key});
@@ -22,7 +23,11 @@ class _CouponState extends State<CouponCard> {
       future: CouponsApiHandler().getActiveCoupons(),
       builder: (BuildContext context, AsyncSnapshot couponSnapshot) {
         if (couponSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              ));
         } else if (couponSnapshot.hasError) {
           return Center(child: Text('Hata oluştu: ${couponSnapshot.error}'));
         } else if (!couponSnapshot.hasData || couponSnapshot.data!.isEmpty) {
@@ -34,7 +39,11 @@ class _CouponState extends State<CouponCard> {
           future: StudentsApiHandler().getLoggedInStudent(),
           builder: (BuildContext context, AsyncSnapshot studentSnapshot) {
             if (studentSnapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(child: LoadingAnimationWidget.flickr(
+              leftDotColor: AppColors.primaryColor,
+              rightDotColor: AppColors.secondaryColor,
+              size: 72,
+              ));
             } else if (studentSnapshot.hasError) {
               return Center(child: Text('Hata oluştu: ${studentSnapshot.error}'));
             } else if (!studentSnapshot.hasData) {
