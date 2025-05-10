@@ -97,6 +97,7 @@ namespace EduPilot.Api.Controllers
                     SubjectId = quiz.SubjectId,
                     Difficulty = quiz.Difficulty,
                     PointPerQuestion = quiz.Difficulty == Difficulty.Easy ? 10 : quiz.Difficulty == Difficulty.Medium ? 20 : 40,
+                    Duration = quiz.Duration,
                     IsActive = quiz.IsActive,
                     Questions = quiz.Questions.Select(q => new Question()
                     {
@@ -167,6 +168,24 @@ namespace EduPilot.Api.Controllers
             _context.Quizzes.Update(quiz);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(AddQuestionToQuiz), new { status = 201, id = questionEntity.Id });
+        }
+
+        [HttpGet("{id}/quiz/count")]
+        public async Task<IActionResult> GetQuizCount(Guid id)
+        {
+            var quizCount = await _context.Quizzes
+                .Where(q => q.PublisherId == id)
+                .CountAsync();
+            return Ok(quizCount);
+        }
+
+        [HttpGet("{id}/question/count")]
+        public async Task<IActionResult> GetQuestionCount(Guid id)
+        {
+            var questionCount = await _context.Questions
+                .Where(q => q.Quiz.PublisherId == id)
+                .CountAsync();
+            return Ok(questionCount);
         }
     }
 }

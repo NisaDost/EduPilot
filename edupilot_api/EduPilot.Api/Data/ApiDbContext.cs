@@ -426,6 +426,12 @@ namespace EduPilot.Api.Data
                 .Property(q => q.PublisherId)
                 .IsRequired();
             modelBuilder.Entity<Quiz>()
+                .Property(q => q.Difficulty)
+                .IsRequired();
+            modelBuilder.Entity<Quiz>()
+                .Property(q => q.Duration)
+                .IsRequired();
+            modelBuilder.Entity<Quiz>()
                 .HasOne(q => q.Publisher)
                 .WithMany(p => p.Quizzes)
                 .HasForeignKey(q => q.PublisherId)
