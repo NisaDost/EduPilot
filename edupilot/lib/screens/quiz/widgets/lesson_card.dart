@@ -55,7 +55,7 @@ class LessonCard extends ConsumerWidget {
                           size: 72
                       ),
                       const SizedBox(height: 10),
-                      XSmallText(
+                      SmallText(
                         lesson.name.length < 12
                             ? lesson.name
                             : '${lesson.name.substring(0, 9)}...',

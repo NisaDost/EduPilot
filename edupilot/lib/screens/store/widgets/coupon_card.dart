@@ -68,7 +68,7 @@ class _CouponState extends State<CouponCard> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       LargeText(coupon.name, AppColors.textColor),
-                                      XSmallText(coupon.description, AppColors.titleColor)
+                                      SmallText(coupon.description, AppColors.titleColor)
                                     ],
                                   ),
                                 ),
@@ -95,7 +95,7 @@ class _CouponState extends State<CouponCard> {
                                         borderRadius: BorderRadius.circular(8)
                                       )
                                     ),
-                                    child: XSmallBodyText('Satın Al', AppColors.backgroundColor)
+                                    child: SmallBodyText('Satın Al', AppColors.backgroundColor)
                                   ),
                                   LargeText('-${coupon.fee}', AppColors.dangerColor),
                                   Icon(Icons.bolt, color: AppColors.primaryColor, size: 36),

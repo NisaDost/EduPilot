@@ -63,29 +63,59 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryAccent,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: DropdownButton<String>(
-                          value: dropdownValue,
-                          dropdownColor: AppColors.primaryAccent,
-                          borderRadius: BorderRadius.circular(16),
-                          isExpanded: true,
-                          items: subjectNames.map((subjectName) {
-                            return DropdownMenuItem<String>(
-                              value: subjectName,
-                              child: LargeText(subjectName, AppColors.backgroundColor),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedSubject = value == 'Tümü' ? null : value;
-                            });
-                          },
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: IntrinsicHeight(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryAccent,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: dropdownValue,
+                              icon: Icon(Icons.arrow_drop_down, size: 40, color: AppColors.backgroundColor),
+                              dropdownColor: AppColors.primaryAccent,
+                              borderRadius: BorderRadius.circular(16),
+                              isExpanded: true,
+                              alignment: Alignment.center,
+                              iconEnabledColor: AppColors.backgroundColor,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedSubject = value == 'Tümü' ? null : value;
+                                });
+                              },
+                              // CLOSED view rendering
+                              selectedItemBuilder: (context) {
+                                return subjectNames.map((subjectName) {
+                                  return ConstrainedBox(
+                                    constraints: const BoxConstraints(minHeight: 24, maxHeight: 96),
+                                    child: Center(
+                                      child: LargeText(
+                                        subjectName,
+                                        AppColors.backgroundColor,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                              // OPENED dropdown items
+                              items: subjectNames.map((subjectName) {
+                                return DropdownMenuItem<String>(
+                                  value: subjectName,
+                                  alignment: Alignment.centerLeft,
+                                  child: LargeText(
+                                    subjectName,
+                                    AppColors.backgroundColor,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
                         ),
                       ),
                     ),

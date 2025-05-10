@@ -58,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                                   InfoRow(text: 'Bu alana kişisel bilgilerinizi giriniz.'),
                                   const SizedBox(height: 8),
                                   InfoRow(
-                                    leading: XSmallBodyText('*', AppColors.dangerColor),
+                                    leading: SmallBodyText('*', AppColors.dangerColor),
                                     text: 'ile işaretli alanların doldurulması zorunludur.',
                                   ),
                                 ],
@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                           children: [
                             _buildLabelWithAsterisk('Favori Derslerini Seç:'),
                             const SizedBox(height: 8),
-                            XSmallBodyText('Seçtiğin dersler hızlı erişimde görüntülenecek', AppColors.titleColor),
+                            SmallBodyText('Seçtiğin dersler hızlı erişimde görüntülenecek', AppColors.titleColor),
                           ],
                         ),
                         const SizedBox(height: 16),
@@ -138,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                                   color: AppColors.secondaryColor,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: XSmallBodyText(lesson.name, AppColors.backgroundColor),
+                                child: SmallBodyText(lesson.name, AppColors.backgroundColor),
                               );
                             }).toList(),
                           ),

@@ -87,7 +87,7 @@ class _AddSupervisorPopUpState extends State<AddSupervisorPopUp> {
                   ? CircularProgressIndicator()
                   : StyledButton(
                       onPressed: _submit,
-                      child: XSmallBodyText('Kaydet', AppColors.backgroundColor),
+                      child: SmallBodyText('Kaydet', AppColors.backgroundColor),
                     ),
             ],
           ),

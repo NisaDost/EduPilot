@@ -64,7 +64,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                               InfoRow(text: 'Merak etme, avatarını daha sonra değiştirebilirsin!'),
                               const SizedBox(height: 8),
                               InfoRow(
-                                leading: XSmallBodyText('*', AppColors.dangerColor),
+                                leading: SmallBodyText('*', AppColors.dangerColor),
                                 text: 'ile işaretli alanların doldurulması zorunludur.',
                               ),
                             ],
@@ -219,7 +219,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                             children: [
                               LargeText('Bir Avatar Seç', AppColors.textColor),
                               const SizedBox(height: 8),
-                              XSmallBodyText('Bunu daha sonra profilinden değiştirebilirsin', AppColors.titleColor),
+                              SmallBodyText('Bunu daha sonra profilinden değiştirebilirsin', AppColors.titleColor),
                               const SizedBox(height: 12),
                               FilledButton(
                                 onPressed: () async {

@@ -26,7 +26,7 @@ class SupervisorsListPopUp extends StatelessWidget {
               const SizedBox(height: 16),
               if (supervisorsList == null || supervisorsList!.isEmpty)
                 Center(
-                  child: XSmallBodyText(
+                  child: SmallBodyText(
                     'Herhangi bir danışman bulamadık.',
                     AppColors.textColor,
                   ),

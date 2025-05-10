@@ -69,7 +69,7 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                               InfoRow(text: 'Danışman bilgisi girmek zorunlu değil ancak danışman eklemek istersen her iki alanı da doldurman gerek!'),
                               const SizedBox(height: 8),
                               InfoRow(
-                                leading: XSmallBodyText('*', AppColors.dangerColor),
+                                leading: SmallBodyText('*', AppColors.dangerColor),
                                 text: 'ile işaretli alanların doldurulması zorunludur.',
                               ),
                             ],

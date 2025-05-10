@@ -65,7 +65,7 @@ class CollapseMenu extends StatelessWidget {
                         children: [
                           Icon(Icons.school_rounded, color: AppColors.backgroundColor),
                           const SizedBox(width: 16),
-                          XSmallBodyText("${student.grade}. Sınıf", AppColors.backgroundColor)
+                          SmallBodyText("${student.grade}. Sınıf", AppColors.backgroundColor)
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -74,7 +74,7 @@ class CollapseMenu extends StatelessWidget {
                         children: [
                           Icon(Icons.bolt, color: AppColors.primaryColor),
                           const SizedBox(width: 16),
-                          XSmallBodyText("${student.points}", AppColors.backgroundColor)
+                          SmallBodyText("${student.points}", AppColors.backgroundColor)
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -83,7 +83,7 @@ class CollapseMenu extends StatelessWidget {
                         children: [
                           Icon(Icons.local_fire_department, color: AppColors.secondaryColor),
                           const SizedBox(width: 16),
-                          XSmallBodyText("${student.dailyStreakCount}", AppColors.backgroundColor)
+                          SmallBodyText("${student.dailyStreakCount}", AppColors.backgroundColor)
                         ],
                       ),
                     ],
@@ -112,7 +112,7 @@ class CollapseMenu extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: XSmallBodyText('Çıkış Yap', AppColors.backgroundColor),
+                  child: SmallBodyText('Çıkış Yap', AppColors.backgroundColor),
                 ),
               ),
             ],
@@ -130,7 +130,7 @@ class CollapseMenu extends StatelessWidget {
           width: double.infinity,
           child: CollapseMenuButton(
             onPressed: onPressed, 
-            child: XSmallBodyText(text, AppColors.backgroundColor),
+            child: SmallBodyText(text, AppColors.backgroundColor),
           ),
         ),
       ],

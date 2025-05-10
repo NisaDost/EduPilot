@@ -253,7 +253,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            XSmallBodyText('Konsantre ol...', AppColors.backgroundColor),
+                            SmallBodyText('Konsantre ol...', AppColors.backgroundColor),
                           ],
                         ),
 
@@ -278,7 +278,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                   children: [
                     LargeBodyText('Simülasyon', AppColors.successColor),
                     const SizedBox(height: 10),
-                    XSmallBodyText('Zamana karşı yarışalım!', AppColors.titleColor),
+                    SmallBodyText('Zamana karşı yarışalım!', AppColors.titleColor),
                   ],
                 ),
               ),

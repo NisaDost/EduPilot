@@ -45,7 +45,7 @@ class LessonCard extends StatelessWidget {
               children: [
                 LargeBodyText(lesson.lessonName, AppColors.backgroundColor),
                 const SizedBox(height: 12),
-                XSmallBodyText('Quizleri görmek için tıkla.', AppColors.backgroundColor)
+                SmallBodyText('Quizleri görmek için tıkla.', AppColors.backgroundColor)
               ],
             ),
           ),

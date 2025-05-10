@@ -26,7 +26,7 @@ class InstitutionListPopUp extends StatelessWidget {
               const SizedBox(height: 16),
               if (institutionName == null || institutionName!.isEmpty)
                 Center(
-                  child: XSmallBodyText(
+                  child: SmallBodyText(
                     'Kayıtlı olduğun bir okul bulamadık.',
                     AppColors.textColor,
                   ),

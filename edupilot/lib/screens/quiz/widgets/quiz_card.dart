@@ -1,14 +1,15 @@
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
-import 'package:edupilot/models/dtos/quiz_dto.dart';
+import 'package:edupilot/models/dtos/quiz_info_dto.dart';
 import 'package:edupilot/models/dtos/subject_dto.dart';
+import 'package:edupilot/models/dtos/subject_quiz_dto.dart';
 import 'package:edupilot/services/lessons_api_handler.dart';
 import 'package:edupilot/services/quizzes_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
 
-class QuizCard extends ConsumerWidget {
+class QuizCard extends StatelessWidget {
   const QuizCard({
     required this.lesson,
     this.subjectFilter,
@@ -19,12 +20,7 @@ class QuizCard extends ConsumerWidget {
   final String? subjectFilter;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final allQuizzesInLesson = ref.watch(activeQuizzesProvider).where((q) {
-    //   final sameLesson = q.subject.lesson.name == lesson.name;
-    //   final matchesSubject = subjectFilter == null || q.subject.name == subjectFilter;
-    //   return sameLesson && matchesSubject;
-    // }).toList();
+  Widget build(BuildContext context) {
 
     return FutureBuilder<List<SubjectDTO>>(
         future: LessonsApiHandler().getSubjectsByLessonId(lesson.id),
@@ -42,22 +38,37 @@ class QuizCard extends ConsumerWidget {
             child: Column(
               children: [
                 for (SubjectDTO subject in subjects)
-                  if (subject.quizzes.isNotEmpty) 
+                  if (subject.quizzes.isNotEmpty && (subjectFilter == null || subject.name == subjectFilter)) 
                     // if (subjectFilter == null || subject.name == subjectFilter)
-                    FutureBuilder<QuizDTO>(
-                      future: QuizzesApiHandler().getQuizzesBySubjectId(subject.id),
-                      builder: (context, quizSnapshot) {
-                        if (quizSnapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (quizSnapshot.hasError) {
-                          return Center(child: Text('Hata oluştu: ${quizSnapshot.error}'));
-                        } else if (!quizSnapshot.hasData) {
-                          return const Center(child: Text('Quiz bulunamadı.'));
-                        }
-                        final QuizDTO quiz = quizSnapshot.data!;
-                        return _quizCardWidget(subject, quiz);
-                      },
-                    ),
+                      for (SubjectQuizDTO quiz in subject.quizzes)
+                        FutureBuilder<QuizInfoDTO>(
+                          future: QuizzesApiHandler().getQuizInfo(quiz.quizId),
+                          builder: (context, quizSnapshot) {
+                            if (quizSnapshot.connectionState == ConnectionState.waiting) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8),
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey.shade300,
+                                  highlightColor: Colors.grey.shade100,
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 160,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else if (quizSnapshot.hasError) {
+                              return Center(child: Text('Hata oluştu: ${quizSnapshot.error}'));
+                            } else if (!quizSnapshot.hasData) {
+                              return const Center(child: Text('Quiz bulunamadı.'));
+                            }
+                            final QuizInfoDTO quiz = quizSnapshot.data!;
+                            return _quizCardWidget(subject, quiz);
+                          },
+                        ),
               ],
             ),
         );
@@ -65,7 +76,7 @@ class QuizCard extends ConsumerWidget {
     );
   }
 
-  _quizCardWidget(SubjectDTO subject, QuizDTO quiz) {
+  _quizCardWidget(SubjectDTO subject, QuizInfoDTO quiz) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
@@ -74,19 +85,30 @@ class QuizCard extends ConsumerWidget {
         color: AppColors.primaryColor,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           LargeText(subject.name, AppColors.backgroundColor),
-          SizedBox(height: 4),
-          Row(
+          SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              XSmallText('Bu quizden ${quiz.pointPerQuestion}', AppColors.titleColor),
-              Icon(Icons.bolt, color: AppColors.titleColor, size: 16),
-              XSmallText('kazanabilirsin!', AppColors.titleColor),
+              SmallText('Bu quizden doğru cevap başına',  AppColors.textColor),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SmallText('${quiz.pointPerQuestion}', AppColors.backgroundColor),
+                  Icon(Icons.bolt, color: AppColors.backgroundColor, size: 16),
+                  SmallText('kazanabilirsin!', AppColors.textColor),
+                ],
+              ),
             ],
           ),
-          const SizedBox(height: 24),
+
+          const SizedBox(height: 12),
+          _buildLine(),
+          const SizedBox(height: 12),
+          
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -98,7 +120,7 @@ class QuizCard extends ConsumerWidget {
                     children: [
                       Icon(Icons.school,color: AppColors.backgroundColor, size: 24),
                       const SizedBox(width: 8),
-                      XSmallText('${subject.grade}. Sınıf', AppColors.textColor)
+                      SmallBodyText('${subject.grade}. Sınıf', AppColors.textColor)
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -106,7 +128,7 @@ class QuizCard extends ConsumerWidget {
                     children: [
                       Icon(Icons.timer, color: AppColors.backgroundColor, size: 24),
                       const SizedBox(width: 8),
-                      XSmallText('20 dk', AppColors.textColor)
+                      SmallText('${quiz.duration} dk', AppColors.textColor)
                     ],
                   )
                 ],
@@ -120,7 +142,7 @@ class QuizCard extends ConsumerWidget {
                     children: [
                       Icon(Icons.assignment, color: AppColors.backgroundColor, size: 24),
                       const SizedBox(width: 8),
-                      XSmallText('${quiz.questions.length} soru', AppColors.textColor)
+                      SmallText('${quiz.questionCount} soru', AppColors.textColor)
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -128,7 +150,7 @@ class QuizCard extends ConsumerWidget {
                     children: [
                       Icon(Icons.signal_cellular_alt_outlined, color: AppColors.backgroundColor, size: 24),
                       const SizedBox(width: 8),
-                      XSmallText(
+                      SmallText(
                         quiz.difficulty.index == 0 
                         ? 'Kolay' 
                         : quiz.difficulty.index == 1
@@ -141,17 +163,30 @@ class QuizCard extends ConsumerWidget {
               ),
               const Expanded(child: SizedBox()),
               // başla tuşu
-              FilledButton(
-                onPressed: () {}, 
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.secondaryColor
+              Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: FilledButton(
+                  onPressed: () {}, 
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.secondaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: LargeText('Başla', AppColors.backgroundColor),
                 ),
-                child: LargeText('Başla', AppColors.backgroundColor),
               )
             ],
           )
         ]
       ),
+    );
+  }
+  Widget _buildLine() {
+    return Container(
+      width: double.infinity,
+      height: 1.15,
+      color: AppColors.backgroundColor,
     );
   }
 }

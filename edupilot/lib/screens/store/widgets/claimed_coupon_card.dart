@@ -55,7 +55,7 @@ class _ClaimedCouponCardState extends State<ClaimedCouponCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               LargeText(claimedCoupon.couponName, AppColors.textColor),
-                              XSmallText(claimedCoupon.couponDescription, AppColors.titleColor)
+                              SmallText(claimedCoupon.couponDescription, AppColors.titleColor)
                             ],
                           ),
                         ),
@@ -101,7 +101,7 @@ class _ClaimedCouponCardState extends State<ClaimedCouponCard> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: XSmallBodyText('Kullan', AppColors.backgroundColor),
+                            child: SmallBodyText('Kullan', AppColors.backgroundColor),
                           ),
                         ],
                       ),

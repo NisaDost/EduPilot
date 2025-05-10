@@ -126,7 +126,7 @@ class InfoRow extends StatelessWidget {
         if (leading != null) leading!,
         if (leading != null) const SizedBox(width: 4),
         Expanded(
-          child: XSmallBodyText(text, AppColors.textColor)),
+          child: SmallBodyText(text, AppColors.textColor)),
       ],
     );
   }

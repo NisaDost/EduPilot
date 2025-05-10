@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class XSmallText extends StatelessWidget {
-  const XSmallText(this.text, this.color, {
+class SmallText extends StatelessWidget {
+  const SmallText(this.text, this.color, {
     super.key,
     this.textAlign,
     this.maxLines,
@@ -27,8 +27,8 @@ class XSmallText extends StatelessWidget {
     );
   }
 }
-class XSmallBodyText extends StatelessWidget {
-  const XSmallBodyText(this.text, this.color, {
+class SmallBodyText extends StatelessWidget {
+  const SmallBodyText(this.text, this.color, {
     super.key,
     this.textAlign,
     this.maxLines,
@@ -108,12 +108,14 @@ class LargeText extends StatelessWidget {
     super.key,
     this.textAlign,
     this.maxLines,
+    this.overflow,
   });
 
   final String text;
   final Color? color;
   final TextAlign? textAlign;
   final int? maxLines;
+  final TextOverflow? overflow;
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +126,7 @@ class LargeText extends StatelessWidget {
       softWrap: true,
       textAlign: textAlign ?? TextAlign.start,
       maxLines: maxLines,
+      overflow: overflow ?? TextOverflow.visible,
     );
   }
 }

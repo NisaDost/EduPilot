@@ -67,21 +67,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Icon(Icons.school_rounded, color: AppColors.titleColor, size: 36),
                                 const SizedBox(width: 12),
-                                XSmallBodyText('${student.grade}. Sınıf', AppColors.textColor)
+                                SmallBodyText('${student.grade}. Sınıf', AppColors.textColor)
                               ],
                             ),
                             Row(
                               children: [
                                 Icon(Icons.bolt, color: AppColors.primaryColor, size: 36),
                                 const SizedBox(width: 12),
-                                XSmallBodyText(student.points.toString(), AppColors.primaryAccent),
+                                SmallBodyText(student.points.toString(), AppColors.primaryAccent),
                               ],
                             ),
                             Row(
                               children: [
                                 Icon(Icons.local_fire_department, color: AppColors.secondaryColor, size: 36),
                                 const SizedBox(width: 12),
-                                XSmallBodyText('${student.dailyStreakCount}. Gün', AppColors.secondaryAccent),
+                                SmallBodyText('${student.dailyStreakCount}. Gün', AppColors.secondaryAccent),
                               ],
                             ),
                             Row(
@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     );
                                   }, 
                                   color: AppColors.primaryColor,
-                                  child: XSmallText('Danışmanlarım', AppColors.backgroundColor), 
+                                  child: SmallText('Danışmanlarım', AppColors.backgroundColor), 
                                 ),
                                 const SizedBox(width: 8),
                                  ProfileScreenButton(
@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     );
                                   }, 
                                   color: AppColors.primaryColor,
-                                  child: XSmallText('Okulum', AppColors.backgroundColor), 
+                                  child: SmallText('Okulum', AppColors.backgroundColor), 
                                 ),
                               ],
                             ),
@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   );
                                 }, 
                                 color: AppColors.secondaryColor,
-                                child: XSmallText('Danışman Ekle', AppColors.backgroundColor), 
+                                child: SmallText('Danışman Ekle', AppColors.backgroundColor), 
                               ),
                             )
                           ],
@@ -175,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       }
                                     }
                                   }, 
-                                  child: XSmallText('Avatarını Değiştir', AppColors.backgroundColor)
+                                  child: SmallText('Avatarını Değiştir', AppColors.backgroundColor)
                                 ),
                               ],
                             ),
@@ -212,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               );
                             }, 
                             color: AppColors.secondaryColor,
-                            child: XSmallText('Düzenle', AppColors.backgroundColor),
+                            child: SmallText('Düzenle', AppColors.backgroundColor),
                           ),
                         ],
                       ),

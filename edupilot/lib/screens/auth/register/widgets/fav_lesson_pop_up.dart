@@ -68,7 +68,7 @@ class _FavoritePopUpState extends State<FavLessonPopUp> {
             final isFavorite = favoriteLessonIds.contains(lesson.id);
 
             return ListTile(
-              title: XSmallBodyText(lesson.name, AppColors.textColor),
+              title: SmallBodyText(lesson.name, AppColors.textColor),
               trailing: SizedBox(
                 width: 48,
                 height: 48,
@@ -93,14 +93,14 @@ class _FavoritePopUpState extends State<FavLessonPopUp> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: XSmallText('Kapat', AppColors.textColor),
+          child: SmallText('Kapat', AppColors.textColor),
         ),
         TextButton(
           onPressed: () async {
             final success = favoriteLessonIds.isNotEmpty;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: XSmallBodyText(
+                content: SmallBodyText(
                   success ? 'Favori dersler başarıyla kaydedildi.' : 'Favori dersler kaydedilemedi.',
                   AppColors.textColor,
                 ),
@@ -112,7 +112,7 @@ class _FavoritePopUpState extends State<FavLessonPopUp> {
             }
             Navigator.pop(context, favoriteLessonIds);
           },
-          child: XSmallText('Kaydet', AppColors.primaryColor),
+          child: SmallText('Kaydet', AppColors.primaryColor),
         ),
       ],
     );

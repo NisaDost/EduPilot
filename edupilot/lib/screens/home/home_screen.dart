@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           LargeText('Hoş Geldin, ${student.firstName}!', AppColors.successColor),
                           const SizedBox(height: 8),
-                          XSmallText('Bugün nasıl çalışmak istersin?', AppColors.textColor),
+                          SmallText('Bugün nasıl çalışmak istersin?', AppColors.textColor),
                           const SizedBox(height: 8),
                           Row(
                             children: [

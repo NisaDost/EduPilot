@@ -64,7 +64,7 @@ class _AchievementCardState extends State<AchievementCard> {
                 ),
               ),
               const SizedBox(height: 6),
-              XSmallText(widget.student.studentAchievements![index].achievementName, AppColors.primaryAccent),
+              SmallText(widget.student.studentAchievements![index].achievementName, AppColors.primaryAccent),
             ],
           ),
         );
