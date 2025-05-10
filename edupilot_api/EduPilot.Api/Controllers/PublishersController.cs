@@ -86,14 +86,18 @@ namespace EduPilot.Api.Controllers
             {
                 return NotFound("Publisher not found");
             }
-            publisherEntity.Name = publisher.Name;
-            publisherEntity.Password = publisher.Password;
-            publisherEntity.Address = publisher.Address;
-            publisherEntity.Logo = publisher.Logo;
-            publisherEntity.Website = publisher.Website;
-            _context.Entry(publisherEntity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return Ok();
+            if (publisherEntity.Password == publisher.CurrentPassword)
+            {
+                publisherEntity.Name = publisher.Name;
+                publisherEntity.Password = publisher.Password;
+                publisherEntity.Address = publisher.Address;
+                publisherEntity.Logo = publisher.Logo;
+                publisherEntity.Website = publisher.Website;
+                _context.Entry(publisherEntity).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [HttpPost("{id}/add/quiz")]
