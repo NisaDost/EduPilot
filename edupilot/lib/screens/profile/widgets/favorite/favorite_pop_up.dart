@@ -11,9 +11,11 @@ class FavoritePopUp extends StatefulWidget {
   const FavoritePopUp({
     super.key,
     required this.onSave,
+    required this.scaffoldMessengerContext,
   });
 
   final VoidCallback onSave;
+  final BuildContext scaffoldMessengerContext;
 
   @override
   State<FavoritePopUp> createState() => _FavoritePopUpState();
@@ -50,10 +52,10 @@ class _FavoritePopUpState extends State<FavoritePopUp> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return Center(child: LoadingAnimationWidget.flickr(
-              leftDotColor: AppColors.primaryColor,
-              rightDotColor: AppColors.secondaryColor,
-              size: 72,
-              ));
+        leftDotColor: AppColors.primaryColor,
+        rightDotColor: AppColors.secondaryColor,
+        size: 72,
+        ));
     }
 
     if (hasError) {
@@ -102,10 +104,10 @@ class _FavoritePopUpState extends State<FavoritePopUp> {
         TextButton(
           onPressed: () async {
             final success = await StudentsApiHandler().updateFavoriteLessons(favoriteLessonIds.toList());
-            ScaffoldMessenger.of(context).showSnackBar(
+            ScaffoldMessenger.of(widget.scaffoldMessengerContext).showSnackBar(
               SnackBar(
                 content: SmallBodyText(
-                  success ? 'Favori dersler başarıyla kaydedildi.' : 'Favori dersler kaydedilemedi.',
+                  success ? 'Favori dersler başarıyla güncellendi.' : 'Favori dersler kaydedilemedi.',
                   AppColors.textColor,
                 ),
                 backgroundColor: success ? AppColors.successColor : AppColors.dangerColor,
@@ -114,7 +116,6 @@ class _FavoritePopUpState extends State<FavoritePopUp> {
             if (success) {
               widget.onSave();
             }
-            Navigator.pop(context);
           },
           child: SmallText('Kaydet', AppColors.primaryColor),
         ),
