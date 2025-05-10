@@ -1,6 +1,6 @@
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/subject_dto.dart';
-import 'package:edupilot/screens/quiz/widgets/quiz_card.dart';
+import 'package:edupilot/screens/sellector/widgets/quiz_card.dart';
 import 'package:edupilot/services/lessons_api_handler.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
