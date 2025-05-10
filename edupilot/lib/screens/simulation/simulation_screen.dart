@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:edupilot/models/dtos/simulation_dto.dart';
 import 'package:edupilot/screens/simulation/widgets/session_picker.dart';
+import 'package:edupilot/screens/simulation/widgets/simulation_is_success_pop_up.dart';
 import 'package:edupilot/services/simulations_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
@@ -85,7 +86,10 @@ class _SimulationScreenState extends State<SimulationScreen> {
             setState(() {
               _isRunning = false;
             });
-            await SimulationsApiHandler().postStudiedSimulation(_selectedSimulation!.id); // not working
+            SimulationIsSuccessPopUp.show(context, () async {
+              await SimulationsApiHandler().postStudiedSimulation(_selectedSimulation!.id);
+            });
+
           }
         }
       }

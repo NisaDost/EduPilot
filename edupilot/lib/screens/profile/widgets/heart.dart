@@ -6,11 +6,11 @@ class Heart extends StatelessWidget {
   final Color defaultColor;
 
   const Heart({
-    Key? key,
+    super.key,
     required this.isFavorite,
     required this.onTap,
     required this.defaultColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

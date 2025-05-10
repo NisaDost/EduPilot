@@ -46,7 +46,7 @@ class SimulationsApiHandler {
       throw Exception('Student ID not found');
     }
     final response = await client.post(
-      Uri.parse('$baseUrl/simulations/$id/student/$studentId'),
+      Uri.parse('$baseUrl/simulation/$id/student/$studentId'),
       headers: <String, String>{
         'Authorization':
             'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',

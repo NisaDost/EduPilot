@@ -6,9 +6,9 @@ class SessionPicker extends StatefulWidget {
   final Function(int) onSessionCountChanged;
 
   const SessionPicker({
-    Key? key,
+    super.key,
     required this.onSessionCountChanged,
-  }) : super(key: key);
+  });
 
   @override
   _SessionPickerState createState() => _SessionPickerState();
