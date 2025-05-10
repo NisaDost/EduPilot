@@ -97,11 +97,12 @@ namespace EduPilot.Api.Controllers
                     SubjectId = quiz.SubjectId,
                     Difficulty = quiz.Difficulty,
                     PointPerQuestion = quiz.Difficulty == Difficulty.Easy ? 10 : quiz.Difficulty == Difficulty.Medium ? 20 : 40,
-                    IsActive = true,
+                    IsActive = quiz.IsActive,
                     Questions = quiz.Questions.Select(q => new Question()
                     {
                         QuestionContent = q.QuestionContent,
                         QuestionImage = q.QuestionImage,
+                        IsActive = q.IsActive,
                         Choices = q.Choices.Select(c => new Choice()
                         {
                             OptionContent = c.ChoiceContent,
