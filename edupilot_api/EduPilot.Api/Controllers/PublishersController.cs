@@ -101,6 +101,7 @@ namespace EduPilot.Api.Controllers
                     Questions = quiz.Questions.Select(q => new Question()
                     {
                         QuestionContent = q.QuestionContent,
+                        QuestionImage = q.QuestionImage,
                         Choices = q.Choices.Select(c => new Choice()
                         {
                             OptionContent = c.ChoiceContent,

@@ -8,7 +8,6 @@ import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-
 class SimulationScreen extends StatefulWidget {
   const SimulationScreen({super.key});
 
@@ -36,10 +35,8 @@ class _SimulationScreenState extends State<SimulationScreen> {
 
   Future<void> _playAlertSound() async {
     await _audioPlayer.play(AssetSource('sounds/alert.mp3')).catchError((error) {
-      print('Error playing sound: $error'); // not working
     });
   }
-
 
   String formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');

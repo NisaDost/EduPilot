@@ -59,8 +59,27 @@ namespace EduPilot.Api.Controllers
                 StudiedAt = DateTime.UtcNow
             };
 
+            var simCount = await _context.StudentSimulations.CountAsync((ss) => ss.StudentId == studentId);
+            var newSimCount = simCount++;
+
             _context.StudentSimulations.Add(studiedSimulation);
             await _context.SaveChangesAsync();
+
+
+            switch (newSimCount)
+            {
+                case 5:
+                    // earn achievement
+                    break;
+                case 15:
+                    // earn achievement
+                    break;
+                case 30:
+                    // earn achievement
+                    break;
+                default:
+                    break;
+            }
 
             return CreatedAtAction(nameof(PostStudiedSimulation), new { status = 201, id = studiedSimulation.Id });
         }
