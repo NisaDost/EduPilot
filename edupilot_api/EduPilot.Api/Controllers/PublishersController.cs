@@ -22,6 +22,14 @@ namespace EduPilot.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PublisherDTO>> GetPublisherById(Guid id)
         {
+            var quizCount = await _context.Quizzes
+                .Where(q => q.PublisherId == id)
+                .CountAsync();
+
+            var questionCount = await _context.Questions
+                .Where(q => q.Quiz.PublisherId == id)
+                .CountAsync();
+
             var publisher = await _context.Publishers
                 .Select(p => new PublisherDTO()
                 {
@@ -31,6 +39,8 @@ namespace EduPilot.Api.Controllers
                     Address = p.Address ?? string.Empty,  
                     Logo = p.Logo ?? string.Empty,        
                     Website = p.Website ?? string.Empty,  
+                    quizCount = quizCount,
+                    questionCount = questionCount
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -168,24 +178,6 @@ namespace EduPilot.Api.Controllers
             _context.Quizzes.Update(quiz);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(AddQuestionToQuiz), new { status = 201, id = questionEntity.Id });
-        }
-
-        [HttpGet("{id}/quiz/count")]
-        public async Task<IActionResult> GetQuizCount(Guid id)
-        {
-            var quizCount = await _context.Quizzes
-                .Where(q => q.PublisherId == id)
-                .CountAsync();
-            return Ok(quizCount);
-        }
-
-        [HttpGet("{id}/question/count")]
-        public async Task<IActionResult> GetQuestionCount(Guid id)
-        {
-            var questionCount = await _context.Questions
-                .Where(q => q.Quiz.PublisherId == id)
-                .CountAsync();
-            return Ok(questionCount);
         }
     }
 }

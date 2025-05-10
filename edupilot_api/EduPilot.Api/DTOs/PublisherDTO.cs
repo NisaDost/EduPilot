@@ -8,5 +8,7 @@
         public string Logo { get; set; }
         public string Address { get; set; }
         public string Website { get; set; }
+        public int quizCount { get; set; }
+        public int questionCount { get; set; }
     }
 }
