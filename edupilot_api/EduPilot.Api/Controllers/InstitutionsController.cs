@@ -100,13 +100,14 @@ namespace EduPilot.Api.Controllers
                                               MiddleName = s.MiddleName,
                                               LastName = s.LastName,
                                               Grade = s.Grade,
+                                              Email = s.Email,
                                               SupervisorName = s.StudentSupervisors
                                                                 .Select(ss => ss.Supervisor.FirstName +
                                                                               (!string.IsNullOrEmpty(ss.Supervisor.MiddleName)
                                                                               ? " " + ss.Supervisor.MiddleName
                                                                               : "") +
                                                                               " " + ss.Supervisor.LastName)
-                                                                .FirstOrDefault(),
+                                                                .ToList(),
                                           })
                                           .ToListAsync();
             if (students == null || students.Count == 0)
