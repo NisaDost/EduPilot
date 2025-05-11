@@ -9,5 +9,6 @@
         public List<Attendance> Attendances { get; set; }
         public List<StudentFavLesson> StudentFavLessons { get; set; }
         public List<Subject> Subjects { get; set; }
+        public List <SolvedQuestionCount> SolvedQuestionCounts { get; set; }
     }
 }

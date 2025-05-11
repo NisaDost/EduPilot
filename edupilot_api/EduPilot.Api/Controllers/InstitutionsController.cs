@@ -19,6 +19,27 @@ namespace EduPilot.Api.Controllers
             _context = context;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<InstitutionDTO>> GetInstitutionById(Guid id)
+        {
+            var institution = await _context.Institutions
+                .Select(i => new InstitutionDTO()
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Email = i.Email,
+                    Address = i.Address,
+                    Logo = i.Logo,
+                    Website = i.Website,
+                })
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (institution == null)
+            {
+                return NotFound();
+            }
+            return institution;
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> PostInstitution([FromBody] InstitutionRegisterDTO institution)
         {

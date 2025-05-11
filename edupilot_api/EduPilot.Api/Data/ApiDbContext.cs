@@ -21,6 +21,7 @@ namespace EduPilot.Api.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Choice> Choices { get; set; }
         public DbSet<Simulation> Simulations { get; set; }
+        public DbSet<SolvedQuestionCount> SolvedQuestionCounts { get; set; }
         public DbSet<StudentSimulation> StudentSimulations { get; set; }
         public DbSet<StudentFavLesson> StudentFavLessons { get; set; }
         public DbSet<StudentAchievement> StudentAchievements { get; set; }
@@ -630,6 +631,32 @@ namespace EduPilot.Api.Data
                 .HasDefaultValueSql("GETDATE()");
             #endregion
 
+            #region SolvedQuestionCount
+            modelBuilder.Entity<SolvedQuestionCount>()
+                .HasKey(sqc => sqc.Id);
+            modelBuilder.Entity<SolvedQuestionCount>()
+                .Property(sqc => sqc.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<SolvedQuestionCount>()
+                .Property(sqc => sqc.Count)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuestionCount>()
+                .Property(sqc => sqc.EntryDate)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuestionCount>()
+                .Property(sqc => sqc.StudentId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuestionCount>()
+                .HasOne(sqc => sqc.Student)
+                .WithMany(s => s.SolvedQuestionCounts)
+                .HasForeignKey(sqc => sqc.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<SolvedQuestionCount>()
+                .HasOne(sqc => sqc.Lesson)
+                .WithMany(l => l.SolvedQuestionCounts)
+                .HasForeignKey(sqc => sqc.LessonId)
+                .OnDelete(DeleteBehavior.Cascade);
+            #endregion
         }
     }
 }

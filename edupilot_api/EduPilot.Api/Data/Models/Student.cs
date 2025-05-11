@@ -22,5 +22,6 @@
         public List<StudentAchievement> StudentAchievements { get; set; }
         public List<StudentSimulation> StudentSimulations { get; set; }
         public List<ClaimedCoupon> ClaimedCoupons { get; set; }
+        public List<SolvedQuestionCount> SolvedQuestionCounts { get; set; }
     }
 }
