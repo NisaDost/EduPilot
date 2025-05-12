@@ -1,6 +1,7 @@
 import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
+import 'package:edupilot/screens/agenda/agenda_screen.dart';
 import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
 import 'package:edupilot/screens/sellector/select_lesson_screen.dart';
@@ -123,6 +124,8 @@ class _MainScreenState extends State<MainScreen> {
                 _screens[0] = StoreScreen(
                   onRefreshStudent: _refreshStudent,
                 );
+
+                _screens[1] = const AgendaScreen();
 
                 _screens[2] = const SimulationScreen();
 

@@ -72,3 +72,31 @@ class ProfileScreenButton extends StatelessWidget {
     );
   }
 }
+
+class AgendaScreenButton extends StatelessWidget {
+  const AgendaScreenButton({
+    super.key,
+    required this.onPressed,
+    required this.child,
+    required this.color,
+  });
+
+  final Function() onPressed;
+  final Widget child;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed, 
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 12),
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: child
+    );
+  }
+}

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
+import 'package:edupilot/models/dtos/solved_question_count_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/sessions/student_session.dart';
 import 'package:http/http.dart' as http;
@@ -229,5 +230,47 @@ class StudentsApiHandler {
     } else {
       return false;
     }
-  } 
+  }
+
+  Future<List<SolvedQuestionCountDTO>> getSolvedQuestionCountPerWeek(DateTime startOfWeek, DateTime endOfWeek) async {
+    final studentId = await StudentSession.getStudentId();
+    final response = await client.get(
+      Uri.parse('$baseUrl/students/$studentId/solvedquestioncount/$startOfWeek/$endOfWeek'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse
+          .map((questionCount) => SolvedQuestionCountDTO.fromJson(questionCount))
+          .toList();
+    } else {
+      throw Exception('Failed to get solved question count data');
+    }
+  }
+
+  Future<bool> postSolvedQuestionCountPerLesson(int count, String lessonId) async {
+    final studentId = await StudentSession.getStudentId();
+    final response = await client.post(
+      Uri.parse('$baseUrl/students/$studentId/add/questioncount/$count/lessson/$lessonId'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'studentId': studentId,
+        'lessonId': lessonId,
+        'count': count,
+      })
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
