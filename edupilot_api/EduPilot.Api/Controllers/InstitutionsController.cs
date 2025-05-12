@@ -117,15 +117,15 @@ namespace EduPilot.Api.Controllers
             return students;
         }
 
-        [HttpPost("{id}/student/{studentId}")]
-        public async Task<IActionResult> AddStudentToInstitution(Guid id, Guid studentId)
+        [HttpPost("{id}/student/{email}")]
+        public async Task<IActionResult> AddStudentToInstitution(Guid id, string email)
         {
             var institution = await _context.Institutions.FindAsync(id);
             if (institution == null)
             {
                 return NotFound("Institution not found");
             }
-            var student = await _context.Students.FindAsync(studentId);
+            var student = await _context.Students.Where(s => s.Email == email).FirstAsync();
             if (student == null)
             {
                 return NotFound("Student not found");
