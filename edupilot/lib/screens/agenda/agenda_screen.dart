@@ -1,6 +1,8 @@
 import 'package:edupilot/models/dtos/solved_question_count_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
-import 'package:edupilot/screens/profile/widgets/supervisors_list_pop_up.dart';
+import 'package:edupilot/screens/agenda/add_new_solved_question_screen.dart';
+import 'package:edupilot/screens/agenda/widgets/agenda_header.dart';
+import 'package:edupilot/screens/agenda/widgets/weekly_comparison_graph.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -28,7 +30,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
     _studentFuture = StudentsApiHandler().getLoggedInStudent();
 
     final now = DateTime.now();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 5; i++) {
       final monday = getStartOfWeek(now.subtract(Duration(days: i * 7)));
       final sunday = getEndOfWeek(monday);
       final label = '${formatDate(monday)} - ${formatDate(sunday)}';
@@ -39,6 +41,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
 
   DateTime getStartOfWeek(DateTime date) =>
       date.subtract(Duration(days: date.weekday - 1));
+
   DateTime getEndOfWeek(DateTime startOfWeek) =>
       startOfWeek.add(const Duration(days: 6));
 
@@ -46,10 +49,37 @@ class _AgendaScreenState extends State<AgendaScreen> {
       DateFormat('dd/MM/yyyy').format(date);
 
   Future<List<SolvedQuestionCountDTO>> _fetchWeekData() {
-    return StudentsApiHandler().getSolvedQuestionCountPerWeek(
-      _selectedWeek['start'],
-      _selectedWeek['end'],
+    final DateTime normalizedStart = DateTime(
+      _selectedWeek['start'].year,
+      _selectedWeek['start'].month,
+      _selectedWeek['start'].day,
     );
+
+    final DateTime normalizedEnd = DateTime(
+      _selectedWeek['end'].year,
+      _selectedWeek['end'].month,
+      _selectedWeek['end'].day,
+    );
+
+    return StudentsApiHandler().getSolvedQuestionCountPerWeek(
+      normalizedStart,
+      normalizedEnd,
+    );
+  }
+
+  Future<List<int>> _fetchWeekTotals() async {
+    List<int> totals = [];
+    for (var week in _weeks.reversed) {
+      final normalizedStart = DateTime(week['start'].year, week['start'].month, week['start'].day);
+      final normalizedEnd = DateTime(week['end'].year, week['end'].month, week['end'].day);
+      final data = await StudentsApiHandler().getSolvedQuestionCountPerWeek(
+        normalizedStart,
+        normalizedEnd,
+      );
+      final total = data.fold(0, (sum, item) => sum + item.count);
+      totals.add(total);
+    }
+    return totals;
   }
 
   @override
@@ -136,15 +166,16 @@ class _AgendaScreenState extends State<AgendaScreen> {
                               ),
                             ),
                             const SizedBox(height: 16),
-
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: List.generate(7, (index) {
                                 final currentDay = _selectedWeek['start'].add(Duration(days: index));
                                 final formattedDate = formatDate(currentDay);
-                                final isToday = formattedDate == formatDate(today);
+                                final isToday = currentDay.year == today.year &&
+                                    currentDay.month == today.month &&
+                                    currentDay.day == today.day;
                                 final isFuture = currentDay.isAfter(today);
-                                final count = isFuture ? '-' : (dateToCount[formattedDate]?.toString() ?? '-');
+                                final count = isFuture ? '-' : (dateToCount[formattedDate]?.toString() ?? '0');
 
                                 final bgColor = isToday
                                     ? AppColors.primaryColor
@@ -197,19 +228,45 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                         Padding(
                                           padding: const EdgeInsets.symmetric(vertical: 6),
                                           child: Text(
-                                            '$count',
+                                            count,
                                             style: GoogleFonts.montserrat(
                                               fontWeight: FontWeight.w600,
                                               color: AppColors.titleColor,
                                             ),
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
                                 );
                               }),
-                            )
+                            ),
+                            const SizedBox(height: 8),
+                            FutureBuilder<List<int>>(
+                              future: _fetchWeekTotals(),
+                              builder: (context, graphSnapshot) {
+                                if (graphSnapshot.connectionState == ConnectionState.waiting) {
+                                  return Center(child: CircularProgressIndicator());
+                                } else if (graphSnapshot.hasError || !graphSnapshot.hasData) {
+                                  return const SizedBox.shrink();
+                                }
+                                return WeeklyComparisonGraph(weekTotals: graphSnapshot.data!);
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              width: double.infinity,
+                              child: AgendaScreenButton(
+                                onPressed: () {
+                                  Navigator.push(context, 
+                                    MaterialPageRoute(
+                                      builder: (context) => AddNewSolvedQuestionScreen())
+                                    );
+                                }, 
+                                color: AppColors.secondaryColor,
+                                child: LargeText('Çözdüğün Soru Sayısını Gir', AppColors.backgroundColor), 
+                              ),
+                            ),
                           ],
                         ),
                       )
@@ -218,69 +275,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                 ),
               ),
             ),
-            // Top bar
-            Container(
-              height: topBarHeight,
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-              decoration: BoxDecoration(
-                color: AppColors.backgroundColor,
-                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      LargeBodyText('Ajanda', AppColors.successColor),
-                      FutureBuilder<StudentDTO>(
-                        future: _studentFuture,
-                        builder: (context, studentSnapshot) {
-                          if (studentSnapshot.connectionState == ConnectionState.waiting) {
-                            return LoadingAnimationWidget.flickr(
-                              leftDotColor: AppColors.primaryColor,
-                              rightDotColor: AppColors.secondaryColor,
-                              size: 48,
-                            );
-                          } else if (studentSnapshot.hasError || !studentSnapshot.hasData) {
-                            return const Text('Danışman bulunamadı');
-                          }
-
-                          final student = studentSnapshot.data!;
-                          return AgendaScreenButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => SupervisorsListPopUp(
-                                  supervisorsList: student.studentSupervisors
-                                          ?.map((s) => s.supervisorName)
-                                          .toList() ??
-                                      [],
-                                ),
-                              );
-                            },
-                            color: AppColors.secondaryColor,
-                            child: SmallBodyText('Danışmanlarım', AppColors.backgroundColor),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'İlerlemene ait bütün istatistikleri burada bulabilirsin.',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                      color: AppColors.titleColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            AgendaHeader(studentFuture: _studentFuture),
           ],
         );
       },
