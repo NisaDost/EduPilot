@@ -112,7 +112,7 @@ namespace EduPilot.Api.Controllers
                                           .ToListAsync();
             if (students == null || students.Count == 0)
             {
-                return NotFound();
+                return new List<InstitutionStudentDTO>();
             }
             return students;
         }
@@ -171,7 +171,7 @@ namespace EduPilot.Api.Controllers
                                             .ToListAsync();
             if (supervisors == null || supervisors.Count == 0)
             {
-                return NotFound();
+                return new List<InstitutionSupervisorDTO>();
             }
             return supervisors;
         }
