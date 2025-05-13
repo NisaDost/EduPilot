@@ -75,9 +75,9 @@ class WeeklyComparisonGraph extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                XLargeText('$thisWeek', AppColors.textColor),
+                XLargeText(thisWeek.toString(), AppColors.primaryAccent),
                 const SizedBox(height: 4),
-                MediumText(message, AppColors.titleColor, textAlign: TextAlign.center),
+                MediumText(message, diff >= 0 ? AppColors.successColor : AppColors.dangerColor, textAlign: TextAlign.center),
               ],
             ),
           ),

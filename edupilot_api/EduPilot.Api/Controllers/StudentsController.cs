@@ -345,19 +345,65 @@ namespace EduPilot.Api.Controllers
             return studentQuestionCount;
         }
 
-        [HttpPost("{id}/add/questioncount/{count}/lesson/{lessonId}")]
-        public async Task<ActionResult<SolvedQuestionCount>> PostSolvedQuestionCount(Guid id, int count, Guid lessonId)
+        [HttpGet("{id}/solvedquestioncount/{date}")]
+        public async Task<ActionResult<List<SolvedQuestionCountDTO>>> GetSolvedQuestionCountPerWeek(Guid id, DateTime date)
         {
-            var countEntity = new SolvedQuestionCount()
+            var counts = await _context.SolvedQuestionCounts
+                .Include(sqc => sqc.Lesson)
+                .Where(sqc => sqc.StudentId == id)
+                .ToListAsync();
+
+            var studentQuestionCount = new List<SolvedQuestionCountDTO>();
+
+            foreach (var count in counts)
             {
-                StudentId = id,
-                LessonId = lessonId,
-                Count = count,
-                EntryDate = DateTime.UtcNow
-            };
-            _context.SolvedQuestionCounts.Add(countEntity);
+                var lesson = count.Lesson;
+                if (lesson == null)
+                {
+                    continue;
+                }
+
+                var countEntity = new SolvedQuestionCountDTO()
+                {
+                    Id = count.Id,
+                    StudentId = id,
+                    LessonId = count.LessonId,
+                    LessonName = lesson.Name,
+                    Count = count.Count,
+                    EntryDate = count.EntryDate,
+                };
+
+                if (countEntity.EntryDate.Date == date.Date)
+                {
+                    studentQuestionCount.Add(countEntity);
+                }
+            }
+
+            return studentQuestionCount;
+        }
+
+        [HttpPost("{id}/add/questioncount/{count}/lesson/{lessonId}/date/{date}")]
+        public async Task<ActionResult<SolvedQuestionCount>> PostSolvedQuestionCount(Guid id, int count, Guid lessonId, DateTime date)
+        {
+            var existingEntity = await _context.SolvedQuestionCounts.FirstOrDefaultAsync(sqc => sqc.LessonId == lessonId && sqc.EntryDate == date.Date);
+            if (existingEntity == null)
+            {
+                var countEntity = new SolvedQuestionCount()
+                {
+                    StudentId = id,
+                    LessonId = lessonId,
+                    Count = count,
+                    EntryDate = date.Date
+                };
+                _context.SolvedQuestionCounts.Add(countEntity);
+            }
+            else
+            {
+                existingEntity.Count += count;
+                _context.SolvedQuestionCounts.Update(existingEntity);
+            }
             await _context.SaveChangesAsync();
-            return Ok(countEntity);
+            return Ok();
         }
     }
 }

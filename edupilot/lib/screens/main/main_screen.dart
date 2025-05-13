@@ -3,6 +3,7 @@ import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/agenda/add_new_solved_question_screen.dart';
 import 'package:edupilot/screens/agenda/agenda_screen.dart';
+import 'package:edupilot/screens/agenda/daily_details_screen.dart';
 import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
 import 'package:edupilot/screens/sellector/select_lesson_screen.dart';
@@ -94,6 +95,13 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void _navigateToDailyAnalysys(date) {
+    setState(() {
+      _screens[8] = DailyDetailsScreen(date: date);
+      _selectedIndex = 8;
+    });
+  }
+
   late final List<Widget> _screens = [
     const SizedBox(), // StoreScreen (dynamic)
     const SizedBox(), // AgendaScreen (dynamicc)
@@ -104,6 +112,7 @@ class _MainScreenState extends State<MainScreen> {
     SelectLessonScreen(onLessonTap: _navigateToSelectQuiz),
     const Placeholder(), // SelectQuizScreen (dynamic)
     const Placeholder(), // AddNewSolvedQuestionScreen (dynamic)
+    const Placeholder(), // DailyAnalysysScreen (dynamic)
   ];
 
   @override
@@ -136,6 +145,7 @@ class _MainScreenState extends State<MainScreen> {
 
                 _screens[1] = AgendaScreen(
                   onNavigateToAddQuestion: _navigateToAddNewSolvedQuestion,
+                  onNavigateToDailyAnalysys: (date) => _navigateToDailyAnalysys(date),
                 );
 
                 _screens[2] = const SimulationScreen();

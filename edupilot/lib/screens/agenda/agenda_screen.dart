@@ -12,9 +12,10 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:intl/intl.dart';
 
 class AgendaScreen extends StatefulWidget {
-  const AgendaScreen({super.key ,required this.onNavigateToAddQuestion});
+  const AgendaScreen({super.key ,required this.onNavigateToAddQuestion, required this.onNavigateToDailyAnalysys});
 
   final VoidCallback onNavigateToAddQuestion;
+  final void Function(DateTime date) onNavigateToDailyAnalysys;
 
   @override
   State<AgendaScreen> createState() => _AgendaScreenState();
@@ -179,24 +180,17 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                 final count = isFuture ? '-' : (dateToCount[formattedDate]?.toString() ?? '0');
 
                                 final bgColor = isToday
-                                    ? AppColors.primaryColor
+                                    ? AppColors.primaryAccent
                                     : AppColors.backgroundAccent;
 
                                 final topColor = isToday
                                     ? AppColors.secondaryColor
-                                    : AppColors.primaryAccent;
+                                    : AppColors.primaryColor;
 
                                 return GestureDetector(
                                   onTap: isFuture
                                       ? null
-                                      : () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => DailyDetailScreen(date: currentDay),
-                                            ),
-                                          );
-                                        },
+                                      : () => widget.onNavigateToDailyAnalysys(currentDay),
                                   child: Container(
                                     width: 48,
                                     margin: const EdgeInsets.symmetric(horizontal: 2),
@@ -210,10 +204,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                         Container(
                                           decoration: BoxDecoration(
                                             color: topColor,
-                                            borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(12),
-                                              topRight: Radius.circular(12),
-                                            ),
+                                            borderRadius: const BorderRadius.all(Radius.circular(12))
                                           ),
                                           padding: const EdgeInsets.symmetric(vertical: 6),
                                           child: Center(
@@ -221,18 +212,18 @@ class _AgendaScreenState extends State<AgendaScreen> {
                                               weekdays[index],
                                               style: GoogleFonts.montserrat(
                                                 fontWeight: FontWeight.bold,
-                                                color: AppColors.backgroundColor,
+                                                color: isToday ? AppColors.primaryAccent : AppColors.backgroundColor,
                                               ),
                                             ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 6),
+                                          padding: const EdgeInsets.only(top: 6, bottom: 10),
                                           child: Text(
                                             count,
                                             style: GoogleFonts.montserrat(
                                               fontWeight: FontWeight.w600,
-                                              color: AppColors.titleColor,
+                                              color: isToday ? AppColors.backgroundColor : AppColors.titleColor,
                                             ),
                                           ),
                                         ),

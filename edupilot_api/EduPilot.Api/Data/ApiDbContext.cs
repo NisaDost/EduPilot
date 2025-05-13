@@ -642,6 +642,7 @@ namespace EduPilot.Api.Data
                 .IsRequired();
             modelBuilder.Entity<SolvedQuestionCount>()
                 .Property(sqc => sqc.EntryDate)
+                .HasColumnType("date")
                 .IsRequired();
             modelBuilder.Entity<SolvedQuestionCount>()
                 .Property(sqc => sqc.StudentId)
