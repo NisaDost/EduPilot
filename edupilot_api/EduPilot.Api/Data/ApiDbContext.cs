@@ -111,7 +111,7 @@ namespace EduPilot.Api.Data
                 .Property(s => s.LastActivityDate)
                 .IsRequired(false);
             modelBuilder.Entity<Student>()
-                .Property(s => s.MugShot)
+                .Property(s => s.Mugshot)
                 .IsRequired(false);
             #endregion
 

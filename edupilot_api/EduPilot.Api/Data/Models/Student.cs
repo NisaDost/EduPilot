@@ -15,7 +15,7 @@
         public string Avatar { get; set; }
         public int DailyStreakCount { get; set; }
         public DateTime? LastActivityDate { get; set; }
-        public string? MugShot { get; set; }
+        public string? Mugshot { get; set; }
         public Institution Institution { get; set; }
         public List<Attendance> Attendances { get; set; }
         public List<StudentSupervisor> StudentSupervisors { get; set; }

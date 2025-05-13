@@ -18,7 +18,7 @@ namespace EduPilot.Api.Controllers
             _context = context;
         }
 
-        [HttpGet("quiz/{id}")]
+        [HttpGet("quizinfo/{id}")]
         public async Task<ActionResult<QuizDTO>> GetQuizInfoById(Guid id)
         {
             var quiz = await _context.Quizzes
@@ -60,6 +60,38 @@ namespace EduPilot.Api.Controllers
                         }).ToList()
                     }).ToList()
                 }).ToListAsync();
+            if (quizzes == null)
+            {
+                return NotFound();
+            }
+            return quizzes;
+        }
+
+        [HttpGet("quiz/{id}")]
+        public async Task<ActionResult<QuizDTO>> GetQuizById(Guid id)
+        {
+            var quizzes = await _context.Quizzes
+                .Where(q => q.Id == id)
+                .Select(q => new QuizDTO
+                {
+                    Id = id,
+                    SubjectId = q.SubjectId,
+                    Difficulty = q.Difficulty,
+                    PointPerQuestion = q.PointPerQuestion,
+                    Duration = q.Duration,
+                    QuestionCount = q.Questions.Count(),
+                    Questions = q.Questions.Select(q => new QuestionDTO
+                    {
+                        QuestionContent = q.QuestionContent,
+                        QuestionImage = q.QuestionImage,
+                        Choices = q.Choices.Select(c => new ChoiceDTO
+                        {
+                            ChoiceId = c.Id,
+                            ChoiceContent = c.OptionContent,
+                            IsCorrect = c.IsCorrect
+                        }).ToList()
+                    }).ToList()
+                }).FirstOrDefaultAsync();
             if (quizzes == null)
             {
                 return NotFound();

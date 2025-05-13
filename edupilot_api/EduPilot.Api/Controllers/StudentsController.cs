@@ -405,5 +405,20 @@ namespace EduPilot.Api.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPut("{id}/mugshot")]
+        public async Task<ActionResult> UpdateStudentMugShot(Guid id, [FromBody] UpdateMugshotDTO updateMugshot)
+        {
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            student.Mugshot = updateMugshot.Mugshot;
+            _context.Entry(student).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return Ok();
+
+        }
     }
 }

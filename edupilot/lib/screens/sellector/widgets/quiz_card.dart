@@ -2,6 +2,7 @@ import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/quiz_info_dto.dart';
 import 'package:edupilot/models/dtos/subject_dto.dart';
 import 'package:edupilot/models/dtos/subject_quiz_dto.dart';
+import 'package:edupilot/screens/quiz/quiz_screen.dart';
 import 'package:edupilot/services/lessons_api_handler.dart';
 import 'package:edupilot/services/quizzes_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -71,7 +72,7 @@ class QuizCard extends StatelessWidget {
                               return const Center(child: Text('Quiz bulunamadı.'));
                             }
                             final QuizInfoDTO quiz = quizSnapshot.data!;
-                            return _quizCardWidget(subject, quiz);
+                            return _quizCardWidget(context, subject, quiz);
                           },
                         ),
               ],
@@ -81,7 +82,7 @@ class QuizCard extends StatelessWidget {
     );
   }
 
-  _quizCardWidget(SubjectDTO subject, QuizInfoDTO quiz) {
+  _quizCardWidget(BuildContext context, SubjectDTO subject, QuizInfoDTO quiz) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
@@ -171,7 +172,13 @@ class QuizCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 4),
                 child: FilledButton(
-                  onPressed: () {}, 
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreen(
+                      quizId: quiz.id,
+                      lessonName: lesson.name,
+                      subjectName: subject.name,
+                    )));
+                  }, 
                   style: FilledButton.styleFrom(
                     backgroundColor: AppColors.secondaryColor,
                     shape: RoundedRectangleBorder(

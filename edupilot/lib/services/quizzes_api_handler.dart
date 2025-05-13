@@ -39,7 +39,7 @@ class QuizzesApiHandler {
 
   Future<QuizInfoDTO> getQuizInfo(String quizId) async {
     final quizInfo = await client.get(
-      Uri.parse('$baseUrl/quiz/$quizId'),
+      Uri.parse('$baseUrl/quizinfo/$quizId'),
       headers: <String, String>{
         'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
         'Content-Type': 'application/json; charset=UTF-8',  
@@ -48,6 +48,22 @@ class QuizzesApiHandler {
     if (quizInfo.statusCode >= 200 && quizInfo.statusCode < 300) {
       final jsonResponse = jsonDecode(quizInfo.body);
       return QuizInfoDTO.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<QuizDTO> getQuiz(String quizId) async {
+    final quiz = await client.get(
+      Uri.parse('$baseUrl/quiz/$quizId'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',  
+      },
+    );
+    if (quiz.statusCode >= 200 && quiz.statusCode < 300) {
+      final jsonResponse = jsonDecode(quiz.body);
+      return QuizDTO.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load data');
     }
