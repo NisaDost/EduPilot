@@ -1,6 +1,7 @@
 import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
+import 'package:edupilot/screens/agenda/add_new_solved_question_screen.dart';
 import 'package:edupilot/screens/agenda/agenda_screen.dart';
 import 'package:edupilot/screens/home/home_screen.dart';
 import 'package:edupilot/screens/profile/profile_screen.dart';
@@ -86,15 +87,23 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void _navigateToAddNewSolvedQuestion() {
+    setState(() {
+      _screens[7] = AddNewSolvedQuestionScreen();
+      _selectedIndex = 7;
+    });
+  }
+
   late final List<Widget> _screens = [
     const SizedBox(), // StoreScreen (dynamic)
-    const Placeholder(),
+    const SizedBox(), // AgendaScreen (dynamicc)
     const SizedBox(), // SimulationScreen (dynamic)
     // These will be rebuilt inside build() using studentNotifier
     const SizedBox(), // Home
     const SizedBox(), // Profile
     SelectLessonScreen(onLessonTap: _navigateToSelectQuiz),
     const Placeholder(), // SelectQuizScreen (dynamic)
+    const Placeholder(), // AddNewSolvedQuestionScreen (dynamic)
   ];
 
   @override
@@ -125,7 +134,9 @@ class _MainScreenState extends State<MainScreen> {
                   onRefreshStudent: _refreshStudent,
                 );
 
-                _screens[1] = const AgendaScreen();
+                _screens[1] = AgendaScreen(
+                  onNavigateToAddQuestion: _navigateToAddNewSolvedQuestion,
+                );
 
                 _screens[2] = const SimulationScreen();
 

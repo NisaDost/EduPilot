@@ -283,7 +283,7 @@ class _SimulationScreenState extends State<SimulationScreen> {
                   children: [
                     LargeBodyText('Simülasyon', AppColors.successColor),
                     const SizedBox(height: 10),
-                    SmallBodyText('Zamana karşı yarışalım!', AppColors.titleColor),
+                    SmallText('Zamana karşı yarışalım!', AppColors.titleColor),
                   ],
                 ),
               ),

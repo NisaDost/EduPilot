@@ -1,6 +1,5 @@
 import 'package:edupilot/models/dtos/solved_question_count_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
-import 'package:edupilot/screens/agenda/add_new_solved_question_screen.dart';
 import 'package:edupilot/screens/agenda/widgets/agenda_header.dart';
 import 'package:edupilot/screens/agenda/widgets/weekly_comparison_graph.dart';
 import 'package:edupilot/services/students_api_handler.dart';
@@ -13,7 +12,9 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:intl/intl.dart';
 
 class AgendaScreen extends StatefulWidget {
-  const AgendaScreen({super.key});
+  const AgendaScreen({super.key ,required this.onNavigateToAddQuestion});
+
+  final VoidCallback onNavigateToAddQuestion;
 
   @override
   State<AgendaScreen> createState() => _AgendaScreenState();
@@ -257,12 +258,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                             SizedBox(
                               width: double.infinity,
                               child: AgendaScreenButton(
-                                onPressed: () {
-                                  Navigator.push(context, 
-                                    MaterialPageRoute(
-                                      builder: (context) => AddNewSolvedQuestionScreen())
-                                    );
-                                }, 
+                                onPressed: widget.onNavigateToAddQuestion, 
                                 color: AppColors.secondaryColor,
                                 child: LargeText('Çözdüğün Soru Sayısını Gir', AppColors.backgroundColor), 
                               ),

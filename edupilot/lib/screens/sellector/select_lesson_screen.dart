@@ -5,7 +5,6 @@ import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SelectLessonScreen extends StatelessWidget {
@@ -15,7 +14,7 @@ class SelectLessonScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double topBarHeight = 96;
+    const double topBarHeight = 102;
     return FutureBuilder<StudentDTO>(
         future: StudentsApiHandler().getLoggedInStudent(),
         builder: (BuildContext context, AsyncSnapshot studentSnapshot) {
@@ -64,15 +63,7 @@ class SelectLessonScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Derslere ait quizleri görüntülemek için kartlara tıklayınız.',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                      color: AppColors.titleColor,
-                    ),
-                  ),
+                  SmallText('Derslere ait quizleri görüntülemek için kartlara tıklayınız.', AppColors.titleColor),
                 ],
               ),
             ),

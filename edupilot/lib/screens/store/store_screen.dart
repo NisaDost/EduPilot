@@ -4,7 +4,6 @@ import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class StoreScreen extends StatefulWidget {
@@ -136,15 +135,7 @@ class _StoreScreenState extends State<StoreScreen> {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Quizlerden kazandığın puanları ödüllere dönüştürelim!',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                      color: AppColors.titleColor,
-                    ),
-                  ),
+                  SmallText('Quizlerden kazandığın puanları ödüllere dönüştürelim!',  AppColors.titleColor),
                 ],
               ),
             ),

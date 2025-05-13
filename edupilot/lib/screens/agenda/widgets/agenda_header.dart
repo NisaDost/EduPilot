@@ -4,7 +4,6 @@ import 'package:edupilot/shared/styled_button.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AgendaHeader extends StatelessWidget {
@@ -64,15 +63,7 @@ class AgendaHeader extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            'İlerlemene ait bütün istatistikleri burada bulabilirsin.',
-            style: GoogleFonts.montserrat(
-              fontSize: 11,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.5,
-              color: AppColors.titleColor,
-            ),
-          ),
+          SmallText('İlerlemene ait bütün istatistikleri burada bulabilirsin.', AppColors.titleColor),
         ],
       ),
     );

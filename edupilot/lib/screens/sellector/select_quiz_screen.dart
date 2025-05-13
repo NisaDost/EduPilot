@@ -6,7 +6,6 @@ import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SelectQuizScreen extends StatefulWidget {
@@ -51,7 +50,7 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
         }
         final List<SubjectDTO> subjects = subjectSnapshot.data!;
 
-        const double topBarHeight = 96;
+        const double topBarHeight = 90;
 
         // Filter subjects related to this lesson
         final subjectNames = ['Tümü'] + subjects.map((s) => s.name).toList();
@@ -68,7 +67,7 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 8),
                       child: IntrinsicHeight(
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -186,15 +185,7 @@ class _SelectQuizScreenState extends State<SelectQuizScreen> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Hadi, soru çözüp puan toplayalım!',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.5,
-                      color: AppColors.titleColor,
-                    ),
-                  ),
+                  SmallText('Hadi, soru çözüp puan toplayalım!',  AppColors.titleColor),
                 ],
               ),
             ),
