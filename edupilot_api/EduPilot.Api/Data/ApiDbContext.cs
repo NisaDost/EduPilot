@@ -108,7 +108,10 @@ namespace EduPilot.Api.Data
                 .IsRequired()
                 .HasDefaultValue(0);
             modelBuilder.Entity<Student>()
-                .Property(s => s.LastLoginDate)
+                .Property(s => s.LastActivityDate)
+                .IsRequired(false);
+            modelBuilder.Entity<Student>()
+                .Property(s => s.MugShot)
                 .IsRequired(false);
             #endregion
 
@@ -221,6 +224,9 @@ namespace EduPilot.Api.Data
                 .Property(a => a.IsPresent)
                 .IsRequired()
                 .HasDefaultValue(false);
+            modelBuilder.Entity<Attendance>()
+                .Property(a => a.Emotion)
+                .IsRequired(false);
             modelBuilder.Entity<Attendance>()
                 .HasOne(a => a.Student)
                 .WithMany(s => s.Attendances)

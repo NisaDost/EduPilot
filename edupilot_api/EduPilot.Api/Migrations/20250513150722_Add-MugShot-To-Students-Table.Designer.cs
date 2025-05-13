@@ -4,6 +4,7 @@ using EduPilot.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduPilot.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250513150722_Add-MugShot-To-Students-Table")]
+    partial class AddMugShotToStudentsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,9 +60,6 @@ namespace EduPilot.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CAST(GETDATE() AS DATE)");
-
-                    b.Property<string>("Emotion")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPresent")
                         .ValueGeneratedOnAdd()
@@ -432,7 +432,7 @@ namespace EduPilot.Api.Migrations
                     b.Property<Guid?>("InstitutionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("LastActivityDate")
+                    b.Property<DateTime?>("LastLoginDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
