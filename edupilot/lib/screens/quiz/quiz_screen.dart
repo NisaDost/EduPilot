@@ -139,7 +139,13 @@ class _QuizScreenState extends State<QuizScreen> {
                       children: [
                         LargeText(_formatTime(_remainingSeconds), AppColors.textColor),
                         const SizedBox(width: 6),
-                        Icon(Icons.timer, color: AppColors.primaryColor, size: 28),
+                        Icon(
+                          Icons.timer, 
+                          color: _remainingSeconds <= (_quiz!.duration * 60) ~/ 2
+                            ? AppColors.secondaryColor
+                            : AppColors.primaryColor,
+                          size: 28
+                        ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -171,6 +177,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 onChoiceSelected: (choiceId) {
                   selectedChoices[_currentQuestionIndex] = choiceId;
                 },
+                selectedChoiceId: selectedChoices[_currentQuestionIndex],
                 onPrevious: _currentQuestionIndex == 0
                     ? null
                     : () {
