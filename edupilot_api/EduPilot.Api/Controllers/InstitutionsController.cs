@@ -101,6 +101,7 @@ namespace EduPilot.Api.Controllers
                                               LastName = s.LastName,
                                               Grade = s.Grade,
                                               Email = s.Email,
+                                              Mugshot = s.Mugshot,
                                               SupervisorName = s.StudentSupervisors
                                                                 .Select(ss => ss.Supervisor.FirstName +
                                                                               (!string.IsNullOrEmpty(ss.Supervisor.MiddleName)

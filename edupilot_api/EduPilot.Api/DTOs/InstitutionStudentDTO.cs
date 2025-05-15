@@ -8,6 +8,7 @@
         public string LastName { get; set; }
         public int Grade { get; set; }
         public string Email { get; set; }
+        public string? Mugshot { get; set; }
         public List<string>? SupervisorName { get; set; }
     }
 }
