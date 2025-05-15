@@ -18,7 +18,7 @@ class ChoiceDTO {
   }
   Map<String, dynamic> toJson() {
     return {
-      'cchoiceId': choiceId,
+      'choiceId': choiceId,
       'choiceContent': choiceContent,
       'isCorrect': isCorrect,
     };

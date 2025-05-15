@@ -12,7 +12,8 @@ class QuestionsContainer extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback? onPrevious;
   final bool isLastQuestion;
-  final ValueChanged<String> onChoiceSelected; // 🔹 Callback
+  final ValueChanged<String> onChoiceSelected;
+  final String? selectedChoiceId;
 
   const QuestionsContainer({
     super.key,
@@ -22,7 +23,8 @@ class QuestionsContainer extends StatefulWidget {
     required this.onNext,
     this.onPrevious,
     required this.isLastQuestion,
-    required this.onChoiceSelected, // 🔹 Add to constructor
+    required this.onChoiceSelected,
+    required this.selectedChoiceId,
   });
 
   @override
@@ -43,14 +45,15 @@ class _QuestionsContainerState extends State<QuestionsContainer>
   void initState() {
     super.initState();
     _initializeOrRetrieveChoices();
+    _selectedIndex = _shuffledChoices.indexWhere((c) => c.choiceId == widget.selectedChoiceId);
   }
 
   @override
   void didUpdateWidget(covariant QuestionsContainer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.questionIndex != widget.questionIndex) {
+    if (oldWidget.questionIndex != widget.questionIndex || oldWidget.selectedChoiceId != widget.selectedChoiceId) {
       _initializeOrRetrieveChoices();
-      _selectedIndex = null;
+      _selectedIndex = _shuffledChoices.indexWhere((c) => c.choiceId == widget.selectedChoiceId);
     }
   }
 
