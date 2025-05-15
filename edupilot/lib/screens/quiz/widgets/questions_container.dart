@@ -177,7 +177,9 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                 ),
               const Spacer(),
               TextButton(
-                onPressed: widget.isLastQuestion ? () {} : widget.onNext,
+                onPressed: widget.isLastQuestion 
+                ? () {} // postQuizResult
+                : widget.onNext,
                 style: TextButton.styleFrom(
                   backgroundColor: widget.isLastQuestion ? AppColors.secondaryColor : AppColors.primaryColor,
                   shape: RoundedRectangleBorder(

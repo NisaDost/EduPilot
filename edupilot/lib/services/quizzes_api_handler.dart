@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:edupilot/models/dtos/answer_dto.dart';
 import 'package:edupilot/models/dtos/quiz_dto.dart';
 import 'package:edupilot/models/dtos/quiz_info_dto.dart';
+import 'package:edupilot/models/dtos/quiz_result_dto.dart';
 import 'package:edupilot/models/dtos/solved_quiz_dto.dart';
 import 'package:edupilot/sessions/student_session.dart';
 import 'package:http/http.dart' as http;
@@ -72,8 +73,8 @@ class QuizzesApiHandler {
     }
   }
 
-  Future<bool> postQuizResult(String quizId, List<AnswerDTO> answers) async {
-    final studentId = StudentSession.getStudentId();
+  Future<QuizResultDTO> postQuizResult(String quizId, List<AnswerDTO> answers) async {
+    final studentId = await StudentSession.getStudentId();
     final response = await client.get(
       Uri.parse('$baseUrl/quiz/$quizId/student/$studentId'),
       headers: <String, String>{
@@ -81,15 +82,16 @@ class QuizzesApiHandler {
         'Content-Type': 'application/json; charset=UTF-8',  
       },
     );
-    if (response.statusCode >= 200 && response.statusCode < 300) {  
-      return true;
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final jsonResponse = jsonDecode(response.body);
+      return QuizResultDTO.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to register student');
     }
   }
 
   Future<SolvedQuizDTO> getSolvedQuiz(String quizId) async {
-    final studentId = StudentSession.getStudentId();
+    final studentId = await StudentSession.getStudentId();
     final quiz = await client.get(
       Uri.parse('$baseUrl/quiz/$quizId/student/$studentId'),
       headers: <String, String>{

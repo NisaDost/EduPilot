@@ -66,8 +66,9 @@ class LessonsApiHandler {
   }
 
   Future<List<SubjectDTO>> getSubjectsByLessonId(String lessonId) async {
+    final studentId = await StudentSession.getStudentId();
     final subjects = await client.get(
-      Uri.parse('$baseUrl/lessons/$lessonId/subjects'),
+      Uri.parse('$baseUrl/lessons/$lessonId/subjects/student/$studentId'),
       headers: <String, String>{
         'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
         'Content-Type': 'application/json; charset=UTF-8',

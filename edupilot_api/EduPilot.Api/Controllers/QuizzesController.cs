@@ -44,7 +44,7 @@ namespace EduPilot.Api.Controllers
         public async Task<ActionResult<List<QuizDTO>>> GetQuizzesBySubjectId(Guid subjectId)
         {
             var quizzes = await _context.Quizzes
-                .Where(q => q.SubjectId == subjectId)
+                .Where(q => q.SubjectId == subjectId && q.IsActive)
                 .Select(q => new QuizDTO
                 {
                     SubjectId = q.SubjectId,
@@ -101,7 +101,7 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPost("quiz/{id}/student/{studentId}")]
-        public async Task<ActionResult> PostQuizResult(Guid id, Guid studentId, [FromBody] List<AnswerDTO> answers)
+        public async Task<ActionResult<QuizResultDTO>> PostQuizResult(Guid id, Guid studentId, [FromBody] List<AnswerDTO> answers)
         {
             var student = await _context.Students.Where(s => s.Id == studentId).FirstOrDefaultAsync();
             if (student == null)
@@ -122,7 +122,7 @@ namespace EduPilot.Api.Controllers
             foreach (var answer in answers)
             {
                 var choices = await _context.Choices.Where(c => c.QuestionId == answer.QuestionId).ToListAsync();
-                
+
                 if (answer.ChoiceId == null)
                 {
                     emptyCount++;
@@ -183,9 +183,16 @@ namespace EduPilot.Api.Controllers
                 _context.WeakSubjects.Add(weakSubjectEntity);
             }
 
+            var earnedPoints = trueCount * quiz.PointPerQuestion;
+            if (earnedPoints > 0)
+            {
+                student.Points += earnedPoints;
+                _context.Students.Update(student);
+            }
+
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new QuizResultDTO { TrueCount = trueCount, FalseCount = falseCount, EmptyCount = emptyCount, TotalCount = totalQuestionCount, EarnedPoints = earnedPoints });
         }
 
         [HttpGet("solvedquiz/{id}/student/{studentId}")]

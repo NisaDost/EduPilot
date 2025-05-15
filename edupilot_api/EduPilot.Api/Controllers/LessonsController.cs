@@ -37,8 +37,8 @@ namespace EduPilot.Api.Controllers
             return lesson;
         }
 
-        [HttpGet("lessons/{lessonId}/subjects")]
-        public async Task<ActionResult<List<SubjectDTO>>> GetSubjectsByLessonId(Guid lessonId)
+        [HttpGet("lessons/{lessonId}/subjects/student/{studentId}")]
+        public async Task<ActionResult<List<SubjectDTO>>> GetSubjectsByLessonId(Guid lessonId, Guid studentId)
         {
             var subjects = await _context.Subjects
                 .Where(s => s.LessonId.Equals(lessonId))
@@ -48,7 +48,7 @@ namespace EduPilot.Api.Controllers
                     LessonId = s.LessonId,
                     Name = s.Name,
                     Grade = s.Grade,
-                    Quizzes = s.Quizzes.Where(q => q.IsActive).Select(q => new SubjectQuizDTO()
+                    Quizzes = s.Quizzes.Where(q => q.IsActive && !q.SolvedQuizDetails.Any(sqd => sqd.QuizId == q.Id && sqd.StudentId == studentId)).Select(q => new SubjectQuizDTO()
                     {
                         QuizId = q.Id,
                         SubjectId = q.SubjectId,
