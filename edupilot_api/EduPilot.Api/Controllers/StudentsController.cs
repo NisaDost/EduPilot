@@ -418,7 +418,6 @@ namespace EduPilot.Api.Controllers
             _context.Entry(student).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return Ok();
-
         }
     }
 }

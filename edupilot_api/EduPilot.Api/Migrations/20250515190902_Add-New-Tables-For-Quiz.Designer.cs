@@ -4,6 +4,7 @@ using EduPilot.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduPilot.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250515190902_Add-New-Tables-For-Quiz")]
+    partial class AddNewTablesForQuiz
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -454,9 +457,6 @@ namespace EduPilot.Api.Migrations
                     b.Property<Guid?>("SelectedChoiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
@@ -464,8 +464,6 @@ namespace EduPilot.Api.Migrations
                     b.HasIndex("QuizId");
 
                     b.HasIndex("SelectedChoiceId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("SolvedQuizDetails");
                 });
@@ -707,9 +705,6 @@ namespace EduPilot.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("date");
-
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
@@ -860,33 +855,25 @@ namespace EduPilot.Api.Migrations
                     b.HasOne("EduPilot.Api.Data.Models.Question", "Question")
                         .WithMany("SolvedQuizDetails")
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EduPilot.Api.Data.Models.Quiz", "Quiz")
                         .WithMany("SolvedQuizDetails")
                         .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EduPilot.Api.Data.Models.Choice", "SelectedChoice")
                         .WithMany("SolvedQuizDetails")
                         .HasForeignKey("SelectedChoiceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("EduPilot.Api.Data.Models.Student", "Student")
-                        .WithMany("SolvedQuizDetails")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Question");
 
                     b.Navigation("Quiz");
 
                     b.Navigation("SelectedChoice");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("EduPilot.Api.Data.Models.Student", b =>
@@ -1081,8 +1068,6 @@ namespace EduPilot.Api.Migrations
                     b.Navigation("QuizResults");
 
                     b.Navigation("SolvedQuestionCounts");
-
-                    b.Navigation("SolvedQuizDetails");
 
                     b.Navigation("StudentAchievements");
 

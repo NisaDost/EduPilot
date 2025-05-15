@@ -48,7 +48,7 @@ namespace EduPilot.Api.Controllers
                     LessonId = s.LessonId,
                     Name = s.Name,
                     Grade = s.Grade,
-                    Quizzes = s.Quizzes.Select(q => new SubjectQuizDTO()
+                    Quizzes = s.Quizzes.Where(q => q.IsActive).Select(q => new SubjectQuizDTO()
                     {
                         QuizId = q.Id,
                         SubjectId = q.SubjectId,

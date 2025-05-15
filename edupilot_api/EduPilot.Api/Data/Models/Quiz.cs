@@ -12,5 +12,7 @@
         public bool IsActive { get; set; }
         public Subject Subject { get; set; }
         public Publisher Publisher { get; set; }
+        public List<QuizResult> QuizResults { get; set; }
+        public List<SolvedQuizDetails> SolvedQuizDetails { get; set; }
     }
 }

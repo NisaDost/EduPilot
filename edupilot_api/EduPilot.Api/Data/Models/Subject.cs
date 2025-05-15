@@ -8,5 +8,7 @@
         public int Grade { get; set; }
         public Lesson Lesson { get; set; }
         public List<Quiz> Quizzes { get; set; }
+        public List<QuizResult> QuizResutls { get; set; }
+        public List<WeakSubjects> WeakSubjects { get; set; }
     }
 }

@@ -18,6 +18,9 @@ namespace EduPilot.Api.Data
         public DbSet<Achievement> Achievements { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<QuizResult> QuizResults { get; set; }
+        public DbSet<WeakSubjects> WeakSubjects { get; set; }
+        public DbSet<SolvedQuizDetails> SolvedQuizDetails { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Choice> Choices { get; set; }
         public DbSet<Simulation> Simulations { get; set; }
@@ -450,6 +453,111 @@ namespace EduPilot.Api.Data
                 .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
+            #region QuizResults
+            modelBuilder.Entity<QuizResult>()
+                .HasKey(qr => qr.Id);
+            modelBuilder.Entity<QuizResult>()
+                .Property(qr => qr.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<QuizResult>()
+                .Property(qr => qr.QuizId)
+                .IsRequired();
+            modelBuilder.Entity<QuizResult>()
+                .Property(qr => qr.StudentId)
+                .IsRequired();
+            modelBuilder.Entity<QuizResult>()
+                .HasOne(qr => qr.Student)
+                .WithMany(s => s.QuizResults)
+                .HasForeignKey(qr => qr.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<QuizResult>()
+                .Property(qr => qr.QuizId)
+                .IsRequired();
+            modelBuilder.Entity<QuizResult>()
+                .HasOne(qr => qr.Quiz)
+                .WithMany(q => q.QuizResults)
+                .HasForeignKey(qr => qr.QuizId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<QuizResult>()
+                .Property(qr => qr.SubjectId)
+                .IsRequired();
+            modelBuilder.Entity<QuizResult>()
+                .HasOne(qr => qr.Subject)
+                .WithMany(s => s.QuizResutls)
+                .HasForeignKey(qr => qr.SubjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<QuizResult>()
+                .Property(qr => qr.TrueAnswerCount)
+                .IsRequired();
+            modelBuilder.Entity<QuizResult>()
+                .Property(qr => qr.FalseAnswerCount)
+                .IsRequired();
+            modelBuilder.Entity<QuizResult>()
+                .Property(qr => qr.EmptyAnswerCount)
+                .IsRequired();
+            #endregion
+
+            #region WeakSubjects
+            modelBuilder.Entity<WeakSubjects>()
+                .HasKey(ws => ws.Id);
+            modelBuilder.Entity<WeakSubjects>()
+                .Property(ws => ws.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<WeakSubjects>()
+                .Property(ws => ws.Date)
+                .HasColumnType("date")
+                .IsRequired();
+            modelBuilder.Entity<WeakSubjects>()
+                .Property(ws => ws.StudentId)
+                .IsRequired();
+            modelBuilder.Entity<WeakSubjects>()
+                .HasOne(ws => ws.Student)
+                .WithMany(s => s.WeakSubjects)
+                .HasForeignKey(ws => ws.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<WeakSubjects>()
+                .HasOne(ws => ws.Subject)
+                .WithMany(s => s.WeakSubjects)
+                .HasForeignKey(ws => ws.SubjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<WeakSubjects>()
+                .Property(ws => ws.SubjectName)
+                .IsRequired()
+                .HasMaxLength(250);
+            #endregion
+
+            #region
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasKey(sqd => sqd.Id);
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.QuizId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasOne(sqd => sqd.Quiz)
+                .WithMany(q => q.SolvedQuizDetails)
+                .HasForeignKey(sqd => sqd.QuizId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.QuestionId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasOne(sqd => sqd.Question)
+                .WithMany(q => q.SolvedQuizDetails)
+                .HasForeignKey(sqd => sqd.QuestionId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.QuizId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasOne(sqd => sqd.SelectedChoice)
+                .WithMany(sc => sc.SolvedQuizDetails)
+                .HasForeignKey(sqd => sqd.SelectedChoiceId)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion
+
             #region Questions
             modelBuilder.Entity<Question>()
                 .HasKey(q => q.Id);
@@ -662,6 +770,46 @@ namespace EduPilot.Api.Data
                 .HasOne(sqc => sqc.Lesson)
                 .WithMany(l => l.SolvedQuestionCounts)
                 .HasForeignKey(sqc => sqc.LessonId)
+                .OnDelete(DeleteBehavior.Cascade);
+            #endregion
+
+            #region SolvedQuizDetails
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasKey(sqd => sqd.Id);
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.StudentId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasOne(sqd => sqd.Student)
+                .WithMany(s => s.SolvedQuizDetails)
+                .HasForeignKey(sqd => sqd.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.QuestionId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasOne(sqd => sqd.Question)
+                .WithMany(q => q.SolvedQuizDetails)
+                .HasForeignKey(sqd => sqd.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.QuizId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasOne(sqd => sqd.Quiz)
+                .WithMany(q => q.SolvedQuizDetails)
+                .HasForeignKey(sqd => sqd.QuizId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .Property(sqd => sqd.SelectedChoiceId)
+                .IsRequired(false);
+            modelBuilder.Entity<SolvedQuizDetails>()
+                .HasOne(sqd => sqd.SelectedChoice)
+                .WithMany(c => c.SolvedQuizDetails)
+                .HasForeignKey(sqd => sqd.SelectedChoiceId)
                 .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }

@@ -8,5 +8,6 @@
         public bool IsCorrect { get; set; }
         public bool IsActive { get; set; }
         public Question Question { get; set; }
+        public List<SolvedQuizDetails> SolvedQuizDetails { get; set; }
     }
 }

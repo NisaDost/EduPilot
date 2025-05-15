@@ -9,5 +9,6 @@
         public bool IsActive { get; set; }
         public List<Choice> Choices { get; set; }
         public Quiz Quiz { get; set; }
+        public List<SolvedQuizDetails> SolvedQuizDetails { get; set; }
     }
 }

@@ -164,14 +164,28 @@ class _QuestionsContainerState extends State<QuestionsContainer>
           Row(
             children: [
               if (widget.onPrevious != null)
-                ElevatedButton(
+                TextButton(
                   onPressed: widget.onPrevious,
-                  child: const Text("Önceki Soru"),
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppColors.primaryAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8))
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 24)
+                  ),
+                  child: MediumText("Önceki Soru", AppColors.backgroundColor),
                 ),
               const Spacer(),
-              ElevatedButton(
-                onPressed: widget.onNext,
-                child: Text(widget.isLastQuestion ? "Quizi Bitir" : "Sonraki Soru"),
+              TextButton(
+                onPressed: widget.isLastQuestion ? () {} : widget.onNext,
+                style: TextButton.styleFrom(
+                  backgroundColor: widget.isLastQuestion ? AppColors.secondaryColor : AppColors.primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8))
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24)
+                ),
+                child: MediumText(widget.isLastQuestion ? "Quizi Bitir" : "Sonraki Soru", AppColors.backgroundColor),
               ),
             ],
           ),

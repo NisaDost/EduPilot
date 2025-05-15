@@ -1,20 +1,23 @@
 import 'package:edupilot/models/dtos/choice_dto.dart';
 
-class QuestionDTO {
+class SolvedQuestionDTO {
   final String questionContent;
   final String? questionImage;
+  final String? selectedChoiceId;
   final List<ChoiceDTO> choices;
 
-  QuestionDTO({
+  SolvedQuestionDTO({
     required this.questionContent,
     this.questionImage,
+    this.selectedChoiceId,
     required this.choices,
   });
 
-  factory QuestionDTO.fromJson(Map<String, dynamic> json) {
-    return QuestionDTO(
+  factory SolvedQuestionDTO.fromJson(Map<String, dynamic> json) {
+    return SolvedQuestionDTO(
       questionContent: json['questionContent'] as String,
       questionImage: (json['questionImage'] as String).isEmpty ? null : json['questionImage'],
+      selectedChoiceId: json['selectedChoiceId'] as String,
       choices: (json['choices'] as List<dynamic>)
         .map((e) => ChoiceDTO.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -24,6 +27,7 @@ class QuestionDTO {
     return {
       'questionContent': questionContent,
       'questionImage': questionImage,
+      'selectedChoiceId': selectedChoiceId,
       'choices': choices,
     };
   }

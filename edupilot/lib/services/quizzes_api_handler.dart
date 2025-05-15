@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:edupilot/models/dtos/answer_dto.dart';
 import 'package:edupilot/models/dtos/quiz_dto.dart';
 import 'package:edupilot/models/dtos/quiz_info_dto.dart';
+import 'package:edupilot/models/dtos/solved_quiz_dto.dart';
+import 'package:edupilot/sessions/student_session.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:io';
@@ -64,6 +67,39 @@ class QuizzesApiHandler {
     if (quiz.statusCode >= 200 && quiz.statusCode < 300) {
       final jsonResponse = jsonDecode(quiz.body);
       return QuizDTO.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<bool> postQuizResult(String quizId, List<AnswerDTO> answers) async {
+    final studentId = StudentSession.getStudentId();
+    final response = await client.get(
+      Uri.parse('$baseUrl/quiz/$quizId/student/$studentId'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',  
+      },
+    );
+    if (response.statusCode >= 200 && response.statusCode < 300) {  
+      return true;
+    } else {
+      throw Exception('Failed to register student');
+    }
+  }
+
+  Future<SolvedQuizDTO> getSolvedQuiz(String quizId) async {
+    final studentId = StudentSession.getStudentId();
+    final quiz = await client.get(
+      Uri.parse('$baseUrl/quiz/$quizId/student/$studentId'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',  
+      },
+    );
+    if (quiz.statusCode >= 200 && quiz.statusCode < 300) {
+      final jsonResponse = jsonDecode(quiz.body);
+      return SolvedQuizDTO.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load data');
     }

@@ -1,4 +1,5 @@
 ﻿using EduPilot.Api.Data;
+using EduPilot.Api.Data.Models;
 using EduPilot.Api.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,11 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpGet("quizinfo/{id}")]
-        public async Task<ActionResult<QuizDTO>> GetQuizInfoById(Guid id)
+        public async Task<ActionResult<QuizInfoDTO>> GetQuizInfoById(Guid id)
         {
             var quiz = await _context.Quizzes
-                .Where(q => q.Id == id)
-                .Select(q => new QuizDTO
+                .Where(q => q.Id == id && q.IsActive)
+                .Select(q => new QuizInfoDTO
                 {
                     Id = q.Id,
                     SubjectId = q.SubjectId,
@@ -70,8 +71,8 @@ namespace EduPilot.Api.Controllers
         [HttpGet("quiz/{id}")]
         public async Task<ActionResult<QuizDTO>> GetQuizById(Guid id)
         {
-            var quizzes = await _context.Quizzes
-                .Where(q => q.Id == id)
+            var quiz = await _context.Quizzes
+                .Where(q => q.Id == id && q.IsActive)
                 .Select(q => new QuizDTO
                 {
                     Id = id,
@@ -92,11 +93,142 @@ namespace EduPilot.Api.Controllers
                         }).ToList()
                     }).ToList()
                 }).FirstOrDefaultAsync();
-            if (quizzes == null)
+            if (quiz == null)
             {
                 return NotFound();
             }
-            return quizzes;
+            return quiz;
+        }
+
+        [HttpPost("quiz/{id}/student/{studentId}")]
+        public async Task<ActionResult> PostQuizResult(Guid id, Guid studentId, [FromBody] List<AnswerDTO> answers)
+        {
+            var student = await _context.Students.Where(s => s.Id == studentId).FirstOrDefaultAsync();
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var quiz = await _context.Quizzes.Where(q => q.Id == id).FirstOrDefaultAsync();
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            var trueCount = 0;
+            var falseCount = 0;
+            var emptyCount = 0;
+
+            foreach (var answer in answers)
+            {
+                var choices = await _context.Choices.Where(c => c.QuestionId == answer.QuestionId).ToListAsync();
+                
+                if (answer.ChoiceId == null)
+                {
+                    emptyCount++;
+                }
+                else
+                {
+                    if (choices.Any(c => c.Id == answer.ChoiceId && c.IsCorrect))
+                    {
+                        trueCount++;
+                    }
+                    else if (choices.Any(c => c.Id == answer.ChoiceId && !c.IsCorrect))
+                    {
+                        falseCount++;
+                    }
+                }
+
+                var solvedQuizEntity = new SolvedQuizDetails
+                {
+                    QuizId = id,
+                    StudentId = studentId,
+                    QuestionId = answer.QuestionId,
+                    SelectedChoiceId = answer.ChoiceId
+                };
+                _context.SolvedQuizDetails.Add(solvedQuizEntity);
+            }
+
+            var answerEntity = new QuizResult
+            {
+                QuizId = id,
+                StudentId = studentId,
+                SubjectId = quiz.SubjectId,
+                QuizDifficulty = quiz.Difficulty,
+                TrueAnswerCount = trueCount,
+                FalseAnswerCount = falseCount,
+                EmptyAnswerCount = emptyCount,
+            };
+
+            if (answerEntity == null)
+            {
+                return BadRequest();
+            }
+            _context.QuizResults.Add(answerEntity);
+
+            var totalQuestionCount = answerEntity.TrueAnswerCount + answerEntity.FalseAnswerCount + answerEntity.EmptyAnswerCount;
+
+            if ((answerEntity.QuizDifficulty == Difficulty.Easy && answerEntity.TrueAnswerCount <= totalQuestionCount * 0.8)
+                || (answerEntity.QuizDifficulty == Difficulty.Medium && answerEntity.TrueAnswerCount <= totalQuestionCount * 0.6)
+                || (answerEntity.QuizDifficulty == Difficulty.Hard && answerEntity.TrueAnswerCount <= totalQuestionCount * 0.4))
+            {
+                _context.Entry(answerEntity).Reference(a => a.Subject).Load();
+                var weakSubjectEntity = new WeakSubjects
+                {
+                    StudentId = studentId,
+                    SubjectId = answerEntity.SubjectId,
+                    SubjectName = answerEntity.Subject.Name,
+                    Date = DateTime.Now.Date,
+                };
+                _context.WeakSubjects.Add(weakSubjectEntity);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpGet("solvedquiz/{id}/student/{studentId}")]
+        public async Task<ActionResult<SolvedQuizDTO>> GetSolvedQuiz(Guid id, Guid studentId)
+        {
+            var solvedQuizDetails = await _context.SolvedQuizDetails
+                .Include(sqd => sqd.Quiz)
+                .ThenInclude(q => q.Questions)
+                .ThenInclude(q => q.Choices)
+                .Where(sqd => sqd.QuizId == id && sqd.StudentId == studentId)
+                .ToListAsync();
+
+            if (solvedQuizDetails == null || !solvedQuizDetails.Any())
+            {
+                return NotFound();
+            }
+
+            var quiz = solvedQuizDetails.First().Quiz;
+
+            var solvedQuizDTO = new SolvedQuizDTO
+            {
+                Id = quiz.Id,
+                SubjectId = quiz.SubjectId,
+                Difficulty = quiz.Difficulty,
+                PointPerQuestion = quiz.PointPerQuestion,
+                Duration = quiz.Duration,
+                QuestionCount = quiz.Questions.Count,
+                SolvedQuestions = quiz.Questions.Select(q => new SolvedQuestionDTO
+                {
+                    QuestionContent = q.QuestionContent,
+                    QuestionImage = q.QuestionImage,
+                    SelectedChoiceId = solvedQuizDetails
+                        .FirstOrDefault(sqd => sqd.QuestionId == q.Id)?.SelectedChoiceId ?? Guid.Empty,
+                    Choices = q.Choices.Select(c => new ChoiceDTO
+                    {
+                        ChoiceId = c.Id,
+                        ChoiceContent = c.OptionContent,
+                        IsCorrect = c.IsCorrect
+                    }).ToList()
+                }).ToList()
+            };
+
+            return solvedQuizDTO;
         }
     }
 }

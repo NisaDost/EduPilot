@@ -1,40 +1,44 @@
 import 'package:edupilot/models/difficulty.dart';
+import 'package:edupilot/models/dtos/solved_question_dto.dart';
 
-class QuizInfoDTO {
+class SolvedQuizDTO {
   final String id;
   final String subjectId;
   final Difficulty difficulty;
-  final int duration;
   final int pointPerQuestion;
-  final bool isActive;
+  final int duration;
   final int questionCount;
+  final List<SolvedQuestionDTO> questions;
 
-  QuizInfoDTO({
+  SolvedQuizDTO({
     required this.id,
     required this.subjectId,
     required this.difficulty,
-    required this.duration,
     required this.pointPerQuestion,
-    required this.isActive,
+    required this.duration,
     required this.questionCount,
+    required this.questions,
   });
 
-  factory QuizInfoDTO.fromJson(Map<String, dynamic> json) => QuizInfoDTO(
+  factory SolvedQuizDTO.fromJson(Map<String, dynamic> json) => SolvedQuizDTO(
         id: json['id'] as String,
         subjectId: json['subjectId'] as String,
         difficulty: Difficulty.values[json['difficulty'] as int],
-        duration: json['duration'] as int,
         pointPerQuestion: json['pointPerQuestion'] as int,
-        isActive: json['isActive'] as bool,
+        duration: json['duration'] as int,
         questionCount: json['questionCount'] as int,
+        questions: (json['questions'] as List<dynamic>)
+            .map((e) => SolvedQuestionDTO.fromJson(e as Map<String, dynamic>))
+            .toList(),
       );
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'subjectId': subjectId,
         'difficulty': Difficulty.values.indexOf(difficulty),
-        'duration': duration,
         'pointPerQuestion': pointPerQuestion,
-        'isActive': isActive,
+        'duration': duration,
         'questionCount': questionCount,
+        'questions': questions.map((e) => e.toJson()).toList(),
       };
 }

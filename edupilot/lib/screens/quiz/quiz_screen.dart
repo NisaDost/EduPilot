@@ -168,32 +168,52 @@ class _QuizScreenState extends State<QuizScreen> {
           // Scrollable Content
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
-              child: QuestionsContainer(
-                question: _quiz!.questions[_currentQuestionIndex],
-                questionIndex: _currentQuestionIndex,
-                totalQuestions: _quiz!.questionCount,
-                isLastQuestion: _currentQuestionIndex == _quiz!.questionCount - 1,
-                onChoiceSelected: (choiceId) {
-                  selectedChoices[_currentQuestionIndex] = choiceId;
-                },
-                selectedChoiceId: selectedChoices[_currentQuestionIndex],
-                onPrevious: _currentQuestionIndex == 0
-                    ? null
-                    : () {
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundColor.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.all(Radius.circular(8))
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SmallText('Doğru cevap ${_quiz!.pointPerQuestion}', AppColors.titleColor),
+                        Icon(Icons.bolt, color: AppColors.titleColor, size: 16),
+                        SmallText('değerinde', AppColors.titleColor)
+                      ]
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  QuestionsContainer(
+                    question: _quiz!.questions[_currentQuestionIndex],
+                    questionIndex: _currentQuestionIndex,
+                    totalQuestions: _quiz!.questionCount,
+                    isLastQuestion: _currentQuestionIndex == _quiz!.questionCount - 1,
+                    onChoiceSelected: (choiceId) {
+                      selectedChoices[_currentQuestionIndex] = choiceId;
+                    },
+                    selectedChoiceId: selectedChoices[_currentQuestionIndex],
+                    onPrevious: _currentQuestionIndex == 0
+                        ? null
+                        : () {
+                            setState(() {
+                              _currentQuestionIndex--;
+                            });
+                          },
+                    onNext: () {
+                      if (_currentQuestionIndex == _quiz!.questionCount - 1) {
+                        // TODO: handle finish
+                      } else {
                         setState(() {
-                          _currentQuestionIndex--;
+                          _currentQuestionIndex++;
                         });
-                      },
-                onNext: () {
-                  if (_currentQuestionIndex == _quiz!.questionCount - 1) {
-                    // TODO: handle finish
-                  } else {
-                    setState(() {
-                      _currentQuestionIndex++;
-                    });
-                  }
-                },
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
           ),
