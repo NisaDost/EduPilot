@@ -134,7 +134,12 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                 MediumBodyText('Boş: ${result.emptyCount}', AppColors.titleColor),
                 MediumBodyText('Toplam: ${result.totalCount}', AppColors.textColor),
                 const SizedBox(height: 10),
-                LargeText('Kazanılan Puan: ${result.earnedPoints}', AppColors.primaryColor),
+                Row(
+                  children: [
+                    LargeText('Kazanılan Puan: ${result.earnedPoints}', AppColors.primaryColor),
+                    Icon(Icons.bolt, color: AppColors.primaryColor, size: 56),
+                  ],
+                ),
               ],
             ),
           ),
