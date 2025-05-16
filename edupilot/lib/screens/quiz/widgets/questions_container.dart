@@ -231,7 +231,7 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                                   Expanded(
                                     flex: 5,
                                     child: TextButton(
-                                      onPressed: () => Navigator.pop(context), 
+                                      onPressed: () {} , // end quiz function - use api here
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: AppColors.secondaryColor,
