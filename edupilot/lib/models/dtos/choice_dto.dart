@@ -1,5 +1,5 @@
 class ChoiceDTO {
-  final String choiceId;
+  final String? choiceId;
   final String choiceContent;
   final bool isCorrect;
 

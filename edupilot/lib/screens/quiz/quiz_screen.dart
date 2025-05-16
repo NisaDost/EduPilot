@@ -193,7 +193,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     totalQuestions: _quiz!.questionCount,
                     isLastQuestion: _currentQuestionIndex == _quiz!.questionCount - 1,
                     onChoiceSelected: (choiceId) {
-                      selectedChoices[_currentQuestionIndex] = choiceId;
+                      selectedChoices[_currentQuestionIndex] = choiceId!;
                     },
                     selectedChoiceId: selectedChoices[_currentQuestionIndex],
                     onPrevious: _currentQuestionIndex == 0
