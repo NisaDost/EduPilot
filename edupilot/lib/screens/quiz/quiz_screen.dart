@@ -188,6 +188,9 @@ class _QuizScreenState extends State<QuizScreen> {
                   ),
                   const SizedBox(height: 8),
                   QuestionsContainer(
+                    quiz: _quiz!,
+                    quizId: _quiz!.id,
+                    selectedChoices: selectedChoices,
                     question: _quiz!.questions[_currentQuestionIndex],
                     questionIndex: _currentQuestionIndex,
                     totalQuestions: _quiz!.questionCount,

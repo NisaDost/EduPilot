@@ -1,11 +1,17 @@
 import 'dart:math';
+import 'package:edupilot/models/dtos/answer_dto.dart';
 import 'package:edupilot/models/dtos/choice_dto.dart';
 import 'package:edupilot/models/dtos/question_dto.dart';
+import 'package:edupilot/models/dtos/quiz_dto.dart';
+import 'package:edupilot/services/quizzes_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:flutter/material.dart';
 import 'package:edupilot/theme.dart';
 
 class QuestionsContainer extends StatefulWidget {
+  final QuizDTO quiz;
+  final Map<int, String> selectedChoices;
+  final String quizId;
   final QuestionDTO question;
   final int questionIndex;
   final int totalQuestions;
@@ -17,6 +23,9 @@ class QuestionsContainer extends StatefulWidget {
 
   const QuestionsContainer({
     super.key,
+    required this.quiz,
+    required this.selectedChoices,
+    required this.quizId,
     required this.question,
     required this.questionIndex,
     required this.totalQuestions,
@@ -34,10 +43,8 @@ class QuestionsContainer extends StatefulWidget {
 class _QuestionsContainerState extends State<QuestionsContainer>
     with TickerProviderStateMixin {
   static final Map<int, List<ChoiceDTO>> _shuffledChoicesCache = {};
-
   late List<ChoiceDTO> _shuffledChoices;
   int? _selectedIndex;
-
   final Map<int, double> _scaleFactors = {};
   final double _pressedScale = 1.1;
 
@@ -47,8 +54,8 @@ class _QuestionsContainerState extends State<QuestionsContainer>
     _initializeOrRetrieveChoices();
     _selectedIndex = _shuffledChoices.indexWhere((c) => c.choiceId == widget.selectedChoiceId);
     if (_selectedIndex == -1) {
-      _selectedIndex = 0; // default to 'Boş'
-      widget.onChoiceSelected(null); // notify parent about 'Boş'
+      _selectedIndex = 0;
+      widget.onChoiceSelected(null);
     }
   }
 
@@ -65,16 +72,12 @@ class _QuestionsContainerState extends State<QuestionsContainer>
     if (_shuffledChoicesCache.containsKey(widget.questionIndex)) {
       _shuffledChoices = _shuffledChoicesCache[widget.questionIndex]!;
     } else {
-      // Clone and shuffle real choices
       final realChoices = List<ChoiceDTO>.from(widget.question.choices)..shuffle(Random());
-
-      // Add 'Boş' as a special last item
       realChoices.add(ChoiceDTO(
         choiceId: null,
         choiceContent: 'Bu soruyu boş bırak',
         isCorrect: false,
       ));
-
       _shuffledChoices = realChoices;
       _shuffledChoicesCache[widget.questionIndex] = _shuffledChoices;
     }
@@ -90,15 +93,56 @@ class _QuestionsContainerState extends State<QuestionsContainer>
       _selectedIndex = index;
       _scaleFactors[index] = _pressedScale;
     });
-
     final selectedChoiceId = _shuffledChoices[index].choiceId;
-    widget.onChoiceSelected(selectedChoiceId!); // 🔹 Notify parent
-
+    widget.onChoiceSelected(selectedChoiceId!);
     Future.delayed(const Duration(milliseconds: 150), () {
       setState(() {
         _scaleFactors[index] = 1.0;
       });
     });
+  }
+
+  void _submitQuizAndShowResult() async {
+    Navigator.pop(context); // close dialog
+
+    final answers = List.generate(widget.quiz.questions.length, (index) {
+      final question = widget.quiz.questions[index];
+      final choiceId = widget.selectedChoices[index];
+      return AnswerDTO(
+        questionId: question.questionId,
+        choiceId: choiceId,
+      );
+    });
+
+    try {
+      final result = await QuizzesApiHandler().postQuizResult(widget.quizId, answers);
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          backgroundColor: AppColors.backgroundColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                LargeBodyText('Sonuçlar', AppColors.textColor),
+                const SizedBox(height: 20),
+                MediumBodyText('Doğru: ${result.trueCount}', AppColors.successColor),
+                MediumBodyText('Yanlış: ${result.falseCount}', AppColors.dangerColor),
+                MediumBodyText('Boş: ${result.emptyCount}', AppColors.titleColor),
+                MediumBodyText('Toplam: ${result.totalCount}', AppColors.textColor),
+                const SizedBox(height: 10),
+                LargeText('Kazanılan Puan: ${result.earnedPoints}', AppColors.primaryColor),
+              ],
+            ),
+          ),
+        ),
+      );
+    } catch (e) {
+      debugPrint('Quiz submit failed: $e');
+    }
   }
 
   @override
@@ -122,22 +166,16 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                 fit: BoxFit.contain,
               ),
             ),
-
           Text(
             widget.question.questionContent,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             textAlign: TextAlign.justify,
           ),
-
           const SizedBox(height: 16),
-
           ...List.generate(_shuffledChoices.length, (i) {
             final choice = _shuffledChoices[i];
             final isSelected = i == _selectedIndex;
-
-            // 🔹 Determine label (A, B, C...) unless it's "Boş"
             final label = choice.choiceId != null ? String.fromCharCode(65 + i) : '-';
-
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 6),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -164,7 +202,7 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                       ),
                       child: label.isNotEmpty
                           ? LargeText(label, AppColors.backgroundColor)
-                          : Icon(Icons.not_interested, color: AppColors.backgroundColor), // 🔹 Optional: icon instead of label
+                          : Icon(Icons.not_interested, color: AppColors.backgroundColor),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -184,80 +222,79 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                   style: TextButton.styleFrom(
                     backgroundColor: AppColors.primaryAccent,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8))
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 24)
+                    padding: EdgeInsets.symmetric(horizontal: 24),
                   ),
                   child: MediumText("Önceki Soru", AppColors.backgroundColor),
                 ),
               const Spacer(),
               TextButton(
-                onPressed: widget.isLastQuestion 
-                ? () {
-                  showDialog(context: context, builder: (context) => 
-                    Dialog(
-                      backgroundColor: AppColors.backgroundColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: SizedBox(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              LargeBodyText('Quizi bitirmek istediğine emin misin?', AppColors.textColor, textAlign: TextAlign.center),
-                              const SizedBox(height: 32),
-                              SmallBodyText('Soruları gözden geçirmek istersen iptal butonuna tıkla.', AppColors.titleColor, textAlign: TextAlign.center),
-                              const SizedBox(height: 24),
-                              SmallBodyText('Quizi bitirirsen geri dönemezsin ve doğru cevaplarına göre kazandığın puanlar hesaplanır.', AppColors.titleColor, textAlign: TextAlign.center),
-                              const SizedBox(height: 32),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                onPressed: widget.isLastQuestion
+                    ? () => showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                            backgroundColor: AppColors.backgroundColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Expanded(
-                                    flex: 5,
-                                    child: TextButton(
-                                      onPressed: () => Navigator.pop(context), 
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primaryAccent,
-                                          borderRadius: BorderRadius.all(Radius.circular(10))
+                                  LargeBodyText('Quizi bitirmek istediğine emin misin?', AppColors.textColor, textAlign: TextAlign.center),
+                                  const SizedBox(height: 32),
+                                  SmallBodyText('Soruları gözden geçirmek istersen iptal butonuna tıkla.', AppColors.titleColor, textAlign: TextAlign.center),
+                                  const SizedBox(height: 24),
+                                  SmallBodyText('Quizi bitirirsen geri dönemezsin ve doğru cevaplarına göre kazandığın puanlar hesaplanır.', AppColors.titleColor, textAlign: TextAlign.center),
+                                  const SizedBox(height: 32),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 5,
+                                        child: TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: AppColors.primaryAccent,
+                                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                                            ),
+                                            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                                            child: MediumBodyText('İptal', AppColors.backgroundColor),
+                                          ),
                                         ),
-                                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-                                        child: MediumBodyText('İptal', AppColors.backgroundColor),
-                                      )
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 5,
-                                    child: TextButton(
-                                      onPressed: () {} , // end quiz function - use api here
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.secondaryColor,
-                                          borderRadius: BorderRadius.all(Radius.circular(10))
+                                      ),
+                                      Expanded(
+                                        flex: 5,
+                                        child: TextButton(
+                                          onPressed: _submitQuizAndShowResult,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: AppColors.secondaryColor,
+                                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                                            ),
+                                            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 9),
+                                            child: MediumBodyText('Quizi Bitir', AppColors.backgroundColor),
+                                          ),
                                         ),
-                                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 9),
-                                        child: MediumBodyText('Quizi Bitir', AppColors.backgroundColor),
-                                      )
-                                    ),
-                                  ),
+                                      ),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ]
-                          )
+                              ),
+                            ),
+                          ),
                         )
-                      )
-                    ),
-                  );
-                } // postQuizResult
-                : widget.onNext,
+                    : widget.onNext,
                 style: TextButton.styleFrom(
-                  backgroundColor: widget.isLastQuestion ? AppColors.secondaryColor : AppColors.primaryColor,
+                  backgroundColor:
+                      widget.isLastQuestion ? AppColors.secondaryColor : AppColors.primaryColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8))
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 24)
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                 ),
                 child: MediumText(widget.isLastQuestion ? "Quizi Bitir" : "Sonraki Soru", AppColors.backgroundColor),
               ),

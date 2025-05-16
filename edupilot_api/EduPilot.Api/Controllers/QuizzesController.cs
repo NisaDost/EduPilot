@@ -83,6 +83,7 @@ namespace EduPilot.Api.Controllers
                     QuestionCount = q.Questions.Count(),
                     Questions = q.Questions.Select(q => new QuestionDTO
                     {
+                        QuestionId = q.Id,
                         QuestionContent = q.QuestionContent,
                         QuestionImage = q.QuestionImage,
                         Choices = q.Choices.Select(c => new ChoiceDTO

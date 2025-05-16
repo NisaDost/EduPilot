@@ -75,7 +75,7 @@ class QuizzesApiHandler {
 
   Future<QuizResultDTO> postQuizResult(String quizId, List<AnswerDTO> answers) async {
     final studentId = await StudentSession.getStudentId();
-    final response = await client.get(
+    final response = await client.post(
       Uri.parse('$baseUrl/quiz/$quizId/student/$studentId'),
       headers: <String, String>{
         'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
