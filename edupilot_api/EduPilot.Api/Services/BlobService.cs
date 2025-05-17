@@ -7,15 +7,15 @@ namespace EduPilot.Api.Services
 {
     public class BlobService
     {
+        private readonly string _questionContainerName;
         private readonly string _connectionString;
-        private readonly string _containerName;
         private readonly string _accountName;
         private readonly string _accountKey;
 
         public BlobService(IConfiguration configuration)
         {
-            _connectionString = configuration["AzureBlobStorage:ConnectionString"];
-            _containerName = configuration["AzureBlobStorage:ContainerName"];
+            _questionContainerName = configuration["AzureBlobStorage:QuestionContainerName"];
+            _connectionString = configuration.GetConnectionString("StorageAccount");
             _accountName = configuration["AzureBlobStorage:AccountName"];
             _accountKey = configuration["AzureBlobStorage:AccountKey"];
         }
@@ -23,7 +23,7 @@ namespace EduPilot.Api.Services
         public async Task<string> UploadQuestionFileAsync(IFormFile file, Guid quizId, Guid questionId)
         {
             var blobServiceClient = new BlobServiceClient(_connectionString);
-            var containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
+            var containerClient = blobServiceClient.GetBlobContainerClient(_questionContainerName);
             await containerClient.CreateIfNotExistsAsync(PublicAccessType.None);
 
             // Compose the blob name like: quizId/questionId/filename.ext

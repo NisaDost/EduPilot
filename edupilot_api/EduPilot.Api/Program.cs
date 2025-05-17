@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<BlobService>();
 // Database
 builder.Services.AddDbContext<ApiDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
 // Authentication options binding (for Basic Auth)
 builder.Services.Configure<BasicAuthOptions>(
