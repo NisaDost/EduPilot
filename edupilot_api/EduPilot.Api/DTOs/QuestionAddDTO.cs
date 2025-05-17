@@ -1,12 +1,10 @@
 ﻿namespace EduPilot.Api.DTOs
 {
-    public class QuestionDTO
+    public class QuestionAddDTO
     {
-        public Guid QuestionId { get; set; }
         public string QuestionContent { get; set; }
         public bool IsActive { get; set; }
-        public string? QuestionImage { get; set; }
         public IFormFile? File { get; set; }
-        public List<ChoiceDTO> Choices { get; set; }
+        public List<ChoiceAddDTO> Choices { get; set; }
     }
 }

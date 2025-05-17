@@ -1,6 +1,8 @@
-﻿using EduPilot.Api.Data;
+﻿using Azure.Storage.Blobs.Specialized;
+using EduPilot.Api.Data;
 using EduPilot.Api.Data.Models;
 using EduPilot.Api.DTOs;
+using EduPilot.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,12 @@ namespace EduPilot.Api.Controllers
     public class QuizController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly BlobService _blobService;
 
-        public QuizController(ApiDbContext context)
+        public QuizController(ApiDbContext context, BlobService blobService)
         {
             _context = context;
+            _blobService = blobService;
         }
 
         [HttpGet("quizinfo/{id}")]
@@ -71,6 +75,8 @@ namespace EduPilot.Api.Controllers
         [HttpGet("quiz/{id}")]
         public async Task<ActionResult<QuizDTO>> GetQuizById(Guid id)
         {
+            var sasToken = _blobService.GetAccountSasToken();
+
             var quiz = await _context.Quizzes
                 .Where(q => q.Id == id && q.IsActive)
                 .Select(q => new QuizDTO
@@ -85,7 +91,7 @@ namespace EduPilot.Api.Controllers
                     {
                         QuestionId = q.Id,
                         QuestionContent = q.QuestionContent,
-                        QuestionImage = q.QuestionImage,
+                        QuestionImage = !string.IsNullOrWhiteSpace(q.QuestionImage) ? $"{q.QuestionImage}?{sasToken}" : null,
                         Choices = q.Choices.Select(c => new ChoiceDTO
                         {
                             ChoiceId = c.Id,
@@ -213,6 +219,8 @@ namespace EduPilot.Api.Controllers
 
             var quiz = solvedQuizDetails.First().Quiz;
 
+            var sasToken = _blobService.GetAccountSasToken();
+
             var solvedQuizDTO = new SolvedQuizDTO
             {
                 Id = quiz.Id,
@@ -224,7 +232,7 @@ namespace EduPilot.Api.Controllers
                 SolvedQuestions = quiz.Questions.Select(q => new SolvedQuestionDTO
                 {
                     QuestionContent = q.QuestionContent,
-                    QuestionImage = q.QuestionImage,
+                    QuestionImage = !string.IsNullOrWhiteSpace(q.QuestionImage) ? $"{q.QuestionImage}?{sasToken}" : null,
                     SelectedChoiceId = solvedQuizDetails
                         .FirstOrDefault(sqd => sqd.QuestionId == q.Id)?.SelectedChoiceId ?? Guid.Empty,
                     Choices = q.Choices.Select(c => new ChoiceDTO

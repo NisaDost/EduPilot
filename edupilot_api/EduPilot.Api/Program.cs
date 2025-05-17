@@ -1,5 +1,6 @@
 using EduPilot.Api.Auth;
 using EduPilot.Api.Data;
+using EduPilot.Api.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -18,6 +19,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<BlobService>();
 // Database
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -78,11 +80,11 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+});
 
 app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();

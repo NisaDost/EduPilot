@@ -1,6 +1,7 @@
 ﻿using EduPilot.Api.Data;
 using EduPilot.Api.Data.Models;
 using EduPilot.Api.DTOs;
+using EduPilot.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace EduPilot.Api.Controllers
     public class PublishersController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly BlobService _blobService;
 
-        public PublishersController(ApiDbContext context)
+        public PublishersController(ApiDbContext context, BlobService blobService)
         {
             _context = context;
+            _blobService = blobService;
         }
 
         [HttpGet("{id}")]
@@ -36,9 +39,9 @@ namespace EduPilot.Api.Controllers
                     Id = p.Id,
                     Name = p.Name,
                     Email = p.Email,
-                    Address = p.Address ?? string.Empty,  
-                    Logo = p.Logo ?? string.Empty,        
-                    Website = p.Website ?? string.Empty,  
+                    Address = p.Address ?? string.Empty,
+                    Logo = p.Logo ?? string.Empty,
+                    Website = p.Website ?? string.Empty,
                     quizCount = quizCount,
                     questionCount = questionCount
                 })
@@ -101,7 +104,7 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPost("{id}/add/quiz")]
-        public async Task<IActionResult> AddQuiz(Guid id, [FromBody] QuizDTO quiz)
+        public async Task<IActionResult> AddQuiz(Guid id, [FromForm] QuizDTO quiz)
         {
             if (ModelState.IsValid)
             {
@@ -116,7 +119,6 @@ namespace EduPilot.Api.Controllers
                     Questions = quiz.Questions.Select(q => new Question()
                     {
                         QuestionContent = q.QuestionContent,
-                        QuestionImage = q.QuestionImage,
                         IsActive = q.IsActive,
                         Choices = q.Choices.Select(c => new Choice()
                         {
@@ -127,6 +129,22 @@ namespace EduPilot.Api.Controllers
                 };
                 _context.Quizzes.Add(quizEntity);
                 await _context.SaveChangesAsync();
+
+                for (int i = 0; i < quiz.Questions.Count; i++)
+                {
+                    var questionDTO = quiz.Questions[i];
+                    var questionEntity = quizEntity.Questions[i];
+
+                    if (questionDTO.File != null)
+                    {
+                        string fileUrl = await _blobService.UploadQuestionFileAsync(questionDTO.File, quizEntity.Id, questionEntity.Id);
+
+                        questionEntity.QuestionImage = fileUrl;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
                 return CreatedAtAction(nameof(AddQuiz), new { status = 201, id = quizEntity.Id });
             }
             return BadRequest(ModelState);
@@ -159,19 +177,20 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPost("question/quiz/{id}")]
-        public async Task<IActionResult> AddQuestionToQuiz(Guid id, [FromBody] QuestionDTO question)
+        public async Task<IActionResult> AddQuestionToQuiz(Guid id, [FromForm] QuestionAddDTO question)
         {
             var quiz = await _context.Quizzes
                 .Include(q => q.Questions) // Ensure questions are included
                 .FirstOrDefaultAsync(q => q.Id == id);
+
             if (quiz == null)
             {
                 return NotFound("Quiz not found");
             }
+
             var questionEntity = new Question()
             {
                 QuestionContent = question.QuestionContent,
-                QuestionImage = question.QuestionImage,
                 Choices = question.Choices.Select(c => new Choice()
                 {
                     OptionContent = c.ChoiceContent,
@@ -181,6 +200,16 @@ namespace EduPilot.Api.Controllers
             quiz.Questions.Add(questionEntity);
             _context.Quizzes.Update(quiz);
             await _context.SaveChangesAsync();
+
+            if (question.File != null)
+            {
+                string fileUrl = await _blobService.UploadQuestionFileAsync(question.File, quiz.Id, questionEntity.Id);
+
+                questionEntity.QuestionImage = fileUrl;
+            }
+
+            await _context.SaveChangesAsync();
+
             return CreatedAtAction(nameof(AddQuestionToQuiz), new { status = 201, id = questionEntity.Id });
         }
     }
