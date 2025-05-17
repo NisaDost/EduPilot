@@ -655,3 +655,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/edupilot_api/EduPilot.Api/appsettings.Development.json
+/edupilot_api/EduPilot.Api/appsettings.Development.json
