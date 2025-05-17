@@ -102,8 +102,8 @@ class _QuestionsContainerState extends State<QuestionsContainer>
     });
   }
 
-  void _submitQuizAndShowResult() async {
-    Navigator.pop(context); // close dialog
+  void _submitQuizAndShowResult(BuildContext dialogContext) async {
+    Navigator.pop(dialogContext); // close dialog
 
     final answers = List.generate(widget.quiz.questions.length, (index) {
       final question = widget.quiz.questions[index];
@@ -135,16 +135,20 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                 MediumBodyText('Toplam: ${result.totalCount}', AppColors.textColor),
                 const SizedBox(height: 10),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     LargeText('Kazanılan Puan: ${result.earnedPoints}', AppColors.primaryColor),
-                    Icon(Icons.bolt, color: AppColors.primaryColor, size: 56),
+                    Icon(Icons.bolt, color: AppColors.primaryColor, size: 30),
                   ],
                 ),
+                const SizedBox(height: 20),
+                LargeText('Tebrikler!', AppColors.primaryAccent)
               ],
             ),
           ),
         ),
       );
+      Navigator.pop(context);
     } catch (e) {
       debugPrint('Quiz submit failed: $e');
     }
@@ -274,7 +278,7 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                                       Expanded(
                                         flex: 5,
                                         child: TextButton(
-                                          onPressed: _submitQuizAndShowResult,
+                                          onPressed: () => _submitQuizAndShowResult(context),
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color: AppColors.secondaryColor,

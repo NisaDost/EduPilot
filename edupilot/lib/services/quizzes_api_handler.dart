@@ -75,12 +75,21 @@ class QuizzesApiHandler {
 
   Future<QuizResultDTO> postQuizResult(String quizId, List<AnswerDTO> answers) async {
     final studentId = await StudentSession.getStudentId();
+
+    final List<Map<String, dynamic>> answersBody = [
+      for (final quizAnswer in answers) {
+        'questionId': quizAnswer.questionId,
+        'choiceId': quizAnswer.choiceId,
+      }
+    ];
+
     final response = await client.post(
       Uri.parse('$baseUrl/quiz/$quizId/student/$studentId'),
       headers: <String, String>{
         'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
         'Content-Type': 'application/json; charset=UTF-8',  
       },
+      body: jsonEncode(answersBody),
     );
     if (response.statusCode >= 200 && response.statusCode < 300) {
       final jsonResponse = jsonDecode(response.body);
