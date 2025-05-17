@@ -177,6 +177,29 @@ namespace EduPilot.Api.Controllers
             return supervisors;
         }
 
+
+        [HttpGet("{id}/attendance")]
+        public async Task<ActionResult<List<InstitutionAttendanceDTO>>> GetAttendanceByInstitution(Guid id)
+        {
+            var attendances = await _context.Attendances
+                                            .Where(a => a.InstitutionId == id)
+                                            .Select(a => new InstitutionAttendanceDTO()
+                                            {
+                                                AttendanceId = a.Id,
+                                                StudentId = a.StudentId,
+                                                LessonId = a.LessonId,
+                                                Date = a.Date,
+                                                IsPresent = a.IsPresent,
+                                                Emotion = a.Emotion,
+                                            })
+                                            .ToListAsync();
+            if (attendances == null || attendances.Count == 0)
+            {
+                return new List<InstitutionAttendanceDTO>();
+            }
+            return attendances;
+        }
+
         [HttpPost("{id}/supervisor/{supervisorId}")]
         public async Task<IActionResult> AddSupervisorToInstitution(Guid id, Guid supervisorId)
         {

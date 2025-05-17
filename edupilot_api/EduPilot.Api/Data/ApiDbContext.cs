@@ -214,6 +214,9 @@ namespace EduPilot.Api.Data
                 .Property(a => a.Id)
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<Attendance>()
+                .Property(a => a.InstitutionId)
+                .IsRequired();
+            modelBuilder.Entity<Attendance>()
                 .Property(a => a.StudentId)
                 .IsRequired();
             modelBuilder.Entity<Attendance>()
@@ -230,6 +233,11 @@ namespace EduPilot.Api.Data
             modelBuilder.Entity<Attendance>()
                 .Property(a => a.Emotion)
                 .IsRequired(false);
+            modelBuilder.Entity<Attendance>()
+                .HasOne(a => a.Institution)
+                .WithMany(i => i.Attendances)
+                .HasForeignKey(a => a.InstitutionId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Attendance>()
                 .HasOne(a => a.Student)
                 .WithMany(s => s.Attendances)

@@ -11,5 +11,6 @@
         public string? Website { get; set; }
         public List<Student> Students { get; set; }
         public List<Supervisor> Supervisors { get; set; }
+        public List<Attendance> Attendances { get; set; }
     }
 }
