@@ -1,9 +1,7 @@
 import 'dart:math';
-import 'package:edupilot/models/dtos/answer_dto.dart';
 import 'package:edupilot/models/dtos/choice_dto.dart';
 import 'package:edupilot/models/dtos/question_dto.dart';
 import 'package:edupilot/models/dtos/quiz_dto.dart';
-import 'package:edupilot/services/quizzes_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:flutter/material.dart';
 import 'package:edupilot/theme.dart';
@@ -102,58 +100,6 @@ class _QuestionsContainerState extends State<QuestionsContainer>
     });
   }
 
-  void _submitQuizAndShowResult(BuildContext dialogContext) async {
-    Navigator.pop(dialogContext); // close dialog
-
-    final answers = List.generate(widget.quiz.questions.length, (index) {
-      final question = widget.quiz.questions[index];
-      final choiceId = widget.selectedChoices[index];
-      return AnswerDTO(
-        questionId: question.questionId,
-        choiceId: choiceId,
-      );
-    });
-
-    try {
-      final result = await QuizzesApiHandler().postQuizResult(widget.quizId, answers);
-      if (!mounted) return;
-      showDialog(
-        context: context,
-        builder: (context) => Dialog(
-          backgroundColor: AppColors.backgroundColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                LargeBodyText('Sonuçlar', AppColors.textColor),
-                const SizedBox(height: 20),
-                MediumBodyText('Doğru: ${result.trueCount}', AppColors.successColor),
-                MediumBodyText('Yanlış: ${result.falseCount}', AppColors.dangerColor),
-                MediumBodyText('Boş: ${result.emptyCount}', AppColors.titleColor),
-                MediumBodyText('Toplam: ${result.totalCount}', AppColors.textColor),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LargeText('Kazanılan Puan: ${result.earnedPoints}', AppColors.primaryColor),
-                    Icon(Icons.bolt, color: AppColors.primaryColor, size: 30),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                LargeText('Tebrikler!', AppColors.primaryAccent)
-              ],
-            ),
-          ),
-        ),
-      );
-      Navigator.pop(context);
-    } catch (e) {
-      debugPrint('Quiz submit failed: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -239,64 +185,7 @@ class _QuestionsContainerState extends State<QuestionsContainer>
                 ),
               const Spacer(),
               TextButton(
-                onPressed: widget.isLastQuestion
-                    ? () => showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                            backgroundColor: AppColors.backgroundColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(24),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  LargeBodyText('Quizi bitirmek istediğine emin misin?', AppColors.textColor, textAlign: TextAlign.center),
-                                  const SizedBox(height: 32),
-                                  SmallBodyText('Soruları gözden geçirmek istersen iptal butonuna tıkla.', AppColors.titleColor, textAlign: TextAlign.center),
-                                  const SizedBox(height: 24),
-                                  SmallBodyText('Quizi bitirirsen geri dönemezsin ve doğru cevaplarına göre kazandığın puanlar hesaplanır.', AppColors.titleColor, textAlign: TextAlign.center),
-                                  const SizedBox(height: 32),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        flex: 5,
-                                        child: TextButton(
-                                          onPressed: () => Navigator.pop(context),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.primaryAccent,
-                                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                                            ),
-                                            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-                                            child: MediumBodyText('İptal', AppColors.backgroundColor),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 5,
-                                        child: TextButton(
-                                          onPressed: () => _submitQuizAndShowResult(context),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.secondaryColor,
-                                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                                            ),
-                                            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 9),
-                                            child: MediumBodyText('Quizi Bitir', AppColors.backgroundColor),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                    : widget.onNext,
+                onPressed: widget.onNext,
                 style: TextButton.styleFrom(
                   backgroundColor:
                       widget.isLastQuestion ? AppColors.secondaryColor : AppColors.primaryColor,
