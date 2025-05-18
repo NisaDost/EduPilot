@@ -38,6 +38,12 @@ class IconConversion {
         return Icons.coffee;
       case 'Icons.sell':
         return Icons.sell;
+      case 'Icons.rocket_launch_rounded':
+        return Icons.rocket_launch_rounded;
+      case 'Icons.insights':
+        return Icons.insights;
+      case 'Icons.emoji_events_outlined':
+        return Icons.emoji_events_outlined;
       default:
         return Icons.menu_book_outlined;
     }
