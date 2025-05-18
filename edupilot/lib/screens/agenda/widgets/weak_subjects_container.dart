@@ -43,6 +43,7 @@ class _WeakSubjectsContainerState extends State<WeakSubjectsContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -51,7 +52,7 @@ class _WeakSubjectsContainerState extends State<WeakSubjectsContainer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Zayıf Konular', style: Theme.of(context).textTheme.titleMedium),
+          LargeBodyText('Zayıf Konular', AppColors.textColor),
           const SizedBox(height: 12),
           FutureBuilder<List<Map<String, String>>>(
             future: _weakSubjectsWithLessons,
@@ -61,7 +62,7 @@ class _WeakSubjectsContainerState extends State<WeakSubjectsContainer> {
               } else if (snapshot.hasError) {
                 return Text('Hata oluştu: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('Zayıf konu bulunamadı.');
+                return Center(child: const Text('Zayıf konu bulunamadı.'));
               }
 
               final data = snapshot.data!;
