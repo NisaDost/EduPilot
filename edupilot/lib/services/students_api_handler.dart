@@ -3,6 +3,7 @@ import 'package:edupilot/models/dtos/favorite_lesson_dto.dart';
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/solved_question_count_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
+import 'package:edupilot/models/dtos/weak_subjects_dto.dart';
 import 'package:edupilot/sessions/student_session.dart';
 import 'package:http/http.dart' as http;
 
@@ -291,6 +292,26 @@ class StudentsApiHandler {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<List<WeakSubjectsDTO>> getWeakSubjects() async {
+    final studentId = await StudentSession.getStudentId();
+    final response = await client.get(
+      Uri.parse('$baseUrl/students/$studentId/weaksubjects'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse
+          .map((item) => WeakSubjectsDTO.fromJson(item))
+          .toList();
+    } else {
+      throw Exception('Failed to fetch weak subjects');
     }
   }
 }

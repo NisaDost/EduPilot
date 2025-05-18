@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using EduPilot.Api.Data;
 using EduPilot.Api.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using EduPilot.Api.Data.Models;
 
 namespace EduPilot.Api.Controllers
 {
@@ -80,6 +81,24 @@ namespace EduPilot.Api.Controllers
                 return NotFound();
             }
             return subjects;
+        }
+
+        [HttpGet("lesson/subject/{subjectId}")]
+        public async Task<ActionResult<LessonNameDTO>> GetLessonNameFromSubjectId(Guid subjectId)
+        {
+            var lessonName = await _context.Subjects
+                .Where(s => s.Id == subjectId)
+                .Select(s => new LessonNameDTO
+                {
+                    LessonId = s.LessonId,
+                    LessonName = s.Lesson.Name
+                })
+                .FirstOrDefaultAsync();
+
+            if (lessonName == null)
+                return NotFound("Subject or Lesson not found.");
+
+            return Ok(lessonName);
         }
     }
 }

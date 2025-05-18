@@ -1,6 +1,7 @@
 import 'package:edupilot/models/dtos/solved_question_count_dto.dart';
 import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/agenda/widgets/agenda_header.dart';
+import 'package:edupilot/screens/agenda/widgets/weak_subjects_container.dart';
 import 'package:edupilot/screens/agenda/widgets/weekly_comparison_graph.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/shared/styled_button.dart';
@@ -256,7 +257,9 @@ class _AgendaScreenState extends State<AgendaScreen> {
                             ),
                           ],
                         ),
-                      )
+                      ),
+                      const SizedBox(height: 16),
+                      WeakSubjectsContainer()
                     ],
                   ),
                 ),
@@ -266,21 +269,6 @@ class _AgendaScreenState extends State<AgendaScreen> {
           ],
         );
       },
-    );
-  }
-}
-
-class DailyDetailScreen extends StatelessWidget {
-  final DateTime date;
-  const DailyDetailScreen({super.key, required this.date});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Detay - ${date.day}/${date.month}/${date.year}')),
-      body: Center(
-        child: Text('Burada detaylar olacak.'),
-      ),
     );
   }
 }

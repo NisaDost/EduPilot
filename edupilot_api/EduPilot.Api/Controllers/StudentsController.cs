@@ -6,6 +6,8 @@ using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 
 namespace EduPilot.Api.Controllers
 {
@@ -418,6 +420,24 @@ namespace EduPilot.Api.Controllers
             _context.Entry(student).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpGet("{id}/weaksubjects")]
+        public async Task<ActionResult<List<WeakSubjectsDTO>>> GetWeakSubjects(Guid id)
+        {
+            var weakSubjects = await _context.WeakSubjects
+                .Where(ws => ws.StudentId == id)
+                .GroupBy(ws => new { ws.SubjectId, ws.SubjectName })
+                .Where(g => g.Count() >= 5)
+                .Select(g => new WeakSubjectsDTO
+                {
+                    StudentId = id,
+                    SubjectId = g.Key.SubjectId,
+                    SubjectName = g.Key.SubjectName
+                })
+                .ToListAsync();
+
+            return Ok(weakSubjects);
         }
     }
 }

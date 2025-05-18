@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:edupilot/models/dtos/lesson_name_dto.dart';
 import 'package:edupilot/models/dtos/lessons_by_grade_dto.dart';
 import 'package:edupilot/models/dtos/subject_dto.dart';
 import 'package:edupilot/services/students_api_handler.dart';
@@ -79,6 +80,22 @@ class LessonsApiHandler {
       return jsonResponse
           .map((subject) => SubjectDTO.fromJson(subject))
           .toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<LessonNameDTO> getLessonNameFromSubjectId(String subjecId) async {
+    final lesson = await client.get(
+      Uri.parse('$baseUrl/lesson/subject/$subjecId'),
+      headers: <String, String>{
+        'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (lesson.statusCode >= 200 && lesson.statusCode < 300) {
+      final Map<String, dynamic> jsonResponse = jsonDecode(lesson.body);
+      return LessonNameDTO.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load data');
     }
