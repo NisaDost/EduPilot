@@ -4,6 +4,7 @@ using EduPilot.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduPilot.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250518171333_Add-EarnedPoints-To-SolvedQuizInfo-Table")]
+    partial class AddEarnedPointsToSolvedQuizInfoTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -482,9 +485,6 @@ namespace EduPilot.Api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Difficulty")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<int>("EarnedPoints")

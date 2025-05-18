@@ -27,5 +27,6 @@
         public List<QuizResult> QuizResults { get; set; }
         public List<WeakSubjects> WeakSubjects { get; set; }
         public List<SolvedQuizDetails> SolvedQuizDetails { get; set; }
+        public List<SolvedQuizInfo> SolvedQuizInfos { get; set; }
     }
 }

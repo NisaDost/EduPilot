@@ -194,8 +194,32 @@ namespace EduPilot.Api.Controllers
             if (earnedPoints > 0)
             {
                 student.Points += earnedPoints;
+                if (student.LastActivityDate == DateTime.Now.Date.AddDays(-1))
+                {
+                    student.DailyStreakCount++;
+                }
+                else
+                {
+                    student.DailyStreakCount = 0;
+                }
+                student.LastActivityDate = DateTime.Now.Date;
                 _context.Students.Update(student);
             }
+
+            var solvedQuizInfo = new SolvedQuizInfo
+            {
+                StudentId = studentId,
+                QuizId = answerEntity.QuizId,
+                Difficulty = quiz.Difficulty,
+                TrueCount = trueCount,
+                FalseCount = falseCount,
+                EmptyCount = emptyCount,
+                TotalQuestionCount = totalQuestionCount,
+                EarnedPoints = earnedPoints,
+                Duration = quiz.Duration,
+                SolvedDate = DateTime.Now.Date,
+            };
+            _context.SolvedQuizInfos.Add(solvedQuizInfo);
 
             await _context.SaveChangesAsync();
 
@@ -245,6 +269,35 @@ namespace EduPilot.Api.Controllers
             };
 
             return solvedQuizDTO;
+        }
+
+        [HttpGet("solvedquizinfo/student/{studentId}")]
+        public async Task<ActionResult<List<SolvedQuizInfoDTO>>> GetSolvedQuizInfo(Guid studentId)
+        {
+            var solvedQuiz = await _context.SolvedQuizInfos
+                .Include(sqi => sqi.Quiz)
+                .Where(sqi => sqi.StudentId == studentId && sqi.Quiz.Id == sqi.QuizId)
+                .Select(sqi => new SolvedQuizInfoDTO
+                {
+                    QuizId = sqi.QuizId,
+                    SubjectId = sqi.Quiz.SubjectId,
+                    SubjectName = sqi.Quiz.Subject.Name,
+                    Difficulty = sqi.Difficulty,
+                    TrueCount = sqi.TrueCount,
+                    FalseCount = sqi.FalseCount,
+                    EmptyCount = sqi.EmptyCount,
+                    TotalQuestionCount = sqi.TotalQuestionCount,
+                    EarnedPoints = sqi.EarnedPoints,
+                    Duration = sqi.Duration,
+                    SolvedDate = sqi.SolvedDate,
+                }).ToListAsync();
+
+            if (solvedQuiz == null)
+            {
+                return NotFound();
+            }
+
+            return solvedQuiz;
         }
     }
 }

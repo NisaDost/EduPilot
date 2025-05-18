@@ -14,5 +14,6 @@
         public Publisher Publisher { get; set; }
         public List<QuizResult> QuizResults { get; set; }
         public List<SolvedQuizDetails> SolvedQuizDetails { get; set; }
+        public List<SolvedQuizInfo> SolvedQuizInfos { get; set; }
     }
 }

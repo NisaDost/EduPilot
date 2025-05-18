@@ -21,6 +21,7 @@ namespace EduPilot.Api.Data
         public DbSet<QuizResult> QuizResults { get; set; }
         public DbSet<WeakSubjects> WeakSubjects { get; set; }
         public DbSet<SolvedQuizDetails> SolvedQuizDetails { get; set; }
+        public DbSet<SolvedQuizInfo> SolvedQuizInfos { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Choice> Choices { get; set; }
         public DbSet<Simulation> Simulations { get; set; }
@@ -819,6 +820,52 @@ namespace EduPilot.Api.Data
                 .WithMany(c => c.SolvedQuizDetails)
                 .HasForeignKey(sqd => sqd.SelectedChoiceId)
                 .OnDelete(DeleteBehavior.Cascade);
+            #endregion
+
+            #region SolvedQuizInfos
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .HasKey(sqi => sqi.Id);
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.StudentId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .HasOne(sqi => sqi.Student)
+                .WithMany(s => s.SolvedQuizInfos)
+                .HasForeignKey(sqi => sqi.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.QuizId)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .HasOne(sqi => sqi.Quiz)
+                .WithMany(q => q.SolvedQuizInfos)
+                .HasForeignKey(sqi => sqi.QuizId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.TrueCount)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.FalseCount)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.EmptyCount)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.TotalQuestionCount)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.EarnedPoints)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.Duration)
+                .IsRequired();
+            modelBuilder.Entity<SolvedQuizInfo>()
+                .Property(sqi => sqi.SolvedDate)
+                .HasColumnType("date")
+                .IsRequired();
             #endregion
         }
     }

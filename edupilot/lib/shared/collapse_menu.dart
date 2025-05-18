@@ -12,10 +12,12 @@ class CollapseMenu extends StatelessWidget {
     super.key,
     required this.onAllLessonsTap,
     required this.onProfileTap,
+    required this.onQuizAnalysysTap,
     });
 
   final VoidCallback onAllLessonsTap;
   final VoidCallback onProfileTap;
+  final VoidCallback onQuizAnalysysTap;
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +95,8 @@ class CollapseMenu extends StatelessWidget {
               const SizedBox(height: 28),
               _buttonWidget('Profil', onProfileTap),
               _buttonWidget('Tüm Dersler', onAllLessonsTap),
-              _buttonWidget('Collapse Menu Button 3', () {}),
-              _buttonWidget('Collapse Menu Button 4', () {}),
+              _buttonWidget('Quiz Analizlerin', onQuizAnalysysTap),
+              _buttonWidget('Tanıtım Sayfası', () {}),
 
               Expanded(child: SizedBox()),
               SizedBox(
