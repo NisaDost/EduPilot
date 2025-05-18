@@ -116,8 +116,7 @@ class _QuestionsContainerState extends State<QuestionsContainer>
             Container(
               width: double.infinity,
               margin: const EdgeInsets.only(bottom: 12),
-              child: Image.asset(
-                'assets/img/temp/${widget.question.questionImage!}',
+              child: Image.network(widget.question.questionImage!,
                 fit: BoxFit.contain,
               ),
             ),

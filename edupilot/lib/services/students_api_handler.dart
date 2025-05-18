@@ -10,7 +10,7 @@ import 'dart:io';
 import 'package:http/io_client.dart';
 
 class StudentsApiHandler {
-  final String baseUrl = 'https://10.0.2.2:7104/api';
+  final String baseUrl = 'https://edupilot-api.azurewebsites.net/api';
   final String authUsername = 'admin';
   final String authPassword = 'password';
 

@@ -91,7 +91,7 @@ namespace EduPilot.Api.Controllers
                     {
                         QuestionId = q.Id,
                         QuestionContent = q.QuestionContent,
-                        QuestionImage = !string.IsNullOrWhiteSpace(q.QuestionImage) ? $"{q.QuestionImage}?{sasToken}" : null,
+                        QuestionImage = !string.IsNullOrWhiteSpace(q.QuestionImage) ? $"{q.QuestionImage}?{sasToken}" : String.Empty,
                         Choices = q.Choices.Select(c => new ChoiceDTO
                         {
                             ChoiceId = c.Id,

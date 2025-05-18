@@ -42,33 +42,50 @@ class _QuizScreenState extends State<QuizScreen> {
 
   Future<void> _loadQuiz() async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
+
       final quiz = await QuizzesApiHandler().getQuiz(widget.quizId);
+      debugPrint("Quiz data: ${quiz.toJson()}");
+      // Check if widget is still mounted after async call
+      if (!mounted) return;
+
       if (quiz.questions.isEmpty) {
         setState(() {
-          _quiz = null;
           _isLoading = false;
+          _quiz = null; // Explicitly set to null for empty quiz
         });
         return;
       }
 
+      // Set the quiz data and start timer
       setState(() {
         _quiz = quiz;
         _remainingSeconds = quiz.duration * 60;
         _isLoading = false;
       });
-
+      
       _startTimer();
     } catch (e) {
       debugPrint("Quiz load error: $e");
-      setState(() {
-        _quiz = null;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _quiz = null;
+          _isLoading = false;
+        });
+      }
     }
   }
 
   void _startTimer() {
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+
       if (_remainingSeconds <= 0) {
         timer.cancel();
         _submitQuiz(); // Auto submit when timer ends

@@ -88,13 +88,13 @@ class _AddNewSolvedQuestionScreenState extends State<AddNewSolvedQuestionScreen>
       _selectedDate,
     );
 
-    final _formattedDate = '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}';
+    final formattedDate = '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}';
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           success
-              ? '${lesson.name} için $_formattedDate tarihinde ekleme başarılı.'
+              ? '${lesson.name} için $formattedDate tarihinde ekleme başarılı.'
               : 'Soru sayısı eklenemedi.',
         ),
         backgroundColor: success ? AppColors.successColor : AppColors.dangerColor,
