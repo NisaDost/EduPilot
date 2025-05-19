@@ -8,7 +8,7 @@ class SolvedQuizDTO {
   final int pointPerQuestion;
   final int duration;
   final int questionCount;
-  final List<SolvedQuestionDTO> questions;
+  final List<SolvedQuestionDTO> solvedQuestions;
 
   SolvedQuizDTO({
     required this.id,
@@ -17,7 +17,7 @@ class SolvedQuizDTO {
     required this.pointPerQuestion,
     required this.duration,
     required this.questionCount,
-    required this.questions,
+    required this.solvedQuestions,
   });
 
   factory SolvedQuizDTO.fromJson(Map<String, dynamic> json) => SolvedQuizDTO(
@@ -27,7 +27,7 @@ class SolvedQuizDTO {
         pointPerQuestion: json['pointPerQuestion'] as int,
         duration: json['duration'] as int,
         questionCount: json['questionCount'] as int,
-        questions: (json['questions'] as List<dynamic>)
+        solvedQuestions: (json['solvedQuestions'] as List<dynamic>)
             .map((e) => SolvedQuestionDTO.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
@@ -39,6 +39,6 @@ class SolvedQuizDTO {
         'pointPerQuestion': pointPerQuestion,
         'duration': duration,
         'questionCount': questionCount,
-        'questions': questions.map((e) => e.toJson()).toList(),
+        'solvedQuestions': solvedQuestions.map((e) => e.toJson()).toList(),
       };
 }

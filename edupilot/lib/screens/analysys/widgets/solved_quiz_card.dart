@@ -1,4 +1,5 @@
 import 'package:edupilot/models/dtos/solved_quiz_info_dto.dart';
+import 'package:edupilot/screens/analysys/solved_quiz_screen.dart';
 import 'package:edupilot/services/lessons_api_handler.dart';
 import 'package:edupilot/services/quizzes_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
@@ -185,7 +186,11 @@ class _SolvedQuizCardState extends State<SolvedQuizCard> {
                 child: Align(
                   alignment: Alignment.center,
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SolvedQuizScreen(quizId: solvedQuiz.quizId))
+                      );
+                    },
                     style: FilledButton.styleFrom(
                       backgroundColor: AppColors.secondaryColor,
                       shape: RoundedRectangleBorder(

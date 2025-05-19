@@ -103,7 +103,7 @@ class QuizzesApiHandler {
   Future<SolvedQuizDTO> getSolvedQuiz(String quizId) async {
     final studentId = await StudentSession.getStudentId();
     final quiz = await client.get(
-      Uri.parse('$baseUrl/quiz/$quizId/student/$studentId'),
+      Uri.parse('$baseUrl/solvedquiz/$quizId/student/$studentId'),
       headers: <String, String>{
         'Authorization': 'Basic ${base64Encode(utf8.encode('$authUsername:$authPassword'))}',
         'Content-Type': 'application/json; charset=UTF-8',  

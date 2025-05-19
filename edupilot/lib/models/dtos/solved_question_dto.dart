@@ -16,7 +16,7 @@ class SolvedQuestionDTO {
   factory SolvedQuestionDTO.fromJson(Map<String, dynamic> json) {
     return SolvedQuestionDTO(
       questionContent: json['questionContent'] as String,
-      questionImage: (json['questionImage'] as String).isEmpty ? null : json['questionImage'],
+      questionImage: json['questionImage'] as String,
       selectedChoiceId: json['selectedChoiceId'] as String,
       choices: (json['choices'] as List<dynamic>)
         .map((e) => ChoiceDTO.fromJson(e as Map<String, dynamic>))

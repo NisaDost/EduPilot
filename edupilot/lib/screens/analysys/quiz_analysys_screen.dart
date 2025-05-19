@@ -160,7 +160,7 @@ class _SelectQuizScreenState extends State<QuizAnalysysScreen> {
                                 return Center(child: LoadingAnimationWidget.flickr(
                                   leftDotColor: AppColors.primaryColor,
                                   rightDotColor: AppColors.secondaryColor,
-                                  size: 72,
+                                  size: 18,
                                   ));
                               } else if (snapshot.hasError) {
                                 return Text('Hata: ${snapshot.error}');

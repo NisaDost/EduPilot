@@ -107,6 +107,7 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _screens[9] = QuizAnalysysScreen();
       _selectedIndex = 9;
+      _collapseMenuOpened = false;
     });
   }
 

@@ -119,7 +119,7 @@ namespace EduPilot.Api.Controllers
                     Questions = quiz.Questions.Select(q => new Question()
                     {
                         QuestionContent = q.QuestionContent,
-                        IsActive = q.IsActive,
+                        IsActive = true,
                         Choices = q.Choices.Select(c => new Choice()
                         {
                             OptionContent = c.ChoiceContent,
@@ -134,6 +134,7 @@ namespace EduPilot.Api.Controllers
                 {
                     var questionDTO = quiz.Questions[i];
                     var questionEntity = quizEntity.Questions[i];
+                    questionEntity.QuestionImage = String.Empty;
 
                     if (questionDTO.File != null)
                     {
