@@ -104,9 +104,6 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                               final result = await showDialog<Set<String>>(
                                 context: context,
                                 builder: (context) => FavLessonPopUp(
-                                  onSave: () {
-                                    setState(() {});
-                                  },
                                   selectedGrade: _selectedGrade!,
                                   selectedLessons: _favLessonIds,
                                 ),

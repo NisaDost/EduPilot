@@ -8,12 +8,10 @@ import 'package:edupilot/shared/styled_text.dart';
 class FavLessonPopUp extends StatefulWidget {
   const FavLessonPopUp({
     super.key,
-    required this.onSave,
     required this.selectedGrade,
     required this.selectedLessons,
   });
 
-  final VoidCallback onSave;
   final int selectedGrade;
   final List<String> selectedLessons;
 
@@ -96,21 +94,35 @@ class _FavoritePopUpState extends State<FavLessonPopUp> {
           child: SmallText('Kapat', AppColors.textColor),
         ),
         TextButton(
-          onPressed: () async {
+          onPressed: () {
             final success = favoriteLessonIds.isNotEmpty;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: SmallBodyText(
-                  success ? 'Favori dersler başarıyla kaydedildi.' : 'Favori dersler kaydedilemedi.',
-                  AppColors.textColor,
-                ),
-                backgroundColor: success ? AppColors.successColor : AppColors.dangerColor,
-              ),
-            );
-            if (success) {
-              widget.onSave();
-            }
-            Navigator.pop(context, favoriteLessonIds);
+
+            Navigator.pop<Set<String>>(context, favoriteLessonIds);
+
+            // Delay any UI calls until after dialog is dismissed
+            Future.delayed(Duration.zero, () {
+              if (success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: SmallBodyText(
+                      'Favori dersler başarıyla kaydedildi.',
+                      AppColors.textColor,
+                    ),
+                    backgroundColor: AppColors.successColor,
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: SmallBodyText(
+                      'Favori dersler kaydedilemedi.',
+                      AppColors.textColor,
+                    ),
+                    backgroundColor: AppColors.dangerColor,
+                  ),
+                );
+              }
+            });
           },
           child: SmallText('Kaydet', AppColors.primaryColor),
         ),
