@@ -21,6 +21,13 @@ class LessonCard extends StatelessWidget {
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: AppColors.primaryAccent,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(75),
+            blurRadius: 4,
+            offset: const Offset(0, 4),
+          ),
+        ],
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

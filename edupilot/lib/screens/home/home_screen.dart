@@ -51,6 +51,13 @@ class HomeScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: AppColors.backgroundColor,
                     borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(25),
+                        blurRadius: 4,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
@@ -88,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                       // maskot resmi
                       Expanded(
                         child: Image.asset(
-                          'assets/img/mascots/demo_mascot.png',
+                          'assets/img/mascots/home_mascot.png',
                           height: 180,
                           width: 180,
                         ),

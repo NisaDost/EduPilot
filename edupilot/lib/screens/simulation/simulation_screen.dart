@@ -276,6 +276,13 @@ class _SimulationScreenState extends State<SimulationScreen> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.backgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(25),
+                      blurRadius: 4,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                   borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
                 ),
                 child: Column(

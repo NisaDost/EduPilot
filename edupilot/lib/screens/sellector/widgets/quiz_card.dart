@@ -88,6 +88,13 @@ class QuizCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(25),
+            blurRadius: 4,
+            offset: const Offset(0, 4),
+          ),
+        ],
         color: AppColors.primaryColor,
       ),
       child: Column(

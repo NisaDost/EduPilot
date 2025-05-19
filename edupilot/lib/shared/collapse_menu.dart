@@ -1,5 +1,6 @@
 import 'package:edupilot/models/dtos/student_dto.dart';
 import 'package:edupilot/screens/auth/welcome_screen.dart';
+import 'package:edupilot/screens/intro/intro_swipe_screen.dart';
 import 'package:edupilot/services/students_api_handler.dart';
 import 'package:edupilot/sessions/student_session.dart';
 import 'package:edupilot/shared/styled_button.dart';
@@ -96,7 +97,11 @@ class CollapseMenu extends StatelessWidget {
               _buttonWidget('Profil', onProfileTap),
               _buttonWidget('Tüm Dersler', onAllLessonsTap),
               _buttonWidget('Quiz Analizlerin', onQuizAnalysysTap),
-              _buttonWidget('Tanıtım Sayfası', () {}),
+              _buttonWidget('Tanıtım Sayfası', () => Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => const IntroSwipeScreen()
+                  )
+                )
+              ),
 
               Expanded(child: SizedBox()),
               SizedBox(

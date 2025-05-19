@@ -19,9 +19,11 @@ class WeeklyComparisonGraph extends StatelessWidget {
     final lastWeek = weekTotals[lastIndex - 1];  // One week before
     final diff = thisWeek - lastWeek;
 
-    final message = diff >= 0
+    final message = diff > 0
         ? 'Bu hafta geçen haftaya göre $diff soru daha fazla çözdün!'
-        : 'Bu hafta geçen haftaya göre ${-diff} soru daha az çözdün!';
+        : diff < 0
+          ? 'Bu hafta geçen haftaya göre ${-diff} soru daha az çözdün!'
+          : 'Bu hafta geçen hafta ile eşit sayıda soru çözdün!';
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -77,7 +79,15 @@ class WeeklyComparisonGraph extends StatelessWidget {
               children: [
                 XLargeText(thisWeek.toString(), AppColors.primaryAccent),
                 const SizedBox(height: 4),
-                MediumText(message, diff >= 0 ? AppColors.successColor : AppColors.dangerColor, textAlign: TextAlign.center),
+                MediumText(
+                  message, 
+                  diff > 0 
+                    ? AppColors.successColor 
+                    : diff < 0 
+                      ? AppColors.dangerColor
+                      : AppColors.textColor, 
+                  textAlign: TextAlign.center
+                ),
               ],
             ),
           ),

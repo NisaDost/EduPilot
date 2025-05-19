@@ -75,6 +75,13 @@ class DailyDetailsScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(25),
+                        blurRadius: 4,
+                        offset: const Offset(4, 4),
+                      ),
+                    ],
                     color: AppColors.primaryAccent,
                   ),
                   child: LargeText('$formattedDate - ${_weekDay()}', AppColors.backgroundColor),
@@ -106,6 +113,13 @@ class DailyDetailsScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: AppColors.backgroundColor,
                             borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(25),
+                                blurRadius: 4,
+                                offset: const Offset(4, 4),
+                              ),
+                            ],
                             border: Border.all(color: AppColors.primaryColor, width: 1),
                           ),
                           child: Row(

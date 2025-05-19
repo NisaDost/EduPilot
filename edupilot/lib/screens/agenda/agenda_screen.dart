@@ -130,6 +130,13 @@ class _AgendaScreenState extends State<AgendaScreen> {
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(25),
+                              blurRadius: 4,
+                              offset: const Offset(4, 4),
+                            ),
+                          ],
                           color: AppColors.backgroundColor,
                         ),
                         child: Column(

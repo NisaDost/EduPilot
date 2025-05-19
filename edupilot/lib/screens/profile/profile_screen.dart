@@ -72,6 +72,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(25),
+                            blurRadius: 4,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                         color: AppColors.backgroundColor,
                       ),
                       child: Row(
@@ -226,6 +233,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(25),
+                            blurRadius: 4,
+                            offset: const Offset(4, 4),
+                          ),
+                        ],
                         color: AppColors.backgroundColor,
                       ),
                       child: Column(
@@ -269,6 +283,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           top: Radius.circular(16),
                           bottom: Radius.circular(16),
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(25),
+                            blurRadius: 4,
+                            offset: const Offset(4, 0),
+                          ),
+                        ],
                         color: AppColors.backgroundColor,
                       ),
                       child: Column(
