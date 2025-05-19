@@ -5,6 +5,7 @@ using EduPilot.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EduPilot.Api.Controllers
 {
@@ -89,18 +90,29 @@ namespace EduPilot.Api.Controllers
             {
                 return NotFound("Publisher not found");
             }
-            if (publisherEntity.Password == publisher.CurrentPassword)
+            if (!publisher.Name.IsNullOrEmpty())
             {
                 publisherEntity.Name = publisher.Name;
-                publisherEntity.Password = publisher.Password;
-                publisherEntity.Address = publisher.Address;
-                publisherEntity.Logo = publisher.Logo;
-                publisherEntity.Website = publisher.Website;
-                _context.Entry(publisherEntity).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                return Ok();
             }
-            return BadRequest();
+            if (!publisher.Address.IsNullOrEmpty())
+            {
+                publisherEntity.Address = publisher.Address;
+            }
+            if (!publisher.Logo.IsNullOrEmpty())
+            {
+                publisherEntity.Logo = publisher.Logo;
+            }
+            if (!publisher.Website.IsNullOrEmpty())
+            {
+                publisherEntity.Website = publisher.Website;
+            }
+            if (publisherEntity.Password == publisher.CurrentPassword)
+            {
+                publisherEntity.Password = publisher.Password;
+            }
+            _context.Publishers.Update(publisherEntity);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpPost("{id}/add/quiz")]

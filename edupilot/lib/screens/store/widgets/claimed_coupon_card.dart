@@ -75,26 +75,34 @@ class _ClaimedCouponCardState extends State<ClaimedCouponCard> {
                                 showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
+                                  final date = claimedCoupon.expirationDate;
+                                  final formattedDate = '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+                                  final formattedTime = '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
                                   return AlertDialog(
                                   content: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
+                                      const SizedBox(height: 24),
                                       LargeBodyText(claimedCoupon.couponName, AppColors.titleColor),
                                       const SizedBox(height: 8),
                                       MediumText('için oluşturulmuş kupon kodun', AppColors.textColor),
-                                      const SizedBox(height: 24),
+                                      const SizedBox(height: 16),
                                       LargeBodyText(claimedCoupon.code, AppColors.successColor),
+                                      const SizedBox(height: 24),
+                                      MediumBodyText('Son Kullanım Tarihi', AppColors.dangerColor),
+                                      MediumBodyText(formattedDate, AppColors.textColor),
+                                      MediumBodyText(formattedTime, AppColors.textColor)
                                     ],
                                   ),
                                   actions: [
                                     TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Kapat'),
-                                    ),
-                                  ],
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Kapat'),
+                                      ),
+                                    ],
                                   );
                                 },
                               );
