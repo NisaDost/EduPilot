@@ -183,11 +183,16 @@ namespace EduPilot.Api.Controllers
         {
             var attendances = await _context.Attendances
                                             .Where(a => a.InstitutionId == id)
+                                            .Include(a => a.Student)
+                                            .Include(a => a.Lesson)
                                             .Select(a => new InstitutionAttendanceDTO()
                                             {
                                                 AttendanceId = a.Id,
                                                 StudentId = a.StudentId,
+                                                StudentName = a.Student.FirstName + " " + a.Student.MiddleName != String.Empty ? a.Student.MiddleName + " " + a.Student.LastName : a.Student.LastName,
+                                                StudentGrade = a.Student.Grade,
                                                 LessonId = a.LessonId,
+                                                LessonName = a.Lesson.Name,
                                                 Date = a.Date,
                                                 IsPresent = a.IsPresent,
                                                 Emotion = a.Emotion,

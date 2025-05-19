@@ -256,7 +256,7 @@ namespace EduPilot.Api.Controllers
                 SolvedQuestions = quiz.Questions.Select(q => new SolvedQuestionDTO
                 {
                     QuestionContent = q.QuestionContent,
-                    QuestionImage = !string.IsNullOrWhiteSpace(q.QuestionImage) ? $"{q.QuestionImage}?{sasToken}" : null,
+                    QuestionImage = !string.IsNullOrWhiteSpace(q.QuestionImage) ? $"{q.QuestionImage}?{sasToken}" : String.Empty,
                     SelectedChoiceId = solvedQuizDetails
                         .FirstOrDefault(sqd => sqd.QuestionId == q.Id)?.SelectedChoiceId ?? Guid.Empty,
                     Choices = q.Choices.Select(c => new ChoiceDTO
