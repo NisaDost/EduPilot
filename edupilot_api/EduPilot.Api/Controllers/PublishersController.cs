@@ -70,7 +70,7 @@ namespace EduPilot.Api.Controllers
                 {
                     Name = publisher.Name,
                     Email = publisher.Email,
-                    Password = publisher.Password,
+                    Password = publisher.Password!,
                     Address = publisher.Address,
                     Logo = publisher.Logo,
                     Website = publisher.Website,
@@ -83,36 +83,40 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPublisher(Guid id, [FromBody] PublisherRegisterDTO publisher)
+        public async Task<IActionResult> PutPublisher(Guid id, [FromForm] PublisherRegisterDTO publisher)
         {
             var publisherEntity = await _context.Publishers.FindAsync(id);
             if (publisherEntity == null)
             {
                 return NotFound("Publisher not found");
             }
-            if (!publisher.Name.IsNullOrEmpty())
+            if (publisher.CurrentPassword == publisherEntity.Password)
             {
-                publisherEntity.Name = publisher.Name;
-            }
-            if (!publisher.Address.IsNullOrEmpty())
-            {
+                if (!string.IsNullOrWhiteSpace(publisher.Name))
+                {
+                    publisherEntity.Name = publisher.Name;
+                }
                 publisherEntity.Address = publisher.Address;
-            }
-            if (!publisher.Logo.IsNullOrEmpty())
-            {
-                publisherEntity.Logo = publisher.Logo;
-            }
-            if (!publisher.Website.IsNullOrEmpty())
-            {
                 publisherEntity.Website = publisher.Website;
+                if (!string.IsNullOrWhiteSpace(publisher.Password))
+                {
+                    publisherEntity.Password = publisher.Password;
+                }
+                if (publisher.File != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(publisherEntity.Logo))
+                    {
+                        await _blobService.DeleteFileAsync(publisherEntity.Logo);
+                    }
+
+                    string fileUrl = await _blobService.UploadPublisherLogoFileAsync(publisher.File, publisherEntity.Id);
+                    publisherEntity.Logo = fileUrl;
+                }
+                _context.Publishers.Update(publisherEntity);
+                await _context.SaveChangesAsync();
+                return Ok();
             }
-            if (publisherEntity.Password == publisher.CurrentPassword)
-            {
-                publisherEntity.Password = publisher.Password;
-            }
-            _context.Publishers.Update(publisherEntity);
-            await _context.SaveChangesAsync();
-            return Ok();
+            return BadRequest("Mevcut parola doğru değil.");
         }
 
         [HttpPost("{id}/add/quiz")]
