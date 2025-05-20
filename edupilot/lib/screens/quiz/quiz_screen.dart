@@ -6,6 +6,7 @@ import 'package:edupilot/services/quizzes_api_handler.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
@@ -37,6 +38,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     _loadQuiz();
   }
 
@@ -224,6 +226,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
   }
 

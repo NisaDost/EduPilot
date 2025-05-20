@@ -130,40 +130,41 @@ class _QuestionsContainerState extends State<QuestionsContainer>
             final choice = _shuffledChoices[i];
             final isSelected = i == _selectedIndex;
             final label = choice.choiceId != null ? String.fromCharCode(65 + i) : '-';
-            return Container(
-              margin: const EdgeInsets.symmetric(vertical: 6),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.secondaryColor),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  AnimatedScale(
-                    scale: _scaleFactors[i] ?? 1.0,
-                    duration: const Duration(milliseconds: 150),
-                    child: TextButton(
-                      onPressed: () => _onChoiceSelected(i),
-                      style: TextButton.styleFrom(
-                        minimumSize: const Size(40, 40),
-                        padding: const EdgeInsets.all(6),
-                        backgroundColor: isSelected
-                            ? AppColors.primaryColor
-                            : AppColors.secondaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+
+            return InkWell(
+              onTap: () => _onChoiceSelected(i),
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 6),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: isSelected ? AppColors.primaryAccent.withOpacity(0.1) : null,
+                  border: Border.all(
+                    color: isSelected ? AppColors.primaryColor : AppColors.secondaryColor,
+                    width: isSelected ? 2 : 1,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: isSelected ? AppColors.primaryColor : AppColors.secondaryColor,
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: label.isNotEmpty
                           ? LargeText(label, AppColors.backgroundColor)
                           : Icon(Icons.not_interested, color: AppColors.backgroundColor),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: MediumText(choice.choiceContent, AppColors.textColor),
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: MediumText(choice.choiceContent, AppColors.textColor),
+                    ),
+                  ],
+                ),
               ),
             );
           }),
