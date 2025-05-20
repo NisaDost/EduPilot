@@ -150,7 +150,6 @@ namespace EduPilot.Api.Controllers
                 {
                     var questionDTO = quiz.Questions[i];
                     var questionEntity = quizEntity.Questions[i];
-                    questionEntity.QuestionImage = String.Empty;
 
                     if (questionDTO.File != null)
                     {
@@ -212,13 +211,13 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpGet("{id}/quizlist")]
-        public async Task<ActionResult<List<QuizListDTO>>> GetQuizList (Guid id)
+        public async Task<ActionResult<List<QuizListDTO>>> GetQuizList(Guid id)
         {
             var quizzes = await _context.Quizzes
                 .Where(q => q.PublisherId == id)
                 .Include(q => q.Questions)
                 .Include(q => q.Subject)
-                .Select(q => new  QuizListDTO
+                .Select(q => new QuizListDTO
                 {
                     Id = q.Id,
                     SubjectName = q.Subject.Name,
@@ -292,6 +291,7 @@ namespace EduPilot.Api.Controllers
         public async Task<IActionResult> UpdateQuestion(Guid questionId, [FromForm] QuestionUpdateDTO question)
         {
             var questionEntity = await _context.Questions.FindAsync(questionId);
+            var choicesEntity = await _context.Choices.Where(c => c.QuestionId == questionId).ToListAsync();
             if (questionEntity == null)
             {
                 return NotFound();
@@ -299,7 +299,7 @@ namespace EduPilot.Api.Controllers
 
             if (question != null)
             {
-                if (string.IsNullOrWhiteSpace(question.QuestionContent))
+                if (!string.IsNullOrWhiteSpace(question.QuestionContent))
                 {
                     questionEntity.QuestionContent = question.QuestionContent;
                 }
@@ -312,6 +312,18 @@ namespace EduPilot.Api.Controllers
 
                     string fileUrl = await _blobService.UploadPublisherLogoFileAsync(question.File, questionEntity.Id);
                     questionEntity.QuestionImage = fileUrl;
+                }
+                if (question.Choices != null && choicesEntity != null)
+                {
+                    foreach (var choice in question.Choices)
+                    {
+                        var choiceToUpdate = choicesEntity.Find(c => c.Id == choice.ChoiceId);
+                        if (choiceToUpdate != null)
+                        {
+                            choiceToUpdate.OptionContent = choice.ChoiceContent;
+                            _context.Choices.Update(choiceToUpdate);
+                        }
+                    }
                 }
 
                 _context.Questions.Update(questionEntity);

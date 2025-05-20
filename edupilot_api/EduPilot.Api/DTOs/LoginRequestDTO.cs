@@ -2,7 +2,7 @@
 
 namespace EduPilot.Api.Models
 {
-    public class StudentLoginRequestDTO
+    public class LoginRequestDTO
     {
         [Required]
         [EmailAddress]

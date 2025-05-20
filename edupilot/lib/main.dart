@@ -1,7 +1,9 @@
 import 'package:edupilot/screens/auth/welcome_screen.dart';
 import 'package:edupilot/screens/main/main_screen.dart';
 import 'package:edupilot/screens/splash/custom_splash_screen.dart';
+import 'package:edupilot/screens/supervisor/home/supervisor_home_screen.dart';
 import 'package:edupilot/sessions/student_session.dart';
+import 'package:edupilot/sessions/supervisor_session.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -22,8 +24,11 @@ class MyApp extends StatelessWidget {
 
   Future<Widget> decideStartScreen() async {
     final studentId = await StudentSession.getStudentId();
+    final supervisorId = await SupervisorSession.getSupervisorId();
     if (studentId != null) {
       return const MainScreen();
+    } else if (supervisorId != null) {
+      return const SupervisorHomeScreen();
     } else {
       return const WelcomeScreen();
     }

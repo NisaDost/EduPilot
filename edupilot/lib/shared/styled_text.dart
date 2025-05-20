@@ -182,22 +182,3 @@ class XLargeText extends StatelessWidget {
     );
   }
 }
-
-class CenterAlignedText extends StatelessWidget {
-  const CenterAlignedText(this.text, this.color, {super.key});
-
-  final String text;
-  final Color? color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.montserrat(
-        textStyle: Theme.of(context).textTheme.headlineSmall,
-        color: color,
-        textBaseline: TextBaseline.alphabetic,
-      ),
-      textAlign: TextAlign.center,
-      softWrap: true,
-    );
-  }
-}

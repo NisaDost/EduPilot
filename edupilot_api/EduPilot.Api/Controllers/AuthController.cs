@@ -26,7 +26,7 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<Guid>> StudentLogin([FromBody] StudentLoginRequestDTO request)
+        public async Task<ActionResult<Guid>> StudentLogin([FromBody] LoginRequestDTO request)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPost("login/institution")]
-        public async Task<ActionResult<Guid>> InstitutionLogin([FromBody] InstitutionLoginRequestDTO request)
+        public async Task<ActionResult<Guid>> InstitutionLogin([FromBody] LoginRequestDTO request)
         {
             if (!ModelState.IsValid)
             {
@@ -59,7 +59,7 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPost("login/publisher")]
-        public async Task<ActionResult<Guid>> PublisherLogin([FromBody] PublisherLoginRequestDTO request)
+        public async Task<ActionResult<Guid>> PublisherLogin([FromBody] LoginRequestDTO request)
         {
             if (!ModelState.IsValid)
             {
@@ -71,6 +71,21 @@ namespace EduPilot.Api.Controllers
                 return Unauthorized("Invalid email or password");
             }
             return Ok(publisher.Id);
+        }
+
+        [HttpPost("login/supervisor")]
+        public async Task<ActionResult<Guid>> SupervisorLogin([FromBody] LoginRequestDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var supervisor = await _context.Supervisors.FirstOrDefaultAsync(p => p.Email == request.Email && p.Password == request.Password);
+            if (supervisor == null)
+            {
+                return Unauthorized("Invalid email or password");
+            }
+            return Ok(supervisor.Id);
         }
     }
 }

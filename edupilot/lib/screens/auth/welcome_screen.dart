@@ -1,5 +1,7 @@
 import 'package:edupilot/screens/auth/login/login_screen.dart';
 import 'package:edupilot/screens/auth/register/register_screen_1.dart';
+import 'package:edupilot/screens/supervisor/auth/supervisor_login_screen.dart';
+import 'package:edupilot/screens/supervisor/auth/supervisor_register_screen.dart';
 import 'package:edupilot/shared/styled_text.dart';
 import 'package:edupilot/theme.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 12, top: 96, right: 12, bottom: 12),
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(16)),
               boxShadow: [
@@ -72,12 +74,12 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   // Text side
                   Expanded(
-                    child: CenterAlignedText('Türkiye\'nin Yenilikçi Öğrenci Başarı Takip Uygulaması EduPilot\'a Hoş Geldin!', AppColors.textColor),
+                    child: MediumText('Türkiye\'nin Yenilikçi Öğrenci Başarı Takip Uygulaması EduPilot\'a Hoş Geldin!', AppColors.textColor, textAlign: TextAlign.center),
                   ),
                   const SizedBox(width: 12), // spacing between text and image
                   // Image side
                   Image.asset(
-                    'assets/img/mascots/demo_mascot.png',
+                    'assets/img/mascots/intro_mascot.png',
                     height: 100, // set size as needed
                     fit: BoxFit.contain,
                   ),
@@ -85,6 +87,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 12),
           Container(
             margin: const EdgeInsets.all(12),
             width: double.infinity,
@@ -134,6 +137,63 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ),
                     child: LargeText('Kayıt Ol', AppColors.backgroundColor)
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            margin: const EdgeInsets.all(12),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  blurRadius: 4,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+              color: AppColors.backgroundColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MediumBodyText('Danışmanlar İçin', AppColors.textColor),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FilledButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const SupervisorLoginScreen()));
+                        },
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.secondaryAccent,
+                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: LargeText('Giriş Yap', AppColors.backgroundColor)
+                      ),
+                      FilledButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const SupervisorRegisterScreen()));
+                        },
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: LargeText('Kayıt Ol', AppColors.backgroundColor)
+                      ),
+                    ],
                   ),
                 ],
               ),

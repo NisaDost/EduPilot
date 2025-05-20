@@ -90,11 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: CenterAlignedText('Seni tekrardan aramızda görmek ne güzel!', AppColors.textColor),
+                          child: MediumText('Seni tekrardan aramızda görmek ne güzel!', AppColors.textColor, textAlign: TextAlign.center),
                         ),
                         const SizedBox(width: 12),
                         Image.asset(
-                          'assets/img/mascots/demo_mascot.png',
+                          'assets/img/mascots/intro_mascot.png',
                           height: 100,
                           fit: BoxFit.contain,
                         ),

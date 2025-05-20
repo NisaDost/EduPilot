@@ -60,7 +60,6 @@ class StudentsApiHandler {
     }
   }
 
-  // same way: use client.post instead of http.post
   Future<bool> loginStudent(String email, String password) async {
     final response = await client.post(
       Uri.parse('$baseUrl/auth/login'),

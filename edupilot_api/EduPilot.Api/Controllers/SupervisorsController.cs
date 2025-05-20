@@ -4,6 +4,8 @@ using EduPilot.Api.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 
 namespace EduPilot.Api.Controllers
 {
@@ -35,7 +37,7 @@ namespace EduPilot.Api.Controllers
                     LastName = s.LastName,
                     Email = s.Email,
                     PhoneNumber = s.PhoneNumber,
-                    UniqueCode = s.UniqueCode
+                    UniqueCode = s.UniqueCode,
                 })
                 .FirstOrDefaultAsync();
 
@@ -78,7 +80,7 @@ namespace EduPilot.Api.Controllers
                     Email = supervisorDTO.Email,
                     Password = supervisorDTO.Password,
                     PhoneNumber = supervisorDTO.PhoneNumber,
-                    UniqueCode = GenerateReadableCode(6)
+                    UniqueCode = uniqueCode
                 };
 
                 _context.Supervisors.Add(supervisor);
@@ -104,6 +106,37 @@ namespace EduPilot.Api.Controllers
             }
             throw new InvalidOperationException("Failed to generate a valid integer.");
         }
+
+        [HttpGet("{id}/info/")]
+        public async Task<ActionResult<SupervisorInfoDTO>> GetSupervisorInfo(Guid id)
+        {
+            var supervisorInfo = await _context.Supervisors
+                .Where(s => s.Id == id)
+                .Include(s => s.StudentSupervisors)
+                .ThenInclude(ss => ss.Student)
+                .Select(s => new SupervisorInfoDTO
+                {
+                    Students = s.StudentSupervisors.Select(ss => new SupervisorStudentsInfoDTO
+                    {
+                        StudentId = ss.Student.Id,
+                        StudentFirstName = ss.Student.FirstName,
+                        StudentMiddleName = ss.Student.MiddleName,
+                        StudentLastName = ss.Student.LastName,
+                        StudentGrade = ss.Student.Grade
+                    }).ToList(),
+                    InstitutionId = s.InstitutionId,
+                    InstitutionName = s.Institution.Name
+                })
+                .FirstOrDefaultAsync();
+
+            if (supervisorInfo == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(supervisorInfo);
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSupervisor(Guid id)
