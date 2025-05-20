@@ -67,33 +67,36 @@ class _FavoritePopUpState extends State<FavoritePopUp> {
       content: SizedBox(
         width: double.maxFinite,
         height: 350,
-        child: ListView.builder(
-          itemCount: allLessons.length,
-          itemBuilder: (context, index) {
-            final lesson = allLessons[index];
-            final isFavorite = favoriteLessonIds.contains(lesson.id);
-
-            return ListTile(
-              title: SmallBodyText(lesson.name, AppColors.textColor),
-              trailing: SizedBox(
-                width: 48,
-                height: 48,
-                child: Heart(
-                  isFavorite: isFavorite,
-                  defaultColor: const Color.fromRGBO(200, 200, 220, 1),
-                  onTap: () {
-                    setState(() {
-                      if (isFavorite) {
-                        favoriteLessonIds.remove(lesson.id);
-                      } else {
-                        favoriteLessonIds.add(lesson.id);
-                      }
-                    });
-                  },
+        child: Scrollbar(
+          thumbVisibility: true,
+          child: ListView.builder(
+            itemCount: allLessons.length,
+            itemBuilder: (context, index) {
+              final lesson = allLessons[index];
+              final isFavorite = favoriteLessonIds.contains(lesson.id);
+          
+              return ListTile(
+                title: SmallBodyText(lesson.name, AppColors.textColor),
+                trailing: SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: Heart(
+                    isFavorite: isFavorite,
+                    defaultColor: const Color.fromRGBO(200, 200, 220, 1),
+                    onTap: () {
+                      setState(() {
+                        if (isFavorite) {
+                          favoriteLessonIds.remove(lesson.id);
+                        } else {
+                          favoriteLessonIds.add(lesson.id);
+                        }
+                      });
+                    },
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
       actions: [
