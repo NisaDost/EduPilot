@@ -167,15 +167,70 @@ namespace EduPilot.Api.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpGet("{id}/quizzes")]
-        public async Task<IActionResult> GetQuizzes(Guid id)
+        [HttpGet("{id}/quiz/{quizId}")]
+        public async Task<ActionResult<PublisherQuizDTO>> GetQuizzes(Guid id, Guid quizId)
         {
-            var quizzes = await _context.Quizzes
-                .Where(q => q.PublisherId == id)
+            var quiz = await _context.Quizzes
+                .Where(q => q.PublisherId == id && q.Id == quizId)
                 .Include(q => q.Subject)
                 .Include(q => q.Questions)
                 .ThenInclude(q => q.Choices)
+                .Select(q => new PublisherQuizDTO
+                {
+                    Id = quizId,
+                    SubjectId = q.SubjectId,
+                    Difficulty = q.Difficulty,
+                    Duration = q.Duration,
+                    IsActive = q.IsActive,
+                    QuestionCount = q.Questions.Count(),
+                    Questions = q.Questions.Select(question => new PublisherQuestionDTO
+                    {
+                        QuestionId = question.Id,
+                        QuestionContent = question.QuestionContent,
+                        QuestionImage = question.QuestionImage,
+                        Choices = question.Choices.Select(choice => new ChoiceDTO
+                        {
+                            ChoiceId = choice.Id,
+                            ChoiceContent = choice.OptionContent,
+                            IsCorrect = choice.IsCorrect,
+                        })
+                        .ToList()
+                    })
+                    .ToList()
+                })
+                .FirstOrDefaultAsync();
+
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(quiz);
+        }
+
+        [HttpGet("{id}/quizlist")]
+        public async Task<ActionResult<List<QuizListDTO>>> GetQuizList (Guid id)
+        {
+            var quizzes = await _context.Quizzes
+                .Where(q => q.PublisherId == id)
+                .Include(q => q.Questions)
+                .Include(q => q.Subject)
+                .Select(q => new  QuizListDTO
+                {
+                    Id = q.Id,
+                    SubjectName = q.Subject.Name,
+                    Difficulty = q.Difficulty,
+                    Duration = q.Duration,
+                    QuestionCount = q.Questions.Count,
+                    IsActive = q.IsActive,
+                })
                 .ToListAsync();
+
+            if (quizzes == null)
+            {
+                return NotFound();
+            }
+
             return Ok(quizzes);
         }
 
