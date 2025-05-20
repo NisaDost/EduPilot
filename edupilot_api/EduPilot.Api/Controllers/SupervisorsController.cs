@@ -1,5 +1,6 @@
 ﻿using EduPilot.Api.Data;
 using EduPilot.Api.Data.Models;
+using EduPilot.Api.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,70 +19,92 @@ namespace EduPilot.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Supervisors
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Supervisor>>> GetSupervisors()
-        {
-            return await _context.Supervisors.ToListAsync();
-        }
-
-        // GET: api/Supervisors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Supervisor>> GetSupervisor(Guid id)
+        public async Task<ActionResult<SupervisorDTO>> GetSupervisor(Guid id)
         {
-            var supervisor = await _context.Supervisors.FindAsync(id);
+            var supervisor = await _context.Supervisors
+                .Where(s => s.Id == id)
+                .Include(s => s.StudentSupervisors)
+                .Select(s => new SupervisorDTO
+                {
+                    Id = id,
+                    InstitutionId = s.InstitutionId,
+                    StudentIds = s.StudentSupervisors.Where(ss => ss.SupervisorId == id).Select(ss => ss.StudentId).ToList(),
+                    FirstName = s.FirstName,
+                    MiddleName = s.MiddleName,
+                    LastName = s.LastName,
+                    Email = s.Email,
+                    PhoneNumber = s.PhoneNumber,
+                    UniqueCode = s.UniqueCode
+                })
+                .FirstOrDefaultAsync();
 
             if (supervisor == null)
             {
                 return NotFound();
             }
 
-            return supervisor;
+            return Ok(supervisor);
         }
 
-        // PUT: api/Supervisors/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSupervisor(Guid id, Supervisor supervisor)
+        [HttpPost("register")]
+        public async Task<ActionResult<SupervisorRegisterDTO>> PostSupervisor([FromBody] SupervisorRegisterDTO supervisorDTO)
         {
-            if (id != supervisor.Id)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
+                if (await _context.Supervisors.AnyAsync(s => s.Email == supervisorDTO.Email))
+                {
+                    ModelState.AddModelError("Email", "Bu e-posta adresi zaten kayıtlı.");
+                    return BadRequest(ModelState);
+                }
 
-            _context.Entry(supervisor).State = EntityState.Modified;
+                if (await _context.Supervisors.AnyAsync(s => s.PhoneNumber == supervisorDTO.PhoneNumber))
+                {
+                    ModelState.AddModelError("PhoneNumber", "Bu telefon numarası zaten kayıtlı.");
+                    return BadRequest(ModelState);
+                }
 
-            try
-            {
+                int uniqueCode;
+                do
+                {
+                    uniqueCode = GenerateReadableCode(8);
+                } while (await _context.Supervisors.AnyAsync(s => s.UniqueCode == uniqueCode));
+
+                var supervisor = new Supervisor
+                {
+                    FirstName = supervisorDTO.FirstName,
+                    MiddleName = supervisorDTO.MiddleName,
+                    LastName = supervisorDTO.LastName,
+                    Email = supervisorDTO.Email,
+                    Password = supervisorDTO.Password,
+                    PhoneNumber = supervisorDTO.PhoneNumber,
+                    UniqueCode = GenerateReadableCode(6)
+                };
+
+                _context.Supervisors.Add(supervisor);
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SupervisorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+
+                return Ok();
             }
 
-            return NoContent();
+            return BadRequest();
         }
 
-        // POST: api/Supervisors
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Supervisor>> PostSupervisor(Supervisor supervisor)
+        private static int GenerateReadableCode(int length)
         {
-            _context.Supervisors.Add(supervisor);
-            await _context.SaveChangesAsync();
+            const string chars = "1234567890"; // only int values
+            var random = new Random();
+            var generated = new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
 
-            return CreatedAtAction("GetSupervisor", new { id = supervisor.Id }, supervisor);
+            // Fix for CS1501 and CS1002: Correctly parse the generated string to an integer and return it.  
+            if (int.TryParse(generated, out int result))
+            {
+                return result;
+            }
+            throw new InvalidOperationException("Failed to generate a valid integer.");
         }
 
-        // DELETE: api/Supervisors/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSupervisor(Guid id)
         {
@@ -95,11 +118,6 @@ namespace EduPilot.Api.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool SupervisorExists(Guid id)
-        {
-            return _context.Supervisors.Any(e => e.Id == id);
         }
     }
 }

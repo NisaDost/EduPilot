@@ -179,6 +179,7 @@ namespace EduPilot.Api.Controllers
                 {
                     Id = quizId,
                     SubjectId = q.SubjectId,
+                    SubjectName = q.Subject.Name,
                     Difficulty = q.Difficulty,
                     Duration = q.Duration,
                     IsActive = q.IsActive,

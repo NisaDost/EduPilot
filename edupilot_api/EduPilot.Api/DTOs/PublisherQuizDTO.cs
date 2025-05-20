@@ -6,6 +6,7 @@ namespace EduPilot.Api.DTOs
     {
         public Guid Id { get; set; }
         public Guid SubjectId { get; set; }
+        public string SubjectName { get; set; }
         public Difficulty Difficulty { get; set; }
         public int Duration { get; set; }
         public bool IsActive { get; set; }
