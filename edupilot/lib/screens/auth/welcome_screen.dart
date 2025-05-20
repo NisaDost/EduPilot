@@ -107,6 +107,8 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  MediumBodyText('Öğrenciler İçin', AppColors.textColor),
+                  const SizedBox(height: 16),
                   MediumText('Zaten hesabın var mı?', AppColors.textColor),
                   const SizedBox(height: 8),
                   FilledButton(

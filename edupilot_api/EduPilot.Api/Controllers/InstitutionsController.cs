@@ -205,15 +205,15 @@ namespace EduPilot.Api.Controllers
             return attendances;
         }
 
-        [HttpPost("{id}/supervisor/{supervisorId}")]
-        public async Task<IActionResult> AddSupervisorToInstitution(Guid id, Guid supervisorId)
+        [HttpPost("{id}/supervisor/{email}")]
+        public async Task<IActionResult> AddSupervisorToInstitution(Guid id, String email)
         {
             var institution = await _context.Institutions.FindAsync(id);
             if (institution == null)
             {
                 return NotFound("Institution not found");
             }
-            var supervisor = await _context.Supervisors.FindAsync(supervisorId);
+            var supervisor = await _context.Supervisors.FirstOrDefaultAsync(s => s.Email == email);
             if (supervisor == null)
             {
                 return NotFound("Supervisor not found");
