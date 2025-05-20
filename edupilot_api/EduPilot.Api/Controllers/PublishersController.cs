@@ -170,6 +170,8 @@ namespace EduPilot.Api.Controllers
         [HttpGet("{id}/quiz/{quizId}")]
         public async Task<ActionResult<PublisherQuizDTO>> GetQuizzes(Guid id, Guid quizId)
         {
+            var sasToken = _blobService.GetAccountSasToken();
+
             var quiz = await _context.Quizzes
                 .Where(q => q.PublisherId == id && q.Id == quizId)
                 .Include(q => q.Subject)
@@ -188,7 +190,7 @@ namespace EduPilot.Api.Controllers
                     {
                         QuestionId = question.Id,
                         QuestionContent = question.QuestionContent,
-                        QuestionImage = question.QuestionImage,
+                        QuestionImage = !string.IsNullOrWhiteSpace(question.QuestionImage) ? $"{question.QuestionImage}?{sasToken}" : String.Empty,
                         Choices = question.Choices.Select(choice => new ChoiceDTO
                         {
                             ChoiceId = choice.Id,
@@ -284,6 +286,41 @@ namespace EduPilot.Api.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(AddQuestionToQuiz), new { status = 201, id = questionEntity.Id });
+        }
+
+        [HttpPut("question/{questionId}")]
+        public async Task<IActionResult> UpdateQuestion(Guid questionId, [FromForm] QuestionUpdateDTO question)
+        {
+            var questionEntity = await _context.Questions.FindAsync(questionId);
+            if (questionEntity == null)
+            {
+                return NotFound();
+            }
+
+            if (question != null)
+            {
+                if (string.IsNullOrWhiteSpace(question.QuestionContent))
+                {
+                    questionEntity.QuestionContent = question.QuestionContent;
+                }
+                if (question.File != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(questionEntity.QuestionImage))
+                    {
+                        await _blobService.DeleteFileAsync(questionEntity.QuestionImage);
+                    }
+
+                    string fileUrl = await _blobService.UploadPublisherLogoFileAsync(question.File, questionEntity.Id);
+                    questionEntity.QuestionImage = fileUrl;
+                }
+
+                _context.Questions.Update(questionEntity);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+
+            return BadRequest();
+
         }
     }
 }
