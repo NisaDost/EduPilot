@@ -113,6 +113,7 @@ namespace EduPilot.Api.Data
                 .HasDefaultValue(1);
             modelBuilder.Entity<Student>()
                 .Property(s => s.LastActivityDate)
+                .HasColumnType("date")
                 .IsRequired(false);
             modelBuilder.Entity<Student>()
                 .Property(s => s.Mugshot)
