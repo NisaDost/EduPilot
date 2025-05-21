@@ -58,6 +58,14 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                                   InfoRow(text: 'Bu alana kişisel bilgilerinizi giriniz.'),
                                   const SizedBox(height: 8),
                                   InfoRow(
+                                    text: 'Sınıfını seçmeden dersleri göremezsin.',
+                                  ),
+                                  const SizedBox(height: 8),
+                                  InfoRow(
+                                    text: 'Favori ders seçmek, senin için o derslerin quizlerine hızlı erişim imkanı sağlar.',
+                                  ),
+                                  const SizedBox(height: 8),
+                                  InfoRow(
                                     leading: SmallBodyText('*', AppColors.dangerColor),
                                     text: 'ile işaretli alanların doldurulması zorunludur.',
                                   ),
@@ -155,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                               },
                               style: FilledButton.styleFrom(
                                 backgroundColor: AppColors.primaryAccent,
-                                padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                               ),
                               child: XLargeText('Geri', AppColors.backgroundColor),
@@ -183,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen1> {
                               },
                               style: FilledButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
-                                padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                               ),
                               child: XLargeText('İleri', AppColors.backgroundColor),

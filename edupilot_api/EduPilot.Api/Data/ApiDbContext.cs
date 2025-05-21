@@ -110,7 +110,7 @@ namespace EduPilot.Api.Data
             modelBuilder.Entity<Student>()
                 .Property(s => s.DailyStreakCount)
                 .IsRequired()
-                .HasDefaultValue(0);
+                .HasDefaultValue(1);
             modelBuilder.Entity<Student>()
                 .Property(s => s.LastActivityDate)
                 .IsRequired(false);

@@ -1,6 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+class XSmallText extends StatelessWidget {
+  const XSmallText(this.text, this.color, {
+    super.key,
+    this.textAlign,
+    this.maxLines,
+  });
+
+  final String text;
+  final Color? color;
+  final TextAlign? textAlign;
+  final int? maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, style: GoogleFonts.montserrat(
+        textStyle: Theme.of(context).textTheme.labelSmall,
+        color: color,
+        textBaseline: TextBaseline.alphabetic,
+      ),
+      softWrap: true,
+      textAlign: textAlign ?? TextAlign.start,
+      maxLines: maxLines,
+    );
+  }
+}
 
 class SmallText extends StatelessWidget {
   const SmallText(this.text, this.color, {
@@ -174,6 +199,31 @@ class XLargeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(text, style: GoogleFonts.montserrat(
         textStyle: Theme.of(context).textTheme.titleLarge,
+        color: color,
+      ),
+      softWrap: true,
+      textAlign: textAlign ?? TextAlign.start,
+      maxLines: maxLines,
+    );
+  }
+}
+
+class CouponCardText extends StatelessWidget {
+  const CouponCardText(this.text, this.color, {
+    super.key,
+    this.textAlign,
+    this.maxLines,
+  });
+
+  final String text;
+  final Color? color;
+  final TextAlign? textAlign;
+  final int? maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, style: GoogleFonts.montserrat(
+        textStyle: Theme.of(context).textTheme.labelLarge,
         color: color,
       ),
       softWrap: true,

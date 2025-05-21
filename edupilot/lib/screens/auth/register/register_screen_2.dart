@@ -63,6 +63,8 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                               const SizedBox(height: 8),
                               InfoRow(text: 'Merak etme, avatarını daha sonra değiştirebilirsin!'),
                               const SizedBox(height: 8),
+                              InfoRow(text: 'Telefon numaranı başında 0 olmadan ekle.'),
+                              const SizedBox(height: 8),
                               InfoRow(
                                 leading: SmallBodyText('*', AppColors.dangerColor),
                                 text: 'ile işaretli alanların doldurulması zorunludur.',
@@ -276,7 +278,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                           },
                           style: FilledButton.styleFrom(
                             backgroundColor: AppColors.primaryAccent,
-                            padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
                           child: XLargeText('Geri', AppColors.backgroundColor),
@@ -307,7 +309,7 @@ class _RegisterScreen2State extends State<RegisterScreen2> {
                           },
                           style: FilledButton.styleFrom(
                             backgroundColor: AppColors.primaryColor,
-                            padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
                           child: XLargeText('İleri', AppColors.backgroundColor),

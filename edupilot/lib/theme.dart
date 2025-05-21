@@ -33,6 +33,12 @@ ThemeData primaryTheme = ThemeData(
   // text theme
   
   textTheme: TextTheme(
+    labelSmall: TextStyle( // XSmallText
+      color: AppColors.backgroundColor,
+      fontWeight: FontWeight.bold,
+      fontSize: 10,
+      letterSpacing: 0.5,
+    ),
     bodySmall: TextStyle( // SmallText
       color: AppColors.backgroundColor,
       fontWeight: FontWeight.bold,
@@ -74,6 +80,12 @@ ThemeData primaryTheme = ThemeData(
       fontWeight: FontWeight.bold,
       fontSize: 32,
       letterSpacing: 1.5,
-    )
+    ),
+    labelLarge: TextStyle( // couponCardText
+      color: AppColors.titleColor,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 0.8,
+    ),
   ),
 );

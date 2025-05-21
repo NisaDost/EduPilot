@@ -118,6 +118,7 @@ class _QuestionsContainerState extends State<QuestionsContainer>
               margin: const EdgeInsets.only(bottom: 12),
               child: Image.network(widget.question.questionImage!,
                 fit: BoxFit.contain,
+                
               ),
             ),
           Text(

@@ -196,11 +196,11 @@ namespace EduPilot.Api.Controllers
                 student.Points += earnedPoints;
                 if (student.LastActivityDate == DateTime.Now.Date.AddDays(-1))
                 {
-                    student.DailyStreakCount++;
+                    student.DailyStreakCount += 1;
                 }
                 else
                 {
-                    student.DailyStreakCount = 0;
+                    student.DailyStreakCount = 1;
                 }
                 student.LastActivityDate = DateTime.Now.Date;
                 _context.Students.Update(student);

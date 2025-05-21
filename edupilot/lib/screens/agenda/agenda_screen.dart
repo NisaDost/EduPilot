@@ -87,7 +87,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double topBarHeight = 112;
+    const double topBarHeight = 136;
     final DateTime today = DateTime.now();
     final weekdays = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cts', 'Paz'];
 
@@ -176,71 +176,87 @@ class _AgendaScreenState extends State<AgendaScreen> {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: List.generate(7, (index) {
-                                final currentDay = _selectedWeek['start'].add(Duration(days: index));
-                                final formattedDate = formatDate(currentDay);
-                                final isToday = currentDay.year == today.year &&
-                                    currentDay.month == today.month &&
-                                    currentDay.day == today.day;
-                                final isFuture = currentDay.isAfter(today);
-                                final count = isFuture ? '-' : (dateToCount[formattedDate]?.toString() ?? '0');
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 2),
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  // Calculate width for each item (subtract spacing first)
+                                  final totalSpacing = 2 * 2 * 7; // 2 px margin * 2 sides * 7 items
+                                  final itemWidth = (constraints.maxWidth - totalSpacing) / 7;
 
-                                final bgColor = isToday
-                                    ? AppColors.primaryAccent
-                                    : AppColors.backgroundAccent;
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: List.generate(7, (index) {
+                                      final currentDay = _selectedWeek['start'].add(Duration(days: index));
+                                      final formattedDate = formatDate(currentDay);
+                                      final isToday = currentDay.year == today.year &&
+                                          currentDay.month == today.month &&
+                                          currentDay.day == today.day;
+                                      final isFuture = currentDay.isAfter(today);
+                                      final count = isFuture ? '-' : (dateToCount[formattedDate]?.toString() ?? '0');
 
-                                final topColor = isToday
-                                    ? AppColors.secondaryColor
-                                    : AppColors.primaryColor;
+                                      final bgColor = isToday
+                                          ? AppColors.primaryAccent
+                                          : AppColors.backgroundAccent;
 
-                                return GestureDetector(
-                                  onTap: isFuture
-                                      ? null
-                                      : () => widget.onNavigateToDailyAnalysys(currentDay),
-                                  child: Container(
-                                    width: 48,
-                                    margin: const EdgeInsets.symmetric(horizontal: 2),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: bgColor,
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
+                                      final topColor = isToday
+                                          ? AppColors.secondaryColor
+                                          : AppColors.primaryColor;
+
+                                      return GestureDetector(
+                                        onTap: isFuture
+                                            ? null
+                                            : () => widget.onNavigateToDailyAnalysys(currentDay),
+                                        child: Container(
+                                          width: itemWidth,
+                                          margin: const EdgeInsets.symmetric(horizontal: 2),
                                           decoration: BoxDecoration(
-                                            color: topColor,
-                                            borderRadius: const BorderRadius.all(Radius.circular(12))
+                                            borderRadius: BorderRadius.circular(12),
+                                            color: bgColor,
                                           ),
-                                          padding: const EdgeInsets.symmetric(vertical: 6),
-                                          child: Center(
-                                            child: Text(
-                                              weekdays[index],
-                                              style: GoogleFonts.montserrat(
-                                                fontWeight: FontWeight.bold,
-                                                color: isToday ? AppColors.primaryAccent : AppColors.backgroundColor,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: topColor,
+                                                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                                                ),
+                                                padding: const EdgeInsets.symmetric(vertical: 6),
+                                                child: Center(
+                                                  child: Text(
+                                                    weekdays[index],
+                                                    style: GoogleFonts.montserrat(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: isToday
+                                                          ? AppColors.primaryAccent
+                                                          : AppColors.backgroundColor,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 6, bottom: 10),
+                                                child: Text(
+                                                  count,
+                                                  style: GoogleFonts.montserrat(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: isToday
+                                                        ? AppColors.backgroundColor
+                                                        : AppColors.titleColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 6, bottom: 10),
-                                          child: Text(
-                                            count,
-                                            style: GoogleFonts.montserrat(
-                                              fontWeight: FontWeight.w600,
-                                              color: isToday ? AppColors.backgroundColor : AppColors.titleColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }),
+                                      );
+                                    }),
+                                  );
+                                },
+                              ),
                             ),
+
                             const SizedBox(height: 8),
                             FutureBuilder<List<int>>(
                               future: _fetchWeekTotals(),

@@ -19,7 +19,7 @@ class CouponCardPopUp extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         child: SizedBox(
           child: Column(
             mainAxisSize: MainAxisSize.min,

@@ -20,7 +20,7 @@ class _StoreScreenState extends State<StoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double topBarHeight = 92;
+    const double topBarHeight = 110;
 
     return Stack(
       children: [
@@ -46,7 +46,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 borderRadius: BorderRadius.circular(10)
                               )
                             ),
-                            child: MediumBodyText('Tüm Kuponlar', AppColors.backgroundColor),
+                            child: MediumText('Tüm Kuponlar', AppColors.backgroundColor),
                           ),
                         ),
                         SizedBox(width: 8),
@@ -61,7 +61,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 borderRadius: BorderRadius.circular(10)
                               )
                             ),
-                            child: MediumBodyText('Kodlarım', AppColors.backgroundColor),
+                            child: MediumText('Kodlarım', AppColors.backgroundColor),
                           ),
                         ),
                       ],

@@ -55,11 +55,11 @@ class _ClaimedCouponCardState extends State<ClaimedCouponCard> {
                         ),
                         const SizedBox(width: 4),
                         SizedBox(
-                          width: 165,
+                          width: 140,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              LargeText(claimedCoupon.couponName, AppColors.textColor),
+                              CouponCardText(claimedCoupon.couponName, AppColors.textColor),
                               SmallText(claimedCoupon.couponDescription, AppColors.titleColor)
                             ],
                           ),
@@ -84,9 +84,9 @@ class _ClaimedCouponCardState extends State<ClaimedCouponCard> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       const SizedBox(height: 24),
-                                      LargeBodyText(claimedCoupon.couponName, AppColors.titleColor),
+                                      LargeBodyText(claimedCoupon.couponName, AppColors.titleColor, textAlign: TextAlign.center),
                                       const SizedBox(height: 8),
-                                      MediumText('için oluşturulmuş kupon kodun', AppColors.textColor),
+                                      MediumText('için oluşturulmuş kupon kodun', AppColors.textColor, textAlign: TextAlign.center),
                                       const SizedBox(height: 16),
                                       LargeBodyText(claimedCoupon.code, AppColors.successColor),
                                       const SizedBox(height: 24),

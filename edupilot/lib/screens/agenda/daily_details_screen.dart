@@ -60,7 +60,7 @@ class DailyDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double topBarHeight = 96;
+    const double topBarHeight = 104;
     final formattedDate = DateFormat('dd/MM/yyyy').format(date);
 
     return Stack(

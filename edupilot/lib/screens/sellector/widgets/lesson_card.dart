@@ -66,7 +66,7 @@ class LessonCard extends ConsumerWidget {
                           color: AppColors.backgroundColor, 
                           size: 72
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 6),
                       SmallText(
                         lesson.name.length < 12
                             ? lesson.name

@@ -54,7 +54,7 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
               child: Column(
                 children: [
                   RegisterLoadout(
-                    title: '3: Okul ve Danışman Bilgileri',
+                    title: '3: Danışman Bilgileri',
                     infoButtonOnPressed: () {
                       showDialog(
                         context: context,
@@ -62,16 +62,12 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              InfoRow(text: 'Bu alana okul ve danışman bilgilerinizi giriniz.'),
+                              InfoRow(text: 'Bu alana danışman bilgilerinizi giriniz.'),
                               const SizedBox(height: 8),
-                              InfoRow(text: 'Merak etme, okulunu ve danışmanını daha sonra ekleyebilirsin!'),
+                              InfoRow(text: 'Merak etme, şimdilik sadece bir danışman ekleyebilirsin ancak sonra profilinden daha fazla danışman girebilirsin!'),
                               const SizedBox(height: 8),
                               InfoRow(text: 'Danışman bilgisi girmek zorunlu değil ancak danışman eklemek istersen her iki alanı da doldurman gerek!'),
                               const SizedBox(height: 8),
-                              InfoRow(
-                                leading: SmallBodyText('*', AppColors.dangerColor),
-                                text: 'ile işaretli alanların doldurulması zorunludur.',
-                              ),
                             ],
                           ),
                         ),
@@ -131,10 +127,10 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                           },
                           style: FilledButton.styleFrom(
                             backgroundColor: AppColors.primaryAccent,
-                            padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 38, vertical: 12),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
-                          child: XLargeText('Geri', AppColors.backgroundColor),
+                          child: LargeText('Geri', AppColors.backgroundColor),
                         ),
                         FilledButton(
                           onPressed: () async {
@@ -185,10 +181,10 @@ class _RegisterScreen3State extends State<RegisterScreen3> {
                           },
                           style: FilledButton.styleFrom(
                             backgroundColor: AppColors.secondaryColor,
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 12),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           ),
-                          child: XLargeText('Kayıt Ol', AppColors.backgroundColor),
+                          child: LargeText('Kayıt Ol', AppColors.backgroundColor),
                         ),
                       ],
                     ),

@@ -101,7 +101,7 @@ class RegisterLoadout extends StatelessWidget {
 
   Widget _buildLine() {
     return Container(
-      width: 113.71,
+      width: 100,
       height: 3,
       color: AppColors.primaryAccent,
     );

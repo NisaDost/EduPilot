@@ -55,7 +55,7 @@ class _CouponState extends State<CouponCard> {
                 for (CouponDTO coupon in coupons)
                   Container(
                     margin: EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: const AssetImage('assets/img/coupon/coupon_bg.png'),
@@ -72,11 +72,11 @@ class _CouponState extends State<CouponCard> {
                                 Icon(IconConversion().getIconFromString(coupon.icon), color: AppColors.secondaryColor, size: 72),
                                 const SizedBox(width: 4),
                                 SizedBox(
-                                  width: 165,
+                                  width: 150,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      LargeText(coupon.name, AppColors.textColor),
+                                      CouponCardText(coupon.name, AppColors.textColor),
                                       SmallText(coupon.description, AppColors.titleColor)
                                     ],
                                   ),

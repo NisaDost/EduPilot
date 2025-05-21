@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Middle Container (Text + Mascot)
                 Container(
-                  margin: const EdgeInsets.only(left: 12, top: 96, right: 12, bottom: 12),
+                  margin: const EdgeInsets.only(left: 12, top: 24, right: 12, bottom: 12),
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(16)),
                     boxShadow: [
@@ -197,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               style: FilledButton.styleFrom(
                 backgroundColor: AppColors.primaryAccent,
-                padding: const EdgeInsets.symmetric(horizontal: 54, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: XLargeText('Geri', AppColors.backgroundColor),
@@ -234,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               style: FilledButton.styleFrom(
                 backgroundColor: AppColors.secondaryColor,
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               child: XLargeText('Giriş', AppColors.backgroundColor),

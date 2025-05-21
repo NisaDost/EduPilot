@@ -139,7 +139,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                MediumBodyText('Testi bitirdiğinde kalan süre', AppColors.textColor),
+                MediumText('Testi bitirdiğinde kalan süre', AppColors.textColor),
                 MediumBodyText(_formatTime(_remainingSeconds), AppColors.textColor),
                 const SizedBox(height: 20),
                 LargeText('Tebrikler!', AppColors.primaryAccent),
@@ -198,7 +198,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                //const SizedBox(width: 4),
                 Expanded(
                   child: TextButton(
                     onPressed: () {
@@ -206,7 +206,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       _submitQuiz();
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                       decoration: BoxDecoration(
                         color: AppColors.secondaryColor,
                         borderRadius: BorderRadius.circular(10),

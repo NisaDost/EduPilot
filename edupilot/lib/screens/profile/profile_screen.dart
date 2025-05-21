@@ -129,9 +129,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         );
                                       },
                                       color: AppColors.primaryColor,
-                                      child: SmallText('Danışmanlarım', AppColors.backgroundColor),
+                                      child: XSmallText('Danışmanlarım', AppColors.backgroundColor),
                                     ),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: 6),
                                     ProfileScreenButton(
                                       onPressed: () {
                                         showDialog(
@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         );
                                       },
                                       color: AppColors.primaryColor,
-                                      child: SmallText('Okulum', AppColors.backgroundColor),
+                                      child: XSmallText('Okulum', AppColors.backgroundColor),
                                     ),
                                   ],
                                 ),
@@ -279,10 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(16),
-                          bottom: Radius.circular(16),
-                        ),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withAlpha(25),
