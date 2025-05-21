@@ -60,6 +60,33 @@ class MyApp extends StatelessWidget {
         },
       ),
       debugShowCheckedModeBanner: false,
+      // Prevent navigation back to login screens
+      navigatorKey: GlobalKey<NavigatorState>(),
+      // This callback prevents default back button behavior when needed
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return MaterialPageRoute(
+            builder: (context) => FutureBuilder<Widget>(
+              future: decideStartScreen(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Scaffold(body: Center(child: LoadingAnimationWidget.flickr(
+                    leftDotColor: AppColors.primaryColor,
+                    rightDotColor: AppColors.secondaryColor,
+                    size: 72,
+                    ))
+                  );
+                } else if (snapshot.hasData) {
+                  return snapshot.data!;
+                } else {
+                  return const Scaffold(body: Center(child: Text('Error!')));
+                }
+              },
+            ),
+          );
+        }
+        return null;
+      },
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
