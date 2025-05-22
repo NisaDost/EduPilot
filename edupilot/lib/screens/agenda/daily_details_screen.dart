@@ -98,7 +98,13 @@ class DailyDetailsScreen extends StatelessWidget {
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Bir hata oluştu: ${snapshot.error}'));
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('Bu günde çözülmüş soru yok.'));
+                      return Center(child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.info_outline_rounded, size: 64, color: AppColors.titleColor.withValues(alpha: 0.5)),
+                          LargeText('Bu tarihte çözülmüş soru bulunmamakta.', AppColors.titleColor.withValues(alpha: 0.5), textAlign: TextAlign.center)
+                        ],
+                      ));
                     }
 
                     final data = snapshot.data!;

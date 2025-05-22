@@ -279,7 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16), bottom: Radius.circular(16)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withAlpha(25),
@@ -295,6 +295,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           MediumBodyText('Başarımlar', AppColors.titleColor),
                           const SizedBox(height: 12),
                           AchievementCard(student: student),
+                          const SizedBox(height: 4),
                         ],
                       ),
                     ),

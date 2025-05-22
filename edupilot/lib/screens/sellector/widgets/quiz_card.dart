@@ -23,68 +23,92 @@ class QuizCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder<List<SubjectDTO>>(
-        future: LessonsApiHandler().getSubjectsByLessonId(lesson.id),
-        builder: (BuildContext context, AsyncSnapshot subjectSnapshot) {
-          if (subjectSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: LoadingAnimationWidget.flickr(
+      future: LessonsApiHandler().getSubjectsByLessonId(lesson.id),
+      builder: (BuildContext context, AsyncSnapshot subjectSnapshot) {
+        if (subjectSnapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: LoadingAnimationWidget.flickr(
               leftDotColor: AppColors.primaryColor,
               rightDotColor: AppColors.secondaryColor,
               size: 72,
-              ));
-          } else if (subjectSnapshot.hasError) {
-            return Center(child: Text('Hata oluştu: ${subjectSnapshot.error}'));
-          } else if (!subjectSnapshot.hasData) {
-            return const Center(child: Text('Konu bulunamadı.'));
-          }
-          final List<SubjectDTO> subjects = subjectSnapshot.data!;
-          return Padding(
-            padding: const EdgeInsets.all(16),
+            ),
+          );
+        } else if (subjectSnapshot.hasError) {
+          return Center(child: Text('Hata oluştu: ${subjectSnapshot.error}'));
+        } else if (!subjectSnapshot.hasData) {
+          return const Center(child: Text('Konu bulunamadı.'));
+        }
+
+        final List<SubjectDTO> subjects = subjectSnapshot.data!;
+        final List<SubjectDTO> filteredSubjects = subjects
+            .where((s) =>
+                s.quizzes.isNotEmpty &&
+                (subjectFilter == null || s.name == subjectFilter))
+            .toList();
+
+        if (filteredSubjects.isEmpty) {
+          return Center(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                for (SubjectDTO subject in subjects)
-                  if (subject.quizzes.isNotEmpty && (subjectFilter == null || subject.name == subjectFilter)) 
-                    // if (subjectFilter == null || subject.name == subjectFilter)
-                      for (SubjectQuizDTO quiz in subject.quizzes)
-                        FutureBuilder<QuizInfoDTO>(
-                          future: QuizzesApiHandler().getQuizInfo(quiz.quizId),
-                          builder: (context, quizSnapshot) {
-                            if (quizSnapshot.connectionState == ConnectionState.waiting) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8),
-                                child: Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade300,
-                                  highlightColor: Colors.grey.shade100,
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 160,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            } else if (quizSnapshot.hasError) {
-                              return Center(child: Text('Hata oluştu: ${quizSnapshot.error}'));
-                            } else if (!quizSnapshot.hasData) {
-                              return const Center(child: Text('Quiz bulunamadı.'));
-                            }
-                            final QuizInfoDTO quiz = quizSnapshot.data!;
-                            return _quizCardWidget(context, subject, quiz);
-                          },
-                        ),
+                const SizedBox(height: 4),
+                Icon(Icons.info_outline_rounded, size: 64, color: AppColors.titleColor.withValues(alpha: 0.5)),
+                LargeText(
+                  'Senin için şu anda daha fazla quiz listeleyemiyoruz. :(',
+                  AppColors.titleColor.withValues(alpha: 0.5),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
+          );
+        }
+
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              for (SubjectDTO subject in filteredSubjects)
+                for (SubjectQuizDTO quiz in subject.quizzes)
+                  FutureBuilder<QuizInfoDTO>(
+                    future: QuizzesApiHandler().getQuizInfo(quiz.quizId),
+                    builder: (context, quizSnapshot) {
+                      if (quizSnapshot.connectionState == ConnectionState.waiting) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              width: double.infinity,
+                              height: 160,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        );
+                      } else if (quizSnapshot.hasError) {
+                        return Center(child: Text('Hata oluştu: ${quizSnapshot.error}'));
+                      } else if (!quizSnapshot.hasData) {
+                        return const Center(child: Text('Quiz bulunamadı.'));
+                      }
+
+                      final QuizInfoDTO quiz = quizSnapshot.data!;
+                      return _quizCardWidget(context, subject, quiz);
+                    },
+                  ),
+            ],
+          ),
         );
-      }
+      },
     );
   }
 
-  _quizCardWidget(BuildContext context, SubjectDTO subject, QuizInfoDTO quiz) {
+  Widget _quizCardWidget(BuildContext context, SubjectDTO subject, QuizInfoDTO quiz) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -101,12 +125,12 @@ class QuizCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           LargeText(subject.name, AppColors.backgroundColor),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              SmallText('Bu quizden doğru cevap başına',  AppColors.textColor),
+              SmallText('Bu quizden doğru cevap başına', AppColors.textColor),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -117,23 +141,20 @@ class QuizCard extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 12),
           _buildLine(),
           const SizedBox(height: 12),
-          
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // sınıf - süre
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.school,color: AppColors.backgroundColor, size: 24),
+                      Icon(Icons.school, color: AppColors.backgroundColor, size: 24),
                       const SizedBox(width: 8),
-                      SmallBodyText('${subject.grade}. Sınıf', AppColors.textColor)
+                      SmallBodyText('${subject.grade}. Sınıf', AppColors.textColor),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -141,13 +162,12 @@ class QuizCard extends StatelessWidget {
                     children: [
                       Icon(Icons.timer, color: AppColors.backgroundColor, size: 24),
                       const SizedBox(width: 8),
-                      SmallText('${quiz.duration} dk', AppColors.textColor)
+                      SmallText('${quiz.duration} dk', AppColors.textColor),
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(width: 24),
-              // soru sayısı - zorluk
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -155,7 +175,7 @@ class QuizCard extends StatelessWidget {
                     children: [
                       Icon(Icons.assignment, color: AppColors.backgroundColor, size: 24),
                       const SizedBox(width: 8),
-                      SmallText('${quiz.questionCount} soru', AppColors.textColor)
+                      SmallText('${quiz.questionCount} soru', AppColors.textColor),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -164,28 +184,33 @@ class QuizCard extends StatelessWidget {
                       Icon(Icons.signal_cellular_alt_outlined, color: AppColors.backgroundColor, size: 24),
                       const SizedBox(width: 8),
                       SmallText(
-                        quiz.difficulty.index == 0 
-                        ? 'Kolay' 
-                        : quiz.difficulty.index == 1
-                          ? 'Orta' 
-                          : 'Zor', 
-                        AppColors.textColor)
+                        quiz.difficulty.index == 0
+                            ? 'Kolay'
+                            : quiz.difficulty.index == 1
+                                ? 'Orta'
+                                : 'Zor',
+                        AppColors.textColor,
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
               const Expanded(child: SizedBox()),
-              // başla tuşu
               Padding(
                 padding: const EdgeInsets.only(right: 4),
                 child: FilledButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuizScreen(
-                      quizId: quiz.id,
-                      lessonName: lesson.name,
-                      subjectName: subject.name,
-                    )));
-                  }, 
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(
+                          quizId: quiz.id,
+                          lessonName: lesson.name,
+                          subjectName: subject.name,
+                        ),
+                      ),
+                    );
+                  },
                   style: FilledButton.styleFrom(
                     backgroundColor: AppColors.secondaryColor,
                     shape: RoundedRectangleBorder(
@@ -194,13 +219,14 @@ class QuizCard extends StatelessWidget {
                   ),
                   child: LargeText('Başla', AppColors.backgroundColor),
                 ),
-              )
+              ),
             ],
-          )
-        ]
+          ),
+        ],
       ),
     );
   }
+
   Widget _buildLine() {
     return Container(
       width: double.infinity,
