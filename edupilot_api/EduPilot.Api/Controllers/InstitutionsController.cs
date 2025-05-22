@@ -1,6 +1,7 @@
 ﻿using EduPilot.Api.Data;
 using EduPilot.Api.Data.Models;
 using EduPilot.Api.DTOs;
+using EduPilot.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +14,19 @@ namespace EduPilot.Api.Controllers
     public class InstitutionsController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly BlobService _blobService;
 
-        public InstitutionsController(ApiDbContext context)
+        public InstitutionsController(ApiDbContext context, BlobService blobService)
         {
             _context = context;
+            _blobService = blobService;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<InstitutionDTO>> GetInstitutionById(Guid id)
         {
+            var sasToken = _blobService.GetAccountSasToken();
+
             var institution = await _context.Institutions
                 .Select(i => new InstitutionDTO()
                 {
@@ -29,7 +34,7 @@ namespace EduPilot.Api.Controllers
                     Name = i.Name,
                     Email = i.Email,
                     Address = i.Address,
-                    Logo = i.Logo,
+                    Logo = string.IsNullOrWhiteSpace(i.Logo) ? string.Empty : $"{i.Logo}?{sasToken}",
                     Website = i.Website,
                 })
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -71,21 +76,40 @@ namespace EduPilot.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInstitution(Guid id, [FromBody] InstitutionRegisterDTO institution)
+        public async Task<IActionResult> PutInstitution(Guid id, [FromForm] InstitutionRegisterDTO institution)
         {
             var institutionEntity = await _context.Institutions.FindAsync(id);
             if (institutionEntity == null)
             {
                 return NotFound("Institution not found");
             }
-            institutionEntity.Name = institution.Name;
-            institutionEntity.Password = institution.Password;
-            institutionEntity.Address = institution.Address;
-            institutionEntity.Logo = institution.Logo;
-            institutionEntity.Website = institution.Website;
-            _context.Institutions.Update(institutionEntity);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            if (institutionEntity.Password == institution.Password)
+            {
+                if (!string.IsNullOrWhiteSpace(institution.Name))
+                {
+                    institutionEntity.Name = institution.Name;
+                }
+                institutionEntity.Address = institution.Address;
+                institutionEntity.Website = institution.Website;
+                if (!string.IsNullOrWhiteSpace(institution.NewPassword))
+                {
+                    institutionEntity.Password = institution.NewPassword;
+                }
+                if (institution.File != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(institutionEntity.Logo))
+                    {
+                        await _blobService.DeleteFileAsync(institutionEntity.Logo);
+                    }
+
+                    string fileUrl = await _blobService.UploadInstitutionLogoFileAsync(institution.File, institutionEntity.Id);
+                    institutionEntity.Logo = fileUrl;
+                }
+                _context.Institutions.Update(institutionEntity);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            return BadRequest("Mevcut parola doğru değil.");
         }
 
         [HttpGet("{id}/students")]

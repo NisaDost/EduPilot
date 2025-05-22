@@ -26,6 +26,8 @@ namespace EduPilot.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PublisherDTO>> GetPublisherById(Guid id)
         {
+            var sasToken = _blobService.GetAccountSasToken();
+
             var quizCount = await _context.Quizzes
                 .Where(q => q.PublisherId == id)
                 .CountAsync();
@@ -41,7 +43,7 @@ namespace EduPilot.Api.Controllers
                     Name = p.Name,
                     Email = p.Email,
                     Address = p.Address ?? string.Empty,
-                    Logo = p.Logo ?? string.Empty,
+                    Logo = string.IsNullOrWhiteSpace(p.Logo) ? string.Empty : $"{p.Logo}?{sasToken}",
                     Website = p.Website ?? string.Empty,
                     quizCount = quizCount,
                     questionCount = questionCount

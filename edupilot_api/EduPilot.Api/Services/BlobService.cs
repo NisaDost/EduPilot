@@ -62,7 +62,7 @@ namespace EduPilot.Api.Services
             return blobClient.Uri.ToString(); // Save this in your DB
         }
 
-        public async Task<string> UploadUserLogoFileAsync(IFormFile file, Guid institutionId)
+        public async Task<string> UploadInstitutionLogoFileAsync(IFormFile file, Guid institutionId)
         {
             var blobServiceClient = new BlobServiceClient(_connectionString);
             var containerClient = blobServiceClient.GetBlobContainerClient(_institutionsContainerName);
