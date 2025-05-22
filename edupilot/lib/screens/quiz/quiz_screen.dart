@@ -145,7 +145,10 @@ class _QuizScreenState extends State<QuizScreen> {
                 LargeText('Tebrikler!', AppColors.primaryAccent),
                 const SizedBox(height: 36),
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    QuestionsContainer.clearQuizCache(_quiz!.id);
+                  },
                   style: TextButton.styleFrom(
                     backgroundColor: AppColors.secondaryColor,
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -204,6 +207,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                       _submitQuiz();
+                      // Removed call to QuestionsContainer.clearQuizCache as it does not exist
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 2),
@@ -238,7 +242,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const double topBarHeight = 128;
+    const double topBarHeight = 132;
 
     if (_isLoading) {
       return const Scaffold(
@@ -272,11 +276,23 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  LargeBodyText(widget.lessonName, AppColors.successColor),
-                  const SizedBox(height: 10),
-                  SmallText(widget.subjectName, AppColors.titleColor),
-                ]),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 150), // Set your desired max width
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, 
+                    children: [
+                      LargeBodyText(
+                        widget.lessonName.length < 12 
+                        ? widget.lessonName
+                        : widget.lessonName.substring(0, 11), 
+                        AppColors.successColor,
+                      ),
+                      const SizedBox(height: 10),
+                      XSmallText(widget.subjectName, AppColors.titleColor),
+                    ],
+                  ),
+                ),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [

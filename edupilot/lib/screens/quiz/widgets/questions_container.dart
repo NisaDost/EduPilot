@@ -34,17 +34,26 @@ class QuestionsContainer extends StatefulWidget {
     required this.selectedChoiceId,
   });
 
+  // Static method to clear quiz cache - now accessible from outside
+  static void clearQuizCache(String quizId) {
+    _QuestionsContainerState._shuffledChoicesCache.removeWhere((key, value) => key.startsWith('${quizId}_'));
+  }
+
   @override
   State<QuestionsContainer> createState() => _QuestionsContainerState();
 }
 
 class _QuestionsContainerState extends State<QuestionsContainer>
     with TickerProviderStateMixin {
-  static final Map<int, List<ChoiceDTO>> _shuffledChoicesCache = {};
+  // Changed to use both quizId and questionIndex as cache key
+  static final Map<String, List<ChoiceDTO>> _shuffledChoicesCache = {};
   late List<ChoiceDTO> _shuffledChoices;
   int? _selectedIndex;
   final Map<int, double> _scaleFactors = {};
   final double _pressedScale = 1.1;
+
+  // Create a unique cache key using both quizId and questionIndex
+  String get _cacheKey => '${widget.quizId}_${widget.questionIndex}';
 
   @override
   void initState() {
@@ -60,15 +69,19 @@ class _QuestionsContainerState extends State<QuestionsContainer>
   @override
   void didUpdateWidget(covariant QuestionsContainer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.questionIndex != widget.questionIndex || oldWidget.selectedChoiceId != widget.selectedChoiceId) {
+    if (oldWidget.questionIndex != widget.questionIndex || 
+        oldWidget.selectedChoiceId != widget.selectedChoiceId ||
+        oldWidget.quizId != widget.quizId) {
       _initializeOrRetrieveChoices();
       _selectedIndex = _shuffledChoices.indexWhere((c) => c.choiceId == widget.selectedChoiceId);
     }
   }
 
   void _initializeOrRetrieveChoices() {
-    if (_shuffledChoicesCache.containsKey(widget.questionIndex)) {
-      _shuffledChoices = _shuffledChoicesCache[widget.questionIndex]!;
+    final cacheKey = _cacheKey;
+    
+    if (_shuffledChoicesCache.containsKey(cacheKey)) {
+      _shuffledChoices = _shuffledChoicesCache[cacheKey]!;
     } else {
       final realChoices = List<ChoiceDTO>.from(widget.question.choices)..shuffle(Random());
       realChoices.add(ChoiceDTO(
@@ -77,7 +90,7 @@ class _QuestionsContainerState extends State<QuestionsContainer>
         isCorrect: false,
       ));
       _shuffledChoices = realChoices;
-      _shuffledChoicesCache[widget.questionIndex] = _shuffledChoices;
+      _shuffledChoicesCache[cacheKey] = _shuffledChoices;
     }
 
     _scaleFactors.clear();
@@ -98,6 +111,11 @@ class _QuestionsContainerState extends State<QuestionsContainer>
         _scaleFactors[index] = 1.0;
       });
     });
+  }
+
+  // ignore: unused_element
+  static void clearQuizCache(String quizId) {
+    _shuffledChoicesCache.removeWhere((key, value) => key.startsWith('${quizId}_'));
   }
 
   @override

@@ -124,7 +124,7 @@ class QuizCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          LargeText(subject.name, AppColors.backgroundColor),
+          LargeText(subject.name, AppColors.backgroundColor, textAlign: TextAlign.center),
           const SizedBox(height: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
