@@ -9,15 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const CustomSplashScreen(),
+    ScreenUtilInit(
+      designSize: Size(384, 854), // Galaxy S20+ size (example)
+      minTextAdapt: true,
+      builder: (_, __) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const CustomSplashScreen(),
+      ),
     ),
+    
   );
 }
 

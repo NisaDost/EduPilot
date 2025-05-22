@@ -8,7 +8,7 @@ import 'package:edupilot/theme.dart';
 
 class QuestionsContainer extends StatefulWidget {
   final QuizDTO quiz;
-  final Map<int, String> selectedChoices;
+  final Map<int, String?> selectedChoices;
   final String quizId;
   final QuestionDTO question;
   final int questionIndex;
@@ -92,7 +92,7 @@ class _QuestionsContainerState extends State<QuestionsContainer>
       _scaleFactors[index] = _pressedScale;
     });
     final selectedChoiceId = _shuffledChoices[index].choiceId;
-    widget.onChoiceSelected(selectedChoiceId!);
+    widget.onChoiceSelected(selectedChoiceId);
     Future.delayed(const Duration(milliseconds: 150), () {
       setState(() {
         _scaleFactors[index] = 1.0;
@@ -118,7 +118,6 @@ class _QuestionsContainerState extends State<QuestionsContainer>
               margin: const EdgeInsets.only(bottom: 12),
               child: Image.network(widget.question.questionImage!,
                 fit: BoxFit.contain,
-                
               ),
             ),
           Text(
@@ -131,40 +130,47 @@ class _QuestionsContainerState extends State<QuestionsContainer>
             final choice = _shuffledChoices[i];
             final isSelected = i == _selectedIndex;
             final label = choice.choiceId != null ? String.fromCharCode(65 + i) : '-';
-
-            return InkWell(
-              onTap: () => _onChoiceSelected(i),
-              borderRadius: BorderRadius.circular(8),
+            return AnimatedScale(
+              scale: _scaleFactors[i] ?? 1.0,
+              duration: const Duration(milliseconds: 150),
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 6),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primaryAccent.withOpacity(0.1) : null,
-                  border: Border.all(
-                    color: isSelected ? AppColors.primaryColor : AppColors.secondaryColor,
-                    width: isSelected ? 2 : 1,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
+                child: TextButton(
+                  onPressed: () => _onChoiceSelected(i),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                    backgroundColor: isSelected ? AppColors.primaryAccent.withValues(alpha: 0.15) : Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
                         color: isSelected ? AppColors.primaryColor : AppColors.secondaryColor,
-                        borderRadius: BorderRadius.circular(8),
+                        width: isSelected ? 2 : 1
                       ),
-                      child: label.isNotEmpty
-                          ? LargeText(label, AppColors.backgroundColor)
-                          : Icon(Icons.not_interested, color: AppColors.backgroundColor),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: MediumText(choice.choiceContent, AppColors.textColor),
-                    ),
-                  ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? AppColors.primaryColor
+                              : AppColors.secondaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: label.isNotEmpty
+                              ? LargeText(label, AppColors.backgroundColor)
+                              : Icon(Icons.not_interested, color: AppColors.backgroundColor),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: MediumText(choice.choiceContent, AppColors.textColor),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

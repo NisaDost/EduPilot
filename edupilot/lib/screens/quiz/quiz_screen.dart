@@ -28,7 +28,7 @@ class _QuizScreenState extends State<QuizScreen> {
   QuizDTO? _quiz;
   bool _isLoading = true;
   int _currentQuestionIndex = 0;
-  Map<int, String> selectedChoices = {};
+  Map<int, String?> selectedChoices = {};
 
   int _remainingSeconds = 0;
   Timer? _timer;
@@ -343,7 +343,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     questionIndex: _currentQuestionIndex,
                     totalQuestions: _quiz!.questionCount,
                     onChoiceSelected: (choiceId) {
-                      selectedChoices[_currentQuestionIndex] = choiceId!;
+                      selectedChoices[_currentQuestionIndex] = choiceId;
                     },
                     selectedChoiceId: selectedChoices[_currentQuestionIndex],
                     onPrevious: _currentQuestionIndex == 0

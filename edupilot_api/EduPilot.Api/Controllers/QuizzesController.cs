@@ -81,7 +81,7 @@ namespace EduPilot.Api.Controllers
                 .Where(q => q.Id == id && q.IsActive)
                 .Select(q => new QuizDTO
                 {
-                    Id = id,
+                    Id = q.Id,
                     SubjectId = q.SubjectId,
                     Difficulty = q.Difficulty,
                     PointPerQuestion = q.PointPerQuestion,
@@ -198,7 +198,7 @@ namespace EduPilot.Api.Controllers
                 {
                     student.DailyStreakCount += 1;
                 }
-                else
+                else if (student.LastActivityDate != DateTime.Now.Date)
                 {
                     student.DailyStreakCount = 1;
                 }

@@ -109,12 +109,19 @@ class _SolvedQuizCardState extends State<SolvedQuizCard> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(25),
+            blurRadius: 4,
+            offset: const Offset(0, 4),
+          ),
+        ],
         color: AppColors.primaryColor,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          LargeText(solvedQuiz.subjectName, AppColors.backgroundColor),
+          LargeText(solvedQuiz.subjectName, AppColors.backgroundColor, textAlign: TextAlign.center),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
