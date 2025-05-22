@@ -2,6 +2,7 @@
 {
     public class UpdateMugshotDTO
     {
-        public string Mugshot { get; set; }
+        public Guid InstitutionId { get; set; }
+        public IFormFile Mugshot { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace EduPilot.Api.Services
         private readonly string _questionContainerName;
         private readonly string _publishersContainerName;
         private readonly string _institutionsContainerName;
+        private readonly string _mugshotsContainerName;
         private readonly string _connectionString;
         private readonly string _accountName;
         private readonly string _accountKey;
@@ -21,6 +22,7 @@ namespace EduPilot.Api.Services
             _questionContainerName = configuration["AzureBlobStorage:QuestionContainerName"];
             _publishersContainerName = configuration["AzureBlobStorage:PublishersContainerName"];
             _institutionsContainerName = configuration["AzureBlobStorage:InstitutionsContainerName"];
+            _mugshotsContainerName = configuration["AzureBlobStorage:MugshotsContainerName"];
             _connectionString = configuration.GetConnectionString("StorageAccount");
             _accountName = configuration["AzureBlobStorage:AccountName"];
             _accountKey = configuration["AzureBlobStorage:AccountKey"];
@@ -66,6 +68,24 @@ namespace EduPilot.Api.Services
         {
             var blobServiceClient = new BlobServiceClient(_connectionString);
             var containerClient = blobServiceClient.GetBlobContainerClient(_institutionsContainerName);
+            await containerClient.CreateIfNotExistsAsync(PublicAccessType.None);
+
+            // Compose the blob name like: quizId/questionId/filename.ext
+            var fileName = Path.GetFileName(file.FileName);
+            var blobName = $"{institutionId}/{fileName}";
+
+            var blobClient = containerClient.GetBlobClient(blobName);
+
+            using var stream = file.OpenReadStream();
+            await blobClient.UploadAsync(stream, overwrite: true);
+
+            return blobClient.Uri.ToString(); // Save this in your DB
+        }
+
+        public async Task<string> UploadStudentMugshotFileAsync(IFormFile file, Guid institutionId)
+        {
+            var blobServiceClient = new BlobServiceClient(_connectionString);
+            var containerClient = blobServiceClient.GetBlobContainerClient(_mugshotsContainerName);
             await containerClient.CreateIfNotExistsAsync(PublicAccessType.None);
 
             // Compose the blob name like: quizId/questionId/filename.ext

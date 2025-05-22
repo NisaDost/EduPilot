@@ -111,6 +111,11 @@ namespace EduPilot.Api.Controllers
         public async Task<ActionResult<QuizResultDTO>> PostQuizResult(Guid id, Guid studentId, [FromBody] List<AnswerDTO> answers)
         {
             var student = await _context.Students.Where(s => s.Id == studentId).FirstOrDefaultAsync();
+
+            var studentAchievements = await _context.StudentAchievements.Where(sa => sa.StudentId == studentId).ToListAsync();
+
+            var solvedQuizInfos = await _context.SolvedQuizInfos.Where(sqi => sqi.StudentId == studentId).ToListAsync();
+
             if (student == null)
             {
                 return NotFound();
@@ -202,6 +207,29 @@ namespace EduPilot.Api.Controllers
                 {
                     student.DailyStreakCount = 1;
                 }
+
+                if (!studentAchievements.Any(sa => sa.AchievementId == Guid.Parse("062e493c-c550-4f5e-bd42-e9e51ab3b7b4")) && student.Points >= 1000)
+                {
+                    var newAchievement = new StudentAchievement
+                    {
+                        StudentId = student.Id,
+                        AchievementId = Guid.Parse("062e493c-c550-4f5e-bd42-e9e51ab3b7b4")
+                    };
+
+                    _context.StudentAchievements.Add(newAchievement);
+                }
+
+                if (!studentAchievements.Any(sa => sa.AchievementId == Guid.Parse("7327f681-b57e-4487-b689-2db753e02ee5")) && student.DailyStreakCount == 7)
+                {
+                    var newAchievement = new StudentAchievement
+                    {
+                        StudentId = student.Id,
+                        AchievementId = Guid.Parse("7327f681-b57e-4487-b689-2db753e02ee5")
+                    };
+
+                    _context.StudentAchievements.Add(newAchievement);
+                }
+
                 student.LastActivityDate = DateTime.Now.Date;
                 _context.Students.Update(student);
             }
@@ -220,6 +248,17 @@ namespace EduPilot.Api.Controllers
                 SolvedDate = DateTime.Now.Date,
             };
             _context.SolvedQuizInfos.Add(solvedQuizInfo);
+
+            if (!studentAchievements.Any(sa => sa.AchievementId == Guid.Parse("401ad235-e546-427b-9e25-3d0b267d15e5")) && solvedQuizInfos.Count >= 10)
+            {
+                var newAchievement = new StudentAchievement
+                {
+                    StudentId = student.Id,
+                    AchievementId = Guid.Parse("401ad235-e546-427b-9e25-3d0b267d15e5")
+                };
+
+                _context.StudentAchievements.Add(newAchievement);
+            }
 
             await _context.SaveChangesAsync();
 

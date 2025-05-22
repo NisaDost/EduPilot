@@ -2,6 +2,7 @@
 using EduPilot.Api.Data.Models;
 using EduPilot.Api.DTOs;
 using EduPilot.Api.Models;
+using EduPilot.Api.Services;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ namespace EduPilot.Api.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly BlobService _blobService;
 
-        public StudentsController(ApiDbContext context)
+        public StudentsController(ApiDbContext context, BlobService blobService)
         {
             _context = context;
+            _blobService = blobService;
         }
 
         [HttpGet("{id}")]
@@ -387,6 +390,14 @@ namespace EduPilot.Api.Controllers
         [HttpPost("{id}/add/questioncount/{count}/lesson/{lessonId}/date/{date}")]
         public async Task<ActionResult<SolvedQuestionCount>> PostSolvedQuestionCount(Guid id, int count, Guid lessonId, DateTime date)
         {
+            var studentAchievements = await _context.StudentAchievements.Where(sa => sa.StudentId == id).ToListAsync();
+
+            var totalSolvedQuestionCount = await _context.SolvedQuestionCounts
+                .Where(sqc => sqc.StudentId == id)
+                .Select(sqc => (int?)sqc.Count)
+                .SumAsync() ?? 0;
+
+
             var existingEntity = await _context.SolvedQuestionCounts.FirstOrDefaultAsync(sqc => sqc.LessonId == lessonId && sqc.EntryDate == date.Date);
             if (existingEntity == null)
             {
@@ -404,22 +415,50 @@ namespace EduPilot.Api.Controllers
                 existingEntity.Count += count;
                 _context.SolvedQuestionCounts.Update(existingEntity);
             }
+
+            if (!studentAchievements.Any(sa => sa.AchievementId == Guid.Parse("0f9f1baa-3d00-4d63-82b6-a3463b284f9e")) && totalSolvedQuestionCount >= 10000)
+            {
+                var newAchievement = new StudentAchievement
+                {
+                    StudentId = id,
+                    AchievementId = Guid.Parse("0f9f1baa-3d00-4d63-82b6-a3463b284f9e")
+                };
+
+                _context.StudentAchievements.Add(newAchievement);
+            }
+
             await _context.SaveChangesAsync();
             return Ok();
         }
 
         [HttpPut("{id}/mugshot")]
-        public async Task<ActionResult> UpdateStudentMugShot(Guid id, [FromBody] UpdateMugshotDTO updateMugshot)
+        public async Task<ActionResult> UpdateStudentMugShot(Guid id, [FromForm] UpdateMugshotDTO updateMugshot)
         {
+            var sasToken = _blobService.GetAccountSasToken();
+
             var student = await _context.Students.FindAsync(id);
             if (student == null)
             {
                 return NotFound();
             }
-            student.Mugshot = updateMugshot.Mugshot;
-            _context.Entry(student).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return Ok();
+
+            var institution = await _context.Institutions.FindAsync(updateMugshot.InstitutionId);
+            if (institution == null)
+            {
+                return NotFound();
+            }
+
+            if (updateMugshot.Mugshot != null)
+            {
+                student.Mugshot = await _blobService.UploadStudentMugshotFileAsync(updateMugshot.Mugshot, updateMugshot.InstitutionId);
+                _context.Students.Update(student);
+                _context.Entry(student).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Ok($"{student.Mugshot}?{sasToken}");
+            }
+
+            return BadRequest();
         }
 
         [HttpGet("{id}/weaksubjects")]
